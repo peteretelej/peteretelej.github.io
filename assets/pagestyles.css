@@ -1,0 +1,55 @@
+#warning{
+    display:block; margin:20px auto;
+    padding:10px 20px;
+    font-weight:bold;
+
+}
+#search form table.gsc-search-box{
+    width:70%; margin:0 auto;
+    min-width:250px; font-family: "Open Sans", Garamond, sans-serif;
+}
+#search td.gsc-input{
+    height:25px;
+}
+#search td.gsc-input table{
+    height:25px;
+}
+#search  .gsc-search-button input.gsc-search-button-v2,
+#search input.gsc-search-button-v2{
+        display:block; padding:5px 10px;
+    height: 25px; width:40px; border: 1px solid #aaa;
+}
+#search .gsc-tabsArea{
+    display:none;
+}
+
+#search #searchoutput .gsc-orderby-container{
+    text-align: left;
+}
+
+#search #searchoutput .gsc-option-selector{
+    right:15px;
+}
+
+#search #searchoutput .gsc-option-menu-container.gsc-inline-block{
+}
+search .gsc-selected-option-container.gsc-inline-block{
+    width:25px;
+}
+#search .gsc-selected-option-container{
+    width:100px!important;
+}
+#search .gsc-resultsbox-visible{
+    display:block; padding:0;  border:1px solid #cfcfcf;
+    margin:0 10px;
+}
+#search .gs-result{
+    display:block; margin:0 5px 0 10px ; padding:10px 10px;
+    border:1px solid #efefef;
+    border-radius: 10px;
+
+}
+#search .gs-result:hover{  }
+#search .gs-webResult .gs-snippet, #search .gs-imageResult .gs-snippet, #search .gs-fileFormatType{
+    padding:5px 20px;
+}

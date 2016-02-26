@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>{% if page.thetitle %} {{ page.thetitle }}{% else %}{% if page.title %}{{ page.title }} &bull; {{ site.description }}{% else %}{{ site.description }} &bull; {{site.name}}{% endif %}{% endif %}</title>
+<!-- SEO -->
+    <meta name="author" content="Peter Etelej">
+    {% if page.title %}<link rel="canonical" href="{{ site.url }}{{ page.url }}" />{% endif %}
+    <link rel="publisher" href="https://plus.google.com/+PeterEtelej/posts"/>
+    {% if page.pagedescription %}<meta name="description" content="{{ page.pagedescription }}">
+    {% else %}<meta name="description" content="{% if page.title %}{{ content |strip_newlines |strip_html |replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '| truncatewords:64 }} &bull; {% endif %}{{ site.name }} – {{ site.description }}">
+     {% endif %}
+     {% if page.noindex %}<meta name="robots" content="noindex">{% endif %}
+<!-- Twitter Meta -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@peteretelej">
+    <meta name="twitter:creator" content="peteretelej">
+    <meta name="twitter:title" content="{% if page.title %}{{ page.title }} &bull; {{ site.description }}{% else %}{{ site.name }} &bull; {{ site.description }}{% endif %}">
+      {% if page.pagedescription %}
+          <meta name="twitter:description" content="{{ page.pagedescription }}">
+      {% else %}
+    <meta name="twitter:description" content="{% if page.title %}{{ content |strip_html|strip_newlines||replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '| truncate:160 }} by {% endif %}{{ site.name }} on {{ site.description }}">
+      {% endif %}
+      {% if page.thumbnail %}<meta name="twitter:image" content="{{ page.thumbnail }}" />{% endif %}
+    <!--[if lt IE 9]>
+      <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link rel='icon' href="{{ site.baseurl }}/favicon.ico" />
+    <link rel="alternate" type="application/rss+xml" title="{{ site.name }} - {{ site.description }}" href="{{ site.baseurl }}/feed.xml" />
+    <link rel="sitemap" href="/sitemap.xml" />
+    <link rel="stylesheet" type="text/css" href="{{ site.baseurl }}/style.css" />
+      {% if page.pagestyles %}
+        <link rel="stylesheet" type="text/css" href="{{ site.baseurl }}/assets/pagestyles.css" />
+      {% endif %}
+<!-- Third party -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href='//fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+    <style> /*-Print Styles-*/@media print{*{background:0 0!important;color:#000!important;box-shadow:none!important;text-shadow:none!important}a,a:visited{text-decoration:underline}a[href]:after{content:" (" attr(href) ")"}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}blockquote,pre{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}img,tr{page-break-inside:avoid}img{max-width:100%!important}@page{margin:.5cm}h2,h3,p{orphans:3;widows:3}h2,h3{page-break-after:avoid}}</style>
+<script type='text/javascript'>
+    var host = "etelej.github.io";
+if ((host == window.location.host) && (window.location.protocol != "https:"))
+    window.location.protocol = "https";
+</script>
+</head>
+  <body>
+    <div id="wrapper-masthead" class='wrapper'>
+      <div class="container">
+        <header class="clearfix">
+          <div class="site-info">
+              {% if page.id %}
+                <p id='thetitle'><a href="{{ site.url }}/"><span>Peter</span> <span>Etelej</span></a></p>
+                <p id='thetitledesc'>{{ site.description }}</p>
+              {% else %}
+                <h1 id='thetitle'><a href="{{ site.url }}/"><span>Peter</span> <span>Etelej</span></a></h1>
+                <p id='thetitledesc'>{{ site.description }}</p>
+              {% endif %}
+
+          </div>
+            <!-- break anchor tags - etelej zerofont hack2 -->
+          <nav id='main-nav' class='clearfix'>
+            <ul><li><a href="{{ site.url }}/">Blog</a></li><li><a
+                href="{{ site.url }}/about/">About</a></li><li><a
+                href="{{ site.url }}/search/">Search</a></li>
+              </ul>
+          </nav>
+        </header>
+      </div>
+    </div>
+
+    <div id="wrapper-content" class='wrapper clearfix'>
+        <div id='mainContent'>
+
+            {{ content }}
+
+        </div>
+
+    </div>
+    <div id='wrapper-comments'>
+       <div class='container'>
+           <div class='disqusiframe'>
+            {% if page.id %}
+            <p class='commentstitle'>Comments</p>
+             {% if site.disqus %}
+                <div class="comments">
+                    <div id="disqus_thread"></div>
+                    <script type="text/javascript">
+
+                        var disqus_shortname = '{{ site.disqus }}';
+                        var disqus_url = '{{ site.url }}{{ page.url }}';
+
+                        (function() {
+                            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+                            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+                        })();
+
+                    </script>
+                    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+                </div>
+                {% endif %}
+            {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div id="wrapper-footer" class='wrapper'>
+      <div class="container">
+        <footer id="footer">
+            <div class='footer-icons'>{% include footer-icons.html %}</div>
+            <div class='copy'>&copy; {{ site.time | date: '%Y' }} Peter Etelej, <a href='https://etelej.com' rel='me'>etelej.com</a></div>
+
+        </footer>
+      </div>
+      <div id='ps'></div>
+    </div>
+    <a href="https://github.com/etelej" id="gitribbon"><img style="" src="https://camo.githubusercontent.com/e7bbb0521b397edbd5fe43e7f760759336b5e05f/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677265656e5f3030373230302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png"></a>
+    <div id="fb-root"></div><!-- fb initialization id-->
+    {% include thirdpartyjs.html %}
+  </body>
+</html>
