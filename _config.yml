@@ -5,15 +5,15 @@ avatar: https://avatars3.githubusercontent.com/u/2271973?v=3&s=100
 footer-links:
   facebook: peter.etelej
   flickr: etelej
-  github: etelej
+  github: peteretelej
   linkedin: peteretelej
-  rss: https://etelej.github.io/feed.xml
-  sitemap: https://etelej.github.io/sitemap.xml
+  rss: https://peteretelej.github.io/feed.xml
+  sitemap: https://peteretelej.github.io/sitemap.xml
   twitter: peteretelej
   stackoverflow: users/1209272/peter-etelej
 disqus: etelejgithub
 google_analytics: UA-54941457-1
-url: https://etelej.github.io
+url: https://peteretelej.github.io
 baseurl: ""
 markdown: kramdown
 highlighter: rouge # githubpages supports rouge

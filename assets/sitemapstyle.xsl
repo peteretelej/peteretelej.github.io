@@ -75,7 +75,7 @@ layout: null
 				<div id="content">
 					<h1>XML Sitemap</h1>
 					<p class="expl">
-                        An XML Sitemap for <a href='/'><b>etelej.github.io</b></a> and is meant for consumption by search engines.
+                        An XML Sitemap for <a href='/'><b>peteretelej.github.io</b></a> and is meant for consumption by search engines.
                         <ul><li>XSL Styling based on Yoast's Wordpress SEO plugin sitemap</li></ul>
 
 						For more information on sitemaps: <a href="http://sitemaps.org">sitemaps.org</a>.

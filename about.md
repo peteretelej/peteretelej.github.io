@@ -20,8 +20,8 @@ permalink: /about/
 <li><i class="fa-li fa fa-check-square"></i>I'm mostly here: twitter.com/<a href='http://twitter.com/peteretelej'>@peteretelej</a></li>
 <li><i class="fa-li fa fa-check-square"></i>Let's collaborate!:
     <ul class='fa-ul'>
-        <li><i class="fa-li fa fa-github-alt"></i>github.com/<a href='http://github.com/etelej'>etelej</a></li>
-        <li><i class="fa-li fa fa-bitbucket"></i>bitbucket.org/<a href='http://bitbucket.org/etelej'>etelej</a></li>
+        <li><i class="fa-li fa fa-github-alt"></i>github.com/<a href='http://github.com/peteretelej'>peteretelej</a></li>
+        <li><i class="fa-li fa fa-bitbucket"></i>bitbucket.org/<a href='http://bitbucket.org/peteretelej'>peteretelej</a></li>
     </ul>
 </li>
 <li><i class="fa-li fa fa-check-square"></i>My Website: <a href='http://etelej.com'>etelej.com</a></li>

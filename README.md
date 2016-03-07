@@ -1,6 +1,6 @@
 # Etelej on Github
 
-A simple [github.io blog](https://etelej.github.io) talking code and projects I'm currently working on.
+A simple [github.io blog](https://peteretelej.github.io) talking code and projects I'm currently working on.
 
 ## Forking this blog (simple guide to working with your copy)
 
@@ -10,15 +10,15 @@ Requirements
 * docker. [Install here](https://docs.docker.com/engine/installation/)
 
 1. Fork the repo.
-2. Then __assuming__ your new repo is at https://github.com/etelej/etelej.github.io, follow the steps below to start working with your repo
+2. Then __assuming__ your new repo is at https://github.com/peteretelej/peteretelej.github.io, follow the steps below to start working with your repo
 
 ```
 # cd into a folder to work in
 
-git clone git@github.com:etelej/etelej.github.io.git
+git clone git@github.com:peteretelej/peteretelej.github.io.git
 # clone your repo (replace name git@github.com:yourgithubname/your.repo.name.io.git)
 
-cd etelej.github.io # cd into the created directory directory
+cd peteretelej.github.io # cd into the created directory directory
 
 ```
 

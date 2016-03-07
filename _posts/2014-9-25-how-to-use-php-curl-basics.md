@@ -2,7 +2,7 @@
 layout: postlayout
 title: How to Use PHP/cURL - The Basics
 labels: [php,curl]
-thumbnail: https://etelej.github.io/images/logos/phpcurl.png
+thumbnail: https://peteretelej.github.io/images/logos/phpcurl.png
 ---
 <p>cURL is a powerful tool for transferring data across various protocols like http, ftp, gopher, file telnet among others. PHP provides support for cURL through the libcurl library as made available through the <code>php_curl</code> extension. In order to make use of the following tutorial, you need to have PHP on your server and it's php_curl extension enabled <i>(enabled by most webhosts)</i>.</p>
 <p style='padding:5px; margin:0;'><b>Jump to Section:</b></p>
