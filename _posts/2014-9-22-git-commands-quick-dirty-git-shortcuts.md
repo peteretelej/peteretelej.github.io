@@ -6,15 +6,25 @@ thumbnail: https://peteretelej.github.io/images/logos/git-logo.png
 ---
 <p>Git is a popular open source Version Control System that allows decentralized management of project repositories.</p>
 <p>Here's a <i>quick and dirty</i> guide to common git commands:</p>
-<p style='padding:5px; margin:0;'><b>Jump to Section:</b></p>
-<div class='jumplist'>
-<a href='#git-config' class='inlink'>Configure Git</a> <a href='#git-init' class='inlink'>Initiliaze Git</a> <a href='#git-reset' class='inlink'>Git Reset</a> <a href='#git-branch' class='inlink'>Manage Branches</a> <a href='#git-merge' class='inlink'>Git Merge</a> <a href='#git-rebase' class='inlink'>Rewriting Git History</a> <a href='#git-remote' class='inlink'>Git Remotes</a> <a href='#git-stash' class='inlink'>Git Stash</a> <a href='#git-useful-commands' class='inlink'>Useful Git Commands</a> <a href='#git-files' class='inlink'>Git Special Files</a> <a href='#git-guides' class='inlink'>Git Guides and Tutorials</a>
-</div>
+
+<div class="tags">
+<a href='#git-config' class='tag is-info '>Configure Git</a> 
+<a href='#git-init' class='tag is-info '>Initiliaze Git</a> 
+<a href='#git-reset' class='tag is-info '>Git Reset</a> 
+<a href='#git-branch' class='tag is-info '>Manage Branches</a> 
+<a href='#git-merge' class='tag is-info '>Git Merge</a> 
+<a href='#git-rebase' class='tag is-info '>Rewriting Git History</a> 
+<a href='#git-remote' class='tag is-info '>Git Remotes</a> 
+<a href='#git-stash' class='tag is-info '>Git Stash</a> 
+<a href='#git-useful-commands' class='tag is-info '>Useful Git Commands</a> 
+<a href='#git-files' class='tag is-info'>Git Special Files</a> 
+<a href='#git-guides' class='tag is-info'>Git Guides and Tutorials</a>
+</div><!--/.tags-->
+
 <p>This is <b style='text-transform:uppercase'>not a tutorial</b> on how to use git. It's meant as a quick way to look up git commands. Please do not use these commands if you're just learning to use git; kindly <a href='#git-guides'>follow these links</a> at the bottom of this post to get Git guides and tutorials.</p>
 
 <h2>Git Quick Commands Listing</h2>
-<section id='git-config'>
-<h3>Git Configuration:</h3>
+<h3 id="git-config">Git Configuration:</h3>
 {% highlight sh lineos %}
 git config --global user.name "Your Name"
 git config --global user.email you@youremaildomain.com
@@ -37,9 +47,8 @@ git config --global push.default simple
 # Automatically rebase pulls
 git config --global branch.autosetuprebase always
 {% endhighlight %}
-</section>
-<section id='git-init'>
-<h3>Initialize git:</h3>
+
+<h3 id="git-init">Initialize git:</h3>
 {% highlight sh lineos %}
 git init
 
@@ -70,9 +79,8 @@ git commit -am "The commit message here"
 git status
 {% endhighlight %}
 <p>To ignore files in repository directory: Add to file or directory to <code>.gitignore</code> file (each file/directory on a new line)</p>
-</section>
-<section id='git-reset'>
-<h3>Resetting and Reverting Repo</h3>
+
+<h3 id="git-reset">Resetting and Reverting Repo</h3>
 <p><b>Revert</b> to previous commit (<i>graceful</i> - does not delete history)</p>
 {% highlight sh lineos %}
 git revert HEAD
@@ -97,9 +105,7 @@ git reset --mixed origin/master
 git branch --set-upstream-to=origin/master master  
 {% endhighlight %}
 
-</section>
-<section id='git-branch'>
-<h3>Git Branches</h3>
+<h3 id="git-branch">Git Branches</h3>
 {% highlight sh lineos %}
 # Create local branch
 git branch branchname
@@ -131,9 +137,8 @@ git fetch -p
 # Checkout branches with latest commits #esp for cleaning old branches
 git for-each-ref --sort=-committerdate --format='%(refname:short) %(committerdate:short)'
 {% endhighlight %}
-</section>
-<section id='git-merge'>
-<h3>Git merge</h3>
+
+<h3 id="git-merge">Git merge</h3>
 <p>Before merging, checkout to branch you want to merge to:</p>
 {% highlight sh lineos %}
 git checkout master
@@ -162,9 +167,8 @@ git merge origin/br# Danchname
 # SHORTCUT - Fetch and merge tracked branch
 git pull
 {% endhighlight %}
-</section>
-<section id='git-rebase'>
-<h3>Rewriting Git History</h3>
+
+<h3 id="git-rebase">Rewriting Git History</h3>
 <p><b>NOTE:</b> Do not rewrite public commits/history</p>
 
 {% highlight sh lineos %}
@@ -201,10 +205,9 @@ squash a3a44as I changed stuff
 <li><code>x, exec</code> - run command (the rest of the line) using shell</li>
 </ul>
 <p><b>Interactive Rebasing Tips</b></p>
-    <p>To reorder commits, reorder the lines; they are executed from top to bottom.<br/>If you remove a line, THAT COMMIT WILL BE LOST<br/>However, if you remove everything, the rebase will be aborted.<br/>Empty commits are commented out</p>
-</section>
-<section id='git-remote'>
-<h3>Working with Remotes</h3>
+<p>To reorder commits, reorder the lines; they are executed from top to bottom.<br/>If you remove a line, THAT COMMIT WILL BE LOST<br/>However, if you remove everything, the rebase will be aborted.<br/>Empty commits are commented out</p>
+
+<h3 id="git-remote">Working with Remotes</h3>
 <p>Adding remote - Connecting local repo with a remote repo (for example a repo on github)</p>
 {% highlight sh lineos %}
 git remote add origin https://github.com/USERNAME/REPOSITORY.git
@@ -237,9 +240,8 @@ git fetch --all #git fetch [remotename] #to fetch single remote
 #push to a new remote branch
 git push -u origin branchname
 {% endhighlight %}
-</section>
-<section id='git-stash'>
-<h3>Stashing</h3>
+
+<h3 id="git-stash">Stashing</h3>
 <p><b>Stash</b> - Store modified tracked files and staged changes on a stach for reapplying later</p>
 {% highlight sh lineos %}
 #push stash onto stack
@@ -265,9 +267,8 @@ git stash clear
 # Apply latest stash and remove from stack
 git stash pop
 {% endhighlight %}
-</section>
-<section id='git-useful-commands'>
-<h3>Useful Commands</h3>
+
+<h3 id="git-useful-commands">Useful Commands</h3>
 <p><b>History</b> - Checkout the history of your commits</p>
 {% highlight sh lineos %}
 git log --oneline --graph --decorate --all --color
@@ -331,7 +332,7 @@ git push --tags
 
 # Adding a message to an existing tag
 git tag tagname tagname -f -m "the message"
-    # creates a tag of the same name with a message and overwrites old tag
+# creates a tag of the same name with a message and overwrites old tag
 
 # Push referenced tags along with branches
 git push --follow-tags
@@ -352,25 +353,21 @@ git gc #calls git prune with prunes loose objects older than 2wks
 
 git gc --prune=all #prunes all loose objects
 {% endhighlight %}
-</section>
-<section id='git-files'>
-<h4>Useful Git Files</h4>
+
+<h4 id="git-files">Useful Git Files</h4>
 <ul>
 <li>.gitignore</li>
 <li>.gitattributes</li>
 <li>.mailmap</li>
 <li>.gitmodules</li>
-<li>*.keep </li>
 </ul>
-</section>
-<section id='git-guides'>
-<h4>Guides and Tutorials on Git</h4>
+<h4 id="git-guides">Guides and Tutorials on Git</h4>
 <ul>
-    <li><a href='http://rogerdudler.github.io/git-guide/'>Git - the <b>simple guide</b> - no deep shit</a></li>
-   	<li><a href='https://blog.udemy.com/git-tutorial-a-comprehensive-guide/'>Git Tutorial: A <b>Comprehensive Guide</b> by Udemy</a></li>
-   	<li><a href='https://www.atlassian.com/git/tutorials/'><b>Git Tutorials</b> by Atlassian <i>( ~ bitbucket)</i></a></li>
-    <li><a href='https://try.github.io/levels/1/challenges/1'>Github's Git Training: <b>Try Git</b></a></li>
-    <li><a href='http://git-scm.com/doc'>Official <b>Git Documentation</b></a></li>
+<li><a href='http://rogerdudler.github.io/git-guide/'>Git - the <b>simple guide</b> - no deep shit</a></li>
+<li><a href='https://blog.udemy.com/git-tutorial-a-comprehensive-guide/'>Git Tutorial: A <b>Comprehensive Guide</b> by Udemy</a></li>
+<li><a href='https://www.atlassian.com/git/tutorials/'><b>Git Tutorials</b> by Atlassian <i>( ~ bitbucket)</i></a></li>
+<li><a href='https://try.github.io/levels/1/challenges/1'>Github's Git Training: <b>Try Git</b></a></li>
+<li><a href='http://git-scm.com/doc'>Official <b>Git Documentation</b></a></li>
 </ul>
 <h4>Git Cheat Sheets (Printable)</h4>
 <ul>
@@ -378,5 +375,3 @@ git gc --prune=all #prunes all loose objects
 <li><a href='https://www.git-tower.com/blog/git-cheat-sheet/'><b>Git Tower</b> Cheat Sheet</a></li>	
 <li><a href='http://zeroturnaround.com/rebellabs/git-commands-and-best-practices-cheat-sheet/'><b>Rebellabs</b> Git Cheat Sheet</a></li>
 </ul>
-</secion>
-<p>This post is meant to increase productivity while working with git, for <b>comments and suggestions</b>, leave a comment below.</p>

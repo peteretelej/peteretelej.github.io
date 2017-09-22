@@ -5,5 +5,23 @@
 /* Etelej - Site Styling */
 /************************/
 
+/* Bulma - customized */
+@import "_bulma";
+
 /*Syntax Highlighting*/
 @import "_syntax";
+
+/* CUSTOM */
+body{
+	font-size:1.2rem;
+}
+pre{
+	text-align:left;
+}
+
+.highlight span {
+}
+
+li>code,p>code{
+color:#588
+}

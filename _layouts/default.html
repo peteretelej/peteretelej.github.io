@@ -27,28 +27,14 @@
 		{% if page.thumbnail %}<meta name="twitter:image" content="{{ page.thumbnail }}" />{% endif %}
 
 		<!--[if lt IE 9]>
-			<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 		<![endif]-->
+		<link rel='icon' href="{{ site.baseurl }}/favicon.ico" />
 		<link rel='icon' href="{{ site.baseurl }}/favicon.ico" />
 		<link rel="alternate" type="application/rss+xml" title="{{ site.name }} - {{ site.description }}" href="{{ site.baseurl }}/feed.xml" />
 		<link rel="sitemap" href="/sitemap.xml" />
-
-		<!-- Third party -->
-		<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
-		<link href='//fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
-		<link rel="stylesheet" href="{{ site.baseurl }}/assets/css/bulma.min.css" />
+		<link rel="stylesheet" type="text/css" href="{{ site.baseurl }}/assets/css/font-awesome/css/font-awesome.min.css" />
 		<link rel="stylesheet" type="text/css" href="{{ site.baseurl }}/style.css" />
-		{% if page.pagestyles %}
-		<link rel="stylesheet" type="text/css" href="{{ site.baseurl }}/assets/pagestyles.css" />
-		{% endif %}
-
-
-		<script type='text/javascript'>
-/* change to https */
-var host = "peteretelej.github.io";
-if ((host == window.location.host) && (window.location.protocol != "https:"))
-window.location.protocol = "https";
-		</script>
 	</head>
 	<body>
 		<div class="navbar" role="navigation" aria-label="main navigation">
@@ -68,11 +54,19 @@ window.location.protocol = "https";
 					<div class="navbar-start">
 					</div><!--/.navbar-start-->
 					<div class="navbar-end">
-						<a class="navbar-item" href="{{site.url}}/search">Search</a>
-						<a class="navbar-item" href="{{site.url}}/about">About</a>
-						<a class="navbar-item is-hidden-desktop-only" href="https://github.com/peteretelej" target="_blank">
-							<span class="icon" style="color: #333;">
+						<a class="navbar-item" href="https://github.com/peteretelej" target="_blank" rel="noopener">
+							<span class="icon" style="color: #777;">
 								<i class="fa fa-lg fa-github"></i>
+							</span>
+						</a>
+						<a class="navbar-item" href="https://www.linkedin.com/in/peteretelej/" target="_blank" rel="noopener">
+							<span class="icon" style="color: #1A5276;">
+								<i class="fa fa-lg fa-linkedin"></i>
+							</span>
+						</a>
+						<a class="navbar-item" href="https://twitter.com/peteretelej" target="_blank" rel="noopener">
+							<span class="icon" style="color: #2980B9;">
+								<i class="fa fa-lg fa-twitter"></i>
 							</span>
 						</a>
 					</div><!--/.navbar-end-->
@@ -89,29 +83,12 @@ window.location.protocol = "https";
 		</div><!--/.section-->
 
 
-		<!-- comments -->
-		<div class="section">
-			<div class="container">
-				<div class='disqusiframe'>
-					{% if page.id %}
-					<p class='commentstitle'>Comments</p>
-					{% if site.disqus %}
-					<div class="comments"></div>
-					{% endif %}
-					{% endif %}
-				</div>
-
-			</div><!--/.container-->
-		</div><!--/.section-->
-
 
 		<div class="footer">
 			<div class="container">
-				<footer id="footer">
-					<div class='footer-icons'>{% include footer-icons.html %}</div>
-					<div class='copy'>&copy; {{ site.time | date: '%Y' }} Peter Etelej, <a href='https://etelej.com' rel='me'>etelej.com</a></div>
-
-				</footer>
+				<div class="content has-content-centered">
+					<p>&copy; {{ site.time | date: '%Y' }} <a href='https://etelej.com' rel='me'>etelej.com</a></p>
+				</div>
 			</div>
 		</div><!--/.footer-->
 
