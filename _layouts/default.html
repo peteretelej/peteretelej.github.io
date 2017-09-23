@@ -4,34 +4,20 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width,initial-scale=1.0" />
 		<title>{% if page.thetitle %} {{ page.thetitle }}{% else %}{% if page.title %}{{ page.title }} &bull; {{ site.description }}{% else %}{{ site.description }} &bull; {{site.name}}{% endif %}{% endif %}</title>
-		<!-- SEO -->
 		<meta name="author" content="Peter Etelej">
+		<meta name="theme-color" content"#dbdbdb">
+		<link rel="manifest" href="/manifest.json">
 		{% if page.title %}<link rel="canonical" href="{{ site.url }}{{ page.url }}" />{% endif %}
-		<link rel="publisher" href="https://plus.google.com/+PeterEtelej/posts"/>
-		{% if page.pagedescription %}<meta name="description" content="{{ page.pagedescription }}">
-		{% else %}<meta name="description" content="{% if page.title %}{{ content |strip_newlines |strip_html |replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '| truncatewords:64 }} &bull; {% endif %}{{ site.name }} – {{ site.description }}">
-		{% endif %}
+		{% if page.pagedescription %}<meta name="description" content="{{ page.pagedescription }}"> {% else %}<meta name="description" content="{% if page.title %}{{ content |strip_newlines |strip_html |replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '| truncatewords:64 }} &bull; {% endif %}{{ site.name }} – {{ site.description }}"> {% endif %}
 		{% if page.noindex %}<meta name="robots" content="noindex">{% endif %}
-
-		<!-- Twitter Meta -->
 		<meta name="twitter:card" content="summary">
 		<meta name="twitter:site" content="@peteretelej">
 		<meta name="twitter:creator" content="peteretelej">
 		<meta name="twitter:title" content="{% if page.title %}{{ page.title }} &bull; {{ site.description }}{% else %}{{ site.name }} &bull; {{ site.description }}{% endif %}">
-
-		{% if page.pagedescription %}
-		<meta name="twitter:description" content="{{ page.pagedescription }}">
-		{% else %}
+		{% if page.pagedescription %} <meta name="twitter:description" content="{{ page.pagedescription }}"> {% else %}
 		<meta name="twitter:description" content="{% if page.title %}{{ content |strip_html|strip_newlines||replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '| truncate:160 }} by {% endif %}{{ site.name }} on {{ site.description }}">
-		{% endif %}
-		{% if page.thumbnail %}<meta name="twitter:image" content="{{ page.thumbnail }}" />{% endif %}
-
-		<!--[if lt IE 9]>
-		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-		<![endif]-->
+		{% endif %} {% if page.thumbnail %}<meta name="twitter:image" content="{{ page.thumbnail }}" />{% endif %}
 		<link rel='icon' href="{{ site.baseurl }}/favicon.ico" />
-		<link rel='icon' href="{{ site.baseurl }}/favicon.ico" />
-		<link rel="alternate" type="application/rss+xml" title="{{ site.name }} - {{ site.description }}" href="{{ site.baseurl }}/feed.xml" />
 		<link rel="sitemap" href="/sitemap.xml" />
 		<link rel="stylesheet" type="text/css" href="{{ site.baseurl }}/assets/css/font-awesome/css/font-awesome.min.css" />
 		<link rel="stylesheet" type="text/css" href="{{ site.baseurl }}/style.css" />

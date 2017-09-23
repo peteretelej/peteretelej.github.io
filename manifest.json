@@ -1,0 +1,21 @@
+{
+  "dir": "ltr",
+  "lang": "en",
+  "name": "Let's Talk Code • Peter Etelej",
+  "scope": "/",
+  "display": "browser",
+  "start_url": "https://peteretelej.github.io/",
+  "short_name": "Let's Talk Code",
+  "theme_color": "#dbdbdb",
+  "description": "Peter Etelej – Let's Talk Code",
+  "orientation": "any",
+  "background_color": "#dbdbdb",
+  "related_applications": [],
+  "prefer_related_applications": false,
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "16x16"
+    }
+  ]
+}
