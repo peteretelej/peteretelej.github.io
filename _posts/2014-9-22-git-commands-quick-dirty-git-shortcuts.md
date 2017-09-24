@@ -30,6 +30,9 @@ git config --global user.name "Your Name"
 git config --global user.email you@youremaildomain.com
 # Add email to github/bitbucket if you plan to use them
 
+# Configure text editor to use (e.g. vim)
+git config --global core.editor vim
+
 # Listing all configs set
 git config --list
 {% endhighlight %}
