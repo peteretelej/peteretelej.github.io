@@ -10,7 +10,7 @@ layout: mainlayout
 			<div class="media-content">
 				{{ post.content |strip_html |replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '| truncate:400  }}
 			</div><!--/.media-content-->
-			<div class="media-right">
+			<div class="media-right is-hidden-mobile">
 				<div class="image is-128x128">
 					<a href="{{site.baseurl}}{{post.url}}">
 						<img src="{{post.thumbnail}}" alt="{{ post.title }} - thumbnail">
