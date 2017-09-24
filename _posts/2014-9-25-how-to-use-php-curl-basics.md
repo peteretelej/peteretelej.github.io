@@ -218,4 +218,3 @@ void curl_close ( resource $curl_handle )
 <li><a href="http://code.tutsplus.com/tutorials/techniques-for-mastering-curl--net-8470">Techniques for Mastering cURL - <b>Tutsplus</b></a></li>
 <li><a href="http://php.net/manual/en/book.curl.php">cURL Library Documentation - <b>PHP Docs</b></a></li>
 </ul>
-<p>Maybe I missed something; leave a comment below with your thoughts.</p>

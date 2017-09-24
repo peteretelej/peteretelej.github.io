@@ -9,7 +9,7 @@ thumbnail: https://peteretelej.github.io/images/logos/git-logo.png
 
 <div class="tags">
 <a href='#git-config' class='tag is-info '>Configure Git</a> 
-<a href='#git-init' class='tag is-info '>Initiliaze Git</a> 
+<a href='#git-basics' class='tag is-info '>Git Basics</a> 
 <a href='#git-reset' class='tag is-info '>Git Reset</a> 
 <a href='#git-branch' class='tag is-info '>Manage Branches</a> 
 <a href='#git-merge' class='tag is-info '>Git Merge</a> 
@@ -25,69 +25,115 @@ thumbnail: https://peteretelej.github.io/images/logos/git-logo.png
 
 <h2>Git Quick Commands Listing</h2>
 <h3 id="git-config">Git Configuration:</h3>
+Add your name and email (baked into each commit made)
 {% highlight sh lineos %}
 git config --global user.name "Your Name"
-git config --global user.email you@youremaildomain.com
-# Add email to github/bitbucket if you plan to use them
-
-# Configure text editor to use (e.g. vim)
-git config --global core.editor vim
-
-# Listing all configs set
-git config --list
+git config --global user.email you@example.com
 {% endhighlight %}
-<p>Adding colors</p>
+
+Configure text editor to use (e.g. to use vim)
+{% highlight sh lineos %}
+git config --global core.editor vim
+{% endhighlight %}
+
+Adding colors
 {% highlight sh lineos %}
 git config --global color.diff auto
 git config --global color.status auto
 git config --global color.branch auto
 {% endhighlight %}
 
-<p>Other useful configurations</p>
+Listing all configurations set
 {% highlight sh lineos %}
-# only push the current branch (instead of pushing all matching)
-git config --global push.default simple
-# Automatically rebase pulls
-git config --global branch.autosetuprebase always
+git config --list
 {% endhighlight %}
 
-<h3 id="git-init">Initialize git:</h3>
+<p>Other useful configurations</p>
 {% highlight sh lineos %}
+git config --global push.default simple
+# only push the current branch (instead of pushing all matching)
+
+git config --global branch.autosetuprebase always
+# Automatically rebase pulls
+{% endhighlight %}
+
+<h3 id="git-basics">Git Basics</h3>
+Initialize a repository
+{% highlight bash lineos %}
 git init
+# initializes a new git repository
 
-# Git Clone
-git clone git://github.com/USERNAME/REPOSITORYNAME.git
+git add .
+# adds all files in the current directory to the new repo
 
-# Add all files (new, modified,deletions) to index (stage)
+git commit -m "Initial commit"
+# adds a commit to the new repo
+{% endhighlight %}
+
+Cloning a remote repository
+{% highlight bash lineos %}
+git clone https://github.com/USERNAME/REPOSITORYNAME.git
+# clone repository via https
+
+git clone username@host:/path/to/repository
+# clone repository via ssh
+{% endhighlight %}
+
+Adding files to repository
+{% highlight bash lineos %}
+git add .
+# adds all in the current directory to staging area
+
 git add -A # perfoms git add .; git add -u
-# Add files to staging area
+# Add all files (new, modified,deletions) to index (stage)
+
 git add filename.txt
+# Add specific files to staging area
+{% endhighlight %}
 
-# List tracked files
+Listing files and tracking status
+{% highlight bash lineos %}
 git ls-files;
+# List tracked files
 
-# List all untracked files
 git ls-files --others  # add --directory for directories
+# Lists all untracked files
+{% endhighlight %}
 
+Removing a file from tracking
+{% highlight bash lineos %}
 # Unstage a file but preserve it's contents
 git reset filename
 
 # Remove files from index, stage it's deletion from HEAD
 git rm filename
+{% endhighlight %}
+<p class="help">To prevent tracking of files; add the file or directory to the <code>.gitignore</code> file (each file/directory on a new line).</p>
 
-# Quick Commit - add all modified files and commit
+Committing 
+{% highlight bash lineos %}
+git commit  
+# will prompt for a commit message in the configured text editor
+
+git commit -m "Fixes stuff x"
+
 git commit -am "The commit message here"
+# Quick Add & Commit - add all modified files and commit
 
 # Status of files in index vs Working directory
 git status
 {% endhighlight %}
-<p>To ignore files in repository directory: Add to file or directory to <code>.gitignore</code> file (each file/directory on a new line)</p>
 
 <h3 id="git-reset">Resetting and Reverting Repo</h3>
 <p><b>Revert</b> to previous commit (<i>graceful</i> - does not delete history)</p>
 {% highlight sh lineos %}
 git revert HEAD
 # git revert [SHA-1]
+{% endhighlight %}
+<p>Undo changes you've made to a file i.e. and replace it with the HEAD version.</p>
+{% highlight sh lineos %}
+git checkout -- myfile
+# git checkout -- [FILENAME]
 {% endhighlight %}
 <p><b>Reset</b> to previous state: <b>Do not use</b> if already commited to shared remote</p>
 {% highlight sh lineos %}
