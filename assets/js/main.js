@@ -35,7 +35,7 @@ if (document.getElementById("qod")){
 		'<br/>'+
 		'<div style="display:block;text-align:right">'+
 		'<cite>{{author}}</cite>'+
-		'<p><a href="https://quotes.etelej.com" class="tag is-white is-rounded">Quotes</a></p>'+
+		'<p><a href="https://quotes.etelej.com" class="tag is-white is-rounded"><span class="icon has-text-info"><i class="fa fa-quote-right"></i></span></a></p>'+
 		'</div>'+
 		'</blockquote>'+
 		'</div>',

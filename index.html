@@ -5,7 +5,7 @@ layout: mainlayout
 {% for post in site.posts %}
 <div class="box">
 	<div class="content">
-		<h2><a href="{{ site.baseurl }}{{ post.url }}" class="title">{{post.title}}</a></h2>
+		<h2><a href="{{ site.baseurl }}{{ post.url }}" class="title" style="display:block">{{post.title}}</a></h2>
 		<article class="media">
 			<div class="media-content">
 				{{ post.content |strip_html |replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '| truncate:400  }}
