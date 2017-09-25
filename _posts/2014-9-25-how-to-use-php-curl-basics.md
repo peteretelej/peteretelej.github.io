@@ -60,14 +60,15 @@ curl_close($curl_handle);
 {% highlight php lineos %}
 <?php
 
-//Syntax description
+/* SYNTAX DESCRIPTION
 resource curl_init ([ string $url = NULL ] )
+*/
 
-	//Example
-	$curl_handle = curl_init();
+//Example
+$curl_handle = curl_init();
 
-	//OR setting the cURL session URL on init
-	$curl_handle = curl_init("http://php.net/");
+//OR setting the cURL session URL on init
+$curl_handle = curl_init("http://php.net/");
 {% endhighlight %}
 <p>If <code>$url</code> is provided it's value is set as the cURL session's <b>CURLOPT_URL</b> as would have been defined by the <code>curl_setopt</code> function <i>(see below)</i>. It <b>Returns</b> a cURL resource handle on success or <code>FALSE</code> on errors.</p>
 
@@ -76,14 +77,15 @@ resource curl_init ([ string $url = NULL ] )
 {% highlight php lineos %}
 <?php
 
+/* SYNTAX DESCRIPTION
 //using curl_setopt
 bool curl_setopt ( resource $curl_handle , int $option , mixed $value )
-	//OR Using curl_setop_array
+
+//OR Using curl_setop_array
 bool curl_setopt_array ( resource $curl_handle , array $options )
-{% endhighlight %}
-<p>Examples</p>
-{% highlight php lineos %}
-<?php
+*/
+
+// EXAMPLES 
 
 //Example 1, Setting curl_setopt options for downloading file via FTP
 curl_setopt($curl_handle, CURLOPT_URL, 'ftp://ftp.ftpaddress.com/filelocation/file.txt');
@@ -144,11 +146,12 @@ curl_setopt_array($curl_handle, array(
 {% highlight php lineos %}
 <?php
 
-//Syntax Description
+/* SYNTAX DESCRIPTION
 mixed curl_exec ( resource $curl_handle )
+*/
 
-	//Example
-	$result  = curl_exec($curl_handle);
+//Example
+$result  = curl_exec($curl_handle);
 {% endhighlight %}
 <h4 id="curl-errors">Handling Errors</h4>
 <p>Testing for errors can be done through the cURL session, but usually done <code>curl_exec</code></p>
@@ -169,11 +172,13 @@ var_dump(curl_getinfo($curl_handle));
 <p>Closing cURL session - Frees up all session resources; the cURL handle is also deleted</p>
 {% highlight php lineos %}
 <?php
-//syntax description
-void curl_close ( resource $curl_handle )
 
-	//usage
-	curl_close($curl_handle);
+/* SYNTAX DESCRIPTION
+void curl_close ( resource $curl_handle )
+*/
+
+//usage
+curl_close($curl_handle);
 {% endhighlight %}
 
 <h3 id="useful-curl-functions">Other Useful PHP cURL Functions:</h3>
