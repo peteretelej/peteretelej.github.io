@@ -1,4 +1,4 @@
-var cacheName="peterghp-v1"
+var cacheName="peterghp-v2"
 
 self.addEventListener("install",function(event){
 	event.waitUntil(

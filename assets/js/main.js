@@ -23,6 +23,12 @@ document.addEventListener('DOMContentLoaded', function () {
 		});
 	}
 
+	// Fix comments syntax highlightling
+	var comments = document.getElementsByClassName("c")
+	for (var i=0;i<comments.length;i++){
+		comments[i].innerHTML=comments[i].innerHTML.trim()
+	}
+
 });
 
 
