@@ -211,7 +211,7 @@ git branch --merged | xargs git branch -d
 # Update the remote
 git fetch origin
 # Merge remote branch
-git merge origin/br# Danchname
+git merge origin/branchname
 
 # SHORTCUT - Fetch and merge tracked branch
 git pull
