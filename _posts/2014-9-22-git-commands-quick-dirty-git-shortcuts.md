@@ -50,6 +50,9 @@ gpg --list-secret-keys --keyid-format LONG
 
 # add your key ID to git
 git config --global user.signingkey YOUR_KEYID_HERE
+
+# automatically sign all commits
+git config --global commit.gpgSign true
 {% endhighlight %}
 
 Listing all configurations set
