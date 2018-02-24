@@ -43,6 +43,15 @@ git config --global color.status auto
 git config --global color.branch auto
 {% endhighlight %}
 
+In case you have a GPG key you'd like used to sign your commits you can add it
+{% highlight sh lineos %} 
+# list GPG keys that you have the private keys to
+gpg --list-secret-keys --keyid-format LONG
+
+# add your key ID to git
+git config --global user.signingkey YOUR_KEYID_HERE
+{% endhighlight %}
+
 Listing all configurations set
 {% highlight sh lineos %}
 git config --list
@@ -50,54 +59,55 @@ git config --list
 
 <p>Other useful configurations</p>
 {% highlight sh lineos %}
-git config --global push.default simple
 # only push the current branch (instead of pushing all matching)
+git config --global push.default simple
 
-git config --global branch.autosetuprebase always
 # Automatically rebase pulls
+git config --global branch.autosetuprebase always
 {% endhighlight %}
 
 <h3 id="git-basics">Git Basics</h3>
 Initialize a repository
 {% highlight bash lineos %}
+# initialize a new git repository
 git init
-# initializes a new git repository
 
+# add all files in the current directory to the new repo
 git add .
-# adds all files in the current directory to the new repo
 
-git commit -m "Initial commit"
 # adds a commit to the new repo
+git commit -m "Initial commit"
 {% endhighlight %}
 
 Cloning a remote repository
 {% highlight bash lineos %}
-git clone https://github.com/USERNAME/REPOSITORYNAME.git
 # clone repository via https
+git clone https://github.com/USERNAME/REPOSITORYNAME.git
 
-git clone username@host:/path/to/repository
 # clone repository via ssh
+git clone username@host:/path/to/repository
 {% endhighlight %}
 
 Adding files to repository
 {% highlight bash lineos %}
+# add all in the current directory to staging area
 git add .
-# adds all in the current directory to staging area
 
-git add -A # perfoms git add .; git add -u
 # Add all files (new, modified,deletions) to index (stage)
+git add -A # perfoms git add .; git add -u
 
-git add filename.txt
 # Add specific files to staging area
+git add filename.txt
 {% endhighlight %}
 
 Listing files and tracking status
 {% highlight bash lineos %}
-git ls-files;
 # List tracked files
+git ls-files;
 
-git ls-files --others  # add --directory for directories
-# Lists all untracked files
+# List all untracked files
+git ls-files --others  
+# add --directory for directories
 {% endhighlight %}
 
 Removing a file from tracking
@@ -112,13 +122,14 @@ git rm filename
 
 Committing 
 {% highlight bash lineos %}
-git commit  
 # will prompt for a commit message in the configured text editor
+git commit  
 
+# shorthand for adding a message to the commit
 git commit -m "Fixes stuff x"
 
-git commit -am "The commit message here"
 # Quick Add & Commit - add all modified files and commit
+git commit -am "The commit message here"
 
 # Status of files in index vs Working directory
 git status
@@ -127,21 +138,21 @@ git status
 <h3 id="git-reset">Resetting and Reverting Repo</h3>
 <p><b>Revert</b> to previous commit (<i>graceful</i> - does not delete history)</p>
 {% highlight sh lineos %}
-git revert HEAD
 # git revert [SHA-1]
+git revert HEAD
 {% endhighlight %}
 <p>Undo changes you've made to a file i.e. and replace it with the HEAD version.</p>
 {% highlight sh lineos %}
-git checkout -- myfile
 # git checkout -- [FILENAME]
+git checkout -- myfile
 {% endhighlight %}
 <p><b>Reset</b> to previous state: <b>Do not use</b> if already commited to shared remote</p>
 {% highlight sh lineos %}
-git reset --hard HEAD
 # git reset --hard [SHA-1] # Reset completely delete history and staged
+git reset --hard HEAD
 
-git reset --soft HEAD
 # git reset --soft [SHA-1] # does not touch staging area or working tree
+git reset --soft HEAD
 {% endhighlight %}
 
 <p><b>Re-clone</b> from a remote repository; will loose changes not in the remote. (e.g if local git corrupt)</p>
@@ -210,6 +221,7 @@ git branch --merged | xargs git branch -d
 {% highlight sh lineos %}
 # Update the remote
 git fetch origin
+
 # Merge remote branch
 git merge origin/branchname
 
@@ -234,8 +246,8 @@ git rebase v0.2.2
 <p>Changing multiple commit messages. <code>git rebase -i 9fceb02</code> <i>(9fceb02 is an example ID)</i>
 provides an interactive text editor for modifying all commits after the base specified (eg 9fceb02)</p>
 {% highlight sh lineos %}
-git rebase -i HEAD~3
 # Modify all commits after base specified (HEAD~3)
+git rebase -i HEAD~3
 
 # Replace 'pick' command with rebasing command e.g
 pick 6fceb02 Added this thing
@@ -371,7 +383,6 @@ git show v1.2
 # Tag older commit
 git tag -a v2 9fceb02 -m "Message here"
 # git tag -a v1.2 [SHA-1] -m "[your message]"
-
 
 # Rename tag
 git tag newtag oldtag
