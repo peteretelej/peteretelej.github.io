@@ -37,7 +37,8 @@ ssh root@SERVER_IP_ADDRESS
 {% highlight sh lineos %}
 adduser demouser
 
-# you can now give the user access to root privileges (using sudo) gpasswd -a demouser sudo
+# you can now give the user access to root privileges (using sudo) 
+gpasswd -a demouser sudo
 {% endhighlight %}
 
 <b>Confirm that you can login as this new user</b> before proceeding.
