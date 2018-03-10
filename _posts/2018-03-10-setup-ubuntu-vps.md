@@ -6,7 +6,8 @@ labels: [ubuntu, vps, ubuntu 16.04, sysadmin]
 thumbnail: https://peteretelej.github.io/images/logos/ubuntu-logo.png
 ---
 
-<p>This is an overview of how to setup your Ubuntu virtual private server. It's based on a collection of private bitbucket snippets I've been using.</p>
+<p>This is an overview of how to setup your Ubuntu virtual private server. It's based on a collection of private bitbucket snippets I'd written.</p>
+
 <div class="tags">
 <a href="#accessing-vps" class="tag is-info">Accessing VPS</a>
 <a href="#user-management" class="tag is-info">Managing Users</a>
@@ -23,14 +24,16 @@ thumbnail: https://peteretelej.github.io/images/logos/ubuntu-logo.png
 ssh root@SERVER_IP_ADDRESS
 {% endhighlight %}
 
+<p>Tips regarding authentication:</p>
+<ul>
+<li>SSH login via root should be disabled <i>(explained in <a href="#ssh-lockdown">SSH Lockdown</a> below)</i></li>
+<li>Only use ssh key authentication <i>(explained in <a href="#user-management">User Management</a> below)</i></li>
+<li>Use a non-common port for ssh <i>(explained in <a href="#ssh-lockdown">SSH Lockdown</a> below)</i></li>
+</ul>
+
+
 <h3 id="user-management">Managing Users</h3>
 <p>By default, only one user exists: <strong>root</strong> - a superuser with unlimited privileges. </p>
-<p>Tips about <code>root</code> and authentication:</p>
-<ul>
-<li>SSH login via root should be disabled</li>
-<li>Only use ssh key authentication <i>(if possible)</i></li>
-<li>Use a non-common port for ssh</li>
-</ul>
 
 <h4>Creating a new user</h4>
 <p>Create a new user to avoid using root and it's elevated privileges. While creating a new user, several questions will be asked. You can add additional information about the user but note that only the password is essential.( Press ENTER to skip the rest)</p>
@@ -114,7 +117,7 @@ Restart ssh service for this change to effect.
 sudo service sshd restart
 {% endhighlight %}
 
-<p class="notification">I would also recommend using a non-common port for SSH. 
+<p class="notification">I would also recommend using a <b>non-common port for SSH</b>. 
 <a class="button is-small is-info" href="#more-ssh-port" onclick="toggle(this,'more-ssh-port')" >Read how to do this</a>
 </p>
 <div class="box hide"  id="more-ssh-port" >
@@ -196,7 +199,7 @@ sudo vi /etc/fstab
 /swapfile   none    swap    sw    0   0
 {% endhighlight %}
 
-<p class="notification"> If you are working on a RAM intensive application, e.g Java, you should consider reducing swappiness and inode cache rate.
+<p class="notification">If you are working on a RAM intensive app, e.g Java, consider <b>reducing swappiness</b> and <b>inode cache rate</b>.
 <a class="button is-small is-info" href="#more-swappiness" onclick="toggle(this,'more-swappiness')" >Read how to do that</a>
 </p>
 
@@ -313,12 +316,12 @@ sudo ufw reset
 </p>                                 
 </div>                               
 <div class="box hide"  id="more-docker-ufw" >                              
-<p>Here are workarounds I've found. You can either:</p>                    
+<p>Here are a few workarounds I've found useful. You can either:</p>                    
 <ol>                                 
-<li>Not use port forwarding (<code>-p</code> or <code>-P</code>) esp. if you don't need it.</li>                                                      
 <li>Only bind docker containers to loopback interfaces e.g. <code>docker run -p "127.0.0.1:8080:80"</code>.. </li>                                    
+<li>Not use port forwarding (<code>-p</code> or <code>-P</code>) esp. if you don't need it.</li>                                                      
 <li>                                 
-<p>Adding <code>--iptables=false</code> to the docker daemon: Uncomment the following line in <code>/etc/default/docker</code></p>                    
+<p>Add <code>--iptables=false</code> to the docker daemon: Uncomment the following line in <code>/etc/default/docker</code></p>                    
 {% highlight sh lineos %}            
 DOCKER_OPTS="--dns 8.8.8.8 --dns 8.8.4.4 --iptables=false"                 
 {% endhighlight %}                   
@@ -331,7 +334,7 @@ DOCKER_OPTS="--dns 8.8.8.8 --dns 8.8.4.4 --iptables=false"
 <hr/>                                
 <footer>                             
 <h4 id="vps-guides">Relevant Guides & Tutorials</h4>                       
-<p>This article is based on snippets and guides from different sources, some are listed below:</p>                                         
+<p>This article is based on snippets, guides and other different sources, some are listed below:</p>                                         
 <ul>                                 
 <li><a href='https://www.digitalocean.com/community/tutorials/initial-server-setup-with-ubuntu-16-04' target="_blank" rel="noopener" >Initial Server Setup with Ubuntu 16.04</a></li>
 <li><a href='https://www.digitalocean.com/community/tutorials/how-to-set-up-a-firewall-with-ufw-on-ubuntu-16-04' target="_blank" rel="noopener" >How To Set Up a Firewall with UFW on Ubuntu 16.04</a></li>
