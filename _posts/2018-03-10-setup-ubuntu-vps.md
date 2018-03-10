@@ -33,7 +33,7 @@ ssh root@SERVER_IP_ADDRESS
 
 
 <h3 id="user-management">Managing Users</h3>
-<p>By default, only one user exists: <strong>root</strong> - a superuser with unlimited privileges. </p>
+<p>By default, only one user exists: <strong>root</strong> - a superuser </p>
 
 <h4>Creating a new user</h4>
 <p>Create a new user to avoid using root and it's elevated privileges. While creating a new user, several questions will be asked. You can add additional information about the user but note that only the password is essential.( Press ENTER to skip the rest)</p>
