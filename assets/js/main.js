@@ -41,7 +41,9 @@ if (document.getElementById("qod")){
 		'<br/>'+
 		'<div style="display:block;text-align:right">'+
 		'<cite>{{author}}</cite>'+
-		'<p><a href="https://quotes.etelej.com" class="tag is-white is-rounded"><span class="icon has-text-info"><i class="fa fa-quote-right"></i></span></a></p>'+
+		'<p><a href="https://quotes.etelej.com" class="tag is-white is-rounded"><span class="icon has-text-info">'+
+		'<svg fill="#3273dc" version="1.1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 32 32"><path d="M25 20c-3.866 0-7-3.134-7-7s3.134-7 7-7 7 3.134 7 7l0.031 1c0 7.732-6.268 14-14 14v-4c2.671 0 5.182-1.040 7.071-2.929 0.364-0.364 0.695-0.75 0.995-1.157-0.357 0.056-0.724 0.086-1.097 0.086zM7 20c-3.866 0-7-3.134-7-7s3.134-7 7-7 7 3.134 7 7l0.031 1c0 7.732-6.268 14-14 14v-4c2.671 0 5.182-1.040 7.071-2.929 0.364-0.364 0.695-0.75 0.995-1.157-0.357 0.056-0.724 0.086-1.097 0.086z"></path></svg>'+
+		'</span></a></p>'+
 		'</div>'+
 		'</blockquote>'+
 		'</div>',
@@ -85,3 +87,23 @@ if (document.getElementById("qod")){
 	})
 }
 
+
+function toggle(event,id){
+	var el =document.getElementById(id);
+	if (el.style.display==="block"){
+		el.style.display="none";
+	}else{
+		el.style.display="block";
+		if (el.lastChild.id !== "close-"+el.id){
+			var close=document.createElement("button");
+			close.id="close-"+el.id;
+			close.classList.add("button", "is-danger", "is-small");
+			close.style.float="right";
+			close.innerHTML="Minimize this section.";
+			close.addEventListener("click",function(event){
+				event.target.parentNode.style.display="none";
+			});
+			el.appendChild(close);
+		}
+	}
+}

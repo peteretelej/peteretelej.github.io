@@ -32,7 +32,6 @@ docker run --rm -it -p 4000:4000 -v "$PWD":/app -w /app etelej/jekyll:latest
 # Starts HTTP server serving your copy of blog on :4000
 ```
 
-Access your githubpages site locally at localhost:4000. Changes you make will reflect automatically, on refresh.
+Access your githubpages site locally at [localhost:4000](http://localhost:4000). Changes you make will reflect automatically, on refresh.
 
 
-~ [@peteretelej](http://twitter.com/peteretelej), **[etelej.com](http://etelej.com)**

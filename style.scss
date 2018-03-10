@@ -23,5 +23,27 @@ pre{
 }
 
 li>code,p>code{
-color:#588
+	color: #212F3D;
+	white-space:nowrap;
+	font-size: 0.8em;
+	color: #A93226;
+	font-weight:700;
+}
+
+kbd{
+	font-size:0.8em;
+	background-color: #111;
+	color: #fff;
+	padding:3px;
+	border-radius:3px;
+}
+
+.hide{
+	display:none;
+}
+
+.notification {
+	font-size:0.8em;
+	padding-top:10px;
+	padding-bottom:10px;
 }
