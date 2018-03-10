@@ -52,7 +52,7 @@ sudo su - # try to access root as user
 {% endhighlight %}
 
 <p class="notification">You can now setup <b>public key authentication</b> (recommended): this enables you to securely login to the server without having to enter your password.
-<a class="button is-small is-info" href="#more-ssh-pub" onclick="toggle(this,'more-ssh-pub')" >Read how to do this</a>
+<a class="button is-small is-info" href="#more-ssh-pub" onclick="showBox('more-ssh-pub')" >Read how to do this</a>
 </p>
 <div class="box hide"  id="more-ssh-pub" >
 <h4>Public Key Authentication</h4>
@@ -118,7 +118,7 @@ sudo service sshd restart
 {% endhighlight %}
 
 <p class="notification">I would also recommend using a <b>non-common port for SSH</b>. 
-<a class="button is-small is-info" href="#more-ssh-port" onclick="toggle(this,'more-ssh-port')" >Read how to do this</a>
+<a class="button is-small is-info" href="#more-ssh-port" onclick="showBox('more-ssh-port')" >Read how to do this</a>
 </p>
 <div class="box hide"  id="more-ssh-port" >
 <h4>Custom SSH Port</h4>
@@ -200,7 +200,7 @@ sudo vi /etc/fstab
 {% endhighlight %}
 
 <p class="notification">If you are working on a RAM intensive app, e.g Java, consider <b>reducing swappiness</b> and <b>inode cache rate</b>.
-<a class="button is-small is-info" href="#more-swappiness" onclick="toggle(this,'more-swappiness')" >Read how to do that</a>
+<a class="button is-small is-info" href="#more-swappiness" onclick="showBox('more-swappiness')" >Read how to do that</a>
 </p>
 
 <div class="box hide"  id="more-swappiness" >
@@ -273,7 +273,7 @@ sudo ufw allow ssh
  # same as: sudo ufw allow 22/tcp 
 {% endhighlight %}
 
-<p>If you are using different port for SSH (see <a href="#more-ssh-port" onclick="toggle(this,'more-ssh-port')">SSH Lockdown: custom port</a> above), then allow that instead of port 22</p>
+<p>If you are using different port for SSH (see <a href="#more-ssh-port" onclick="showBox('more-ssh-port')">SSH Lockdown: custom port</a> above), then allow that instead of port 22</p>
 {% highlight sh lineos %}
 sudo ufw allow 2222/tcp
 {% endhighlight %}
@@ -312,7 +312,7 @@ sudo ufw reset
 
 <div class="notification is-warning">                                      
 <p>UFW and <b>docker</b>: Docker usually manipulates <code>iptables</code> rules the ufw restrictions will not apply.                                 
-<a class="button is-small is-info" href="#more-docker-ufw" onclick="toggle(this,'more-docker-ufw')" >Read how to fix that</a>                         
+<a class="button is-small is-info" href="#more-docker-ufw" onclick="showBox('more-docker-ufw')" >Read how to fix that</a>                         
 </p>                                 
 </div>                               
 <div class="box hide"  id="more-docker-ufw" >                              

@@ -88,22 +88,18 @@ if (document.getElementById("qod")){
 }
 
 
-function toggle(event,id){
-	var el =document.getElementById(id);
-	if (el.style.display==="block"){
-		el.style.display="none";
-	}else{
-		el.style.display="block";
-		if (el.lastChild.id !== "close-"+el.id){
-			var close=document.createElement("button");
-			close.id="close-"+el.id;
-			close.classList.add("button", "is-danger", "is-small");
-			close.style.float="right";
-			close.innerHTML="Minimize this section.";
-			close.addEventListener("click",function(event){
-				event.target.parentNode.style.display="none";
-			});
-			el.appendChild(close);
-		}
+function showBox(id){
+	var el = document.getElementById(id);
+	el.style.display="block";
+	if (el.lastChild.id !== "close-"+el.id){
+		var close=document.createElement("button");
+		close.id="close-"+el.id;
+		close.classList.add("button", "is-danger", "is-small");
+		close.style.float="right";
+		close.innerHTML="Minimize this section.";
+		close.addEventListener("click",function(event){
+			event.target.parentNode.style.display="none";
+		});
+		el.appendChild(close);
 	}
 }

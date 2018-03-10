@@ -1,13 +1,17 @@
-var cacheName="peterghp-v2"
+var cacheName="peterghp-v3"
 
 self.addEventListener("install",function(event){
 	event.waitUntil(
 		caches.open(cacheName).then(function(cache){
 			cache.addAll([
-				"/sw.js",
 				"/",
 				"/style.css",
-				"/images/pic.png"
+				"/favicon.ico",
+				"/manifest.json",
+				"/assets/js/main.js",
+				"/images/pic.png",
+				"/assets/js/axios.min.js",
+				"/assets/js/vue.min.js",
 			])
 		})
 	)
