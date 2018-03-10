@@ -262,7 +262,7 @@ sudo ufw default deny incoming
 sudo ufw default allow outgoing
 {% endhighlight %}
 
-<h5>Allow <b>common connections</b> that you use.</h5>
+<h5>Allow <b>common connections</b> - only allow what you use</h5>
 Allowing SSH connection (default ssh port 22)
 {% highlight sh lineos %}
 sudo ufw allow ssh
@@ -282,6 +282,28 @@ sudo ufw allow https
 # the above two commands are the same as                                   
 sudo ufw allow 80/tcp                
 sudo ufw allow 443/tcp               
+{% endhighlight %}                   
+
+<p>Allow SMTP - if sending out mail directly using SMTP</p>
+{% highlight sh lineos %}
+sudo ufw allow 25/tcp
+{% endhighlight %}                   
+
+<p>Check all added exceptions (allowed connections)</p>
+{% highlight sh lineos %}
+sudo ufw show added
+{% endhighlight %}                   
+
+<p>Enable UFW: Also useful when reloading to update configuration</p>
+{% highlight sh lineos %}
+sudo ufw disable
+sudo ufw enable
+{% endhighlight %}                   
+
+<h5>Reset UFW</h5>
+<p>In case of errors during configuration, you can reset <code>ufw</code> with the following command</p>
+{% highlight sh lineos %}
+sudo ufw reset
 {% endhighlight %}                   
 
 <div class="notification is-warning">                                      
@@ -308,7 +330,7 @@ DOCKER_OPTS="--dns 8.8.8.8 --dns 8.8.4.4 --iptables=false"
 <hr/>                                
 <footer>                             
 <h4 id="vps-guides">Relevant Guides & Tutorials</h4>                       
-<p>This article is based on snippets borrowed from several of the sources below. Check out the tutorials:</p>                                         
+<p>This article is based on snippets and guides from different sources, some are listed below:</p>                                         
 <ul>                                 
 <li><a href='https://www.digitalocean.com/community/tutorials/initial-server-setup-with-ubuntu-16-04' target="_blank" rel="noopener" >Initial Server Setup with Ubuntu 16.04</a></li>
 <li><a href='https://www.digitalocean.com/community/tutorials/how-to-set-up-a-firewall-with-ufw-on-ubuntu-16-04' target="_blank" rel="noopener" >How To Set Up a Firewall with UFW on Ubuntu 16.04</a></li>
