@@ -149,7 +149,7 @@ sudo apt-get update && sudo apt-get upgrade -y
 
 
 
-<h3 id="swap">Add Swap</h3>
+<h3 id="add-swap">Add Swap</h3>
 <p>Check if swap is already enabled on the server, if enabled, the swap partition will be listed.</p>
 {% highlight sh lineos %}
 sudo swapon -s 
