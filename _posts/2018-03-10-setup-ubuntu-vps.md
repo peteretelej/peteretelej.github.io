@@ -335,6 +335,7 @@ DOCKER_OPTS="--dns 8.8.8.8 --dns 8.8.4.4 --iptables=false"
 <ul>                                 
 <li><a href='https://www.digitalocean.com/community/tutorials/initial-server-setup-with-ubuntu-16-04' target="_blank" rel="noopener" >Initial Server Setup with Ubuntu 16.04</a></li>
 <li><a href='https://www.digitalocean.com/community/tutorials/how-to-set-up-a-firewall-with-ufw-on-ubuntu-16-04' target="_blank" rel="noopener" >How To Set Up a Firewall with UFW on Ubuntu 16.04</a></li>
+<li><a href='https://linode.com/docs/security/securing-your-server/' target="_blank" rel="noopener" >How to Secure Your Server</a></li>
 </ul>                                
 </footer>                            
 
