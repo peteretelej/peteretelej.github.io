@@ -1,4 +1,4 @@
-var cacheName="peterghp-v3"
+var cacheName="peterghp-v4"
 
 self.addEventListener("install",function(event){
 	event.waitUntil(
@@ -37,24 +37,25 @@ var pic = "/images/pic.png"
 self.addEventListener("fetch",function(event){
 	var requrl = new URL(event.request.url)
 	if(requrl.origin !== self.location.origin){
-		if(requrl.pathname.indexOf("/u/2271973")===0){
-			event.respondWith(
-				caches.open(cacheName).then(function(cache){
-					return cache.match(pic).then(function(response){
-						return fetch(event.request).then(function(fresponse){
-							if(fresponse){
-								cache.put(pic,fresponse.clone())
-							}
-							return fresponse
-						}).catch(function(){
-							return response
-						})
-					})
-				})
-			)
+		if(requrl.pathname.indexOf("/u/2271973")!==0){
+			event.respondWith(fetch(event.request))
 			return
 		}
-		event.respondWith(fetch(event.request))
+		// github avatar image response
+		event.respondWith(
+			caches.open(cacheName).then(function(cache){
+				return cache.match(pic).then(function(response){
+					return fetch(event.request).then(function(fresponse){
+						if(fresponse){
+							cache.put(pic,fresponse.clone())
+						}
+						return fresponse
+					}).catch(function(){
+						return response
+					})
+				})
+			})
+		)
 		return
 	}
 
