@@ -311,7 +311,7 @@ sudo ufw reset
 {% endhighlight %}                   
 
 <div class="notification is-warning">                                      
-<p>UFW and <b>docker</b>: Docker usually manipulates <code>iptables</code> rules the ufw restrictions will not apply.                                 
+<p>UFW and <b>docker</b>: Docker usually manipulates <code>iptables</code> rules meaning that the ufw restrictions will not apply. 
 <a class="button is-small is-info" href="#more-docker-ufw" onclick="showBox('more-docker-ufw')" >Read how to fix that</a>                         
 </p>                                 
 </div>                               
