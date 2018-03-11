@@ -19,6 +19,10 @@ pre{
 	text-align:left;
 }
 
+/* Highlight overrides */
+.highlight {
+	border-radius:0;
+}
 .highlight span {
 }
 
@@ -49,4 +53,11 @@ kbd{
 
 .box.hide{
 	box-shadow: inset 0px 5px 15px #ababab;
+}
+
+#meta a{
+	opacity:0.5;
+}
+#meta a:hover{
+	opacity:1;
 }

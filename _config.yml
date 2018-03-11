@@ -1,7 +1,7 @@
 # Jekyll configuration flags. Accessible: {{ site.name }}
 name: Peter Etelej
 description: Let's Talk Code
-avatar: https://avatars3.githubusercontent.com/u/2271973?v=3&s=100
+avatar: https://avatars3.githubusercontent.com/u/2271973?v=3&s=96
 footer-links:
   facebook: peter.etelej
   flickr: etelej

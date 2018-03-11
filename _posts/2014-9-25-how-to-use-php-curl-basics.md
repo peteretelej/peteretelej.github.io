@@ -1,7 +1,8 @@
 ---
 layout: postlayout
 title: How to Use PHP/cURL - The Basics
-labels: [php,curl]
+subtitle: An Introduction to the PHP cURL Library
+tags: [php, curl, phpcurl]
 thumbnail: https://peteretelej.github.io/images/logos/phpcurl.png
 ---
 <p>cURL is a powerful tool for transferring data across various protocols like http, ftp, gopher, file telnet among others. PHP provides support for cURL through the libcurl library as made available through the <code>php_curl</code> extension. In order to make use of the following tutorial, you need to have PHP on your server and it's php_curl extension enabled <i>(enabled by most webhosts)</i>.</p>
@@ -103,40 +104,40 @@ curl_setopt_array($curl_handle, array(
 <p>For all <code>curl_setopt</code>/<code>curl_setopt_array</code> options, kindly visit PHP's curl_setopt documentation page (<a href='http://php.net/manual/en/function.curl-setopt.php' title='Go to PHP Docs: curl_setopt'>here</a>). The list below shows the option name and the value and use. e.g If CURLOPT_AUTOREFERER is set to TRUE cURL will follow a Location: redirect.</p>
 <p>The options listed below require boolean values.The default values are FALSE unless explicitly stated:</p>
 <ul>
-<li><b>CURLOPT_AUTOREFERER</b> - If TRUE cURL will follow a <i>Location:</i> redirect</li>
-<li><b>CURLOPT_COOKIESESSION</b> - If TRUE forces a new cookie session</li>
-<li><b>CURLOPT_CONNECT_ONLY</b> - (PHP > 5.5) If TRUE performs connection but no data is transferred </li>
-<li><b>CURLOPT_FAILONERROR</b> - If TRUE fail verbosely if the HTTP code returned is greater than or equal to 400</li>
-<li><b>CURLOPT_CRLF</b> - If TRUE convert Unix newlines to CRLF newlines on transfers</li>
-<li><b>CURLOPT_FILETIME</b> - If TRUE attempt to retrieve the modification date of the remote document</li>
-<li><b>CURLOPT_FRESH_CONNECT</b> - If TRUE force the use of a new connection instead of a cached one</li>
-<li><b>CURLOPT_HEADER</b> - If TRUE include the header in the output</li>
-<li><b>CURLOPT_NOBODY</b> - If TRUE exclude the body from the output. Sets request method to HEAD</li>
-<li><b>CURLOPT_POST</b> - If TRUE do a regular HTTP POST (eg as used by forms)</li>
-<li><b>CURLOPT_RETURNTRANSFER</b> - If TRUE return the transfer as a string, if FALSE, return TRUE or FALSE on success</li>
-<li><b>CURLOPT_SSL_VERIFYPEER</b> - If TRUE <i>[default value]</i> cURL must verify the peer's certificate</li>
-<li><b>CURLOPT_VERBOSE</b> - If TRUE output verbose information</li>
+<li><code>CURLOPT_AUTOREFERER</code> - If TRUE cURL will follow a <i>Location:</i> redirect</li>
+<li><code>CURLOPT_COOKIESESSION</code> - If TRUE forces a new cookie session</li>
+<li><code>CURLOPT_CONNECT_ONLY</code> - (PHP > 5.5) If TRUE performs connection but no data is transferred </li>
+<li><code>CURLOPT_FAILONERROR</code> - If TRUE fail verbosely if the HTTP code returned is greater than or equal to 400</li>
+<li><code>CURLOPT_CRLF</code> - If TRUE convert Unix newlines to CRLF newlines on transfers</li>
+<li><code>CURLOPT_FILETIME</code> - If TRUE attempt to retrieve the modification date of the remote document</li>
+<li><code>CURLOPT_FRESH_CONNECT</code> - If TRUE force the use of a new connection instead of a cached one</li>
+<li><code>CURLOPT_HEADER</code> - If TRUE include the header in the output</li>
+<li><code>CURLOPT_NOBODY</code> - If TRUE exclude the body from the output. Sets request method to HEAD</li>
+<li><code>CURLOPT_POST</code> - If TRUE do a regular HTTP POST (eg as used by forms)</li>
+<li><code>CURLOPT_RETURNTRANSFER</code> - If TRUE return the transfer as a string, if FALSE, return TRUE or FALSE on success</li>
+<li><code>CURLOPT_SSL_VERIFYPEER</code> - If TRUE <i>[default value]</i> cURL must verify the peer's certificate</li>
+<li><code>CURLOPT_VERBOSE</code> - If TRUE output verbose information</li>
 </ul>
 <p>This list includes options that require <code>integer</code> values</p>
 <ul>
-<li><b>CURLOPT_CONNECTTIMEOUT</b> - number of seconds to wait while trying to connect. Use 0 to wait indefinitely. (To use microseconds, if on PHP > 5.2.3 use CURLOPT_CONNECTTIMEOUTMS )</li>
-<li><b>CURLOPT_RESUME_FROM</b> - offset, in bytes, to resume a transfer from</li>
-<li><b>CURLOPT_TIMEOUT</b> - maximum number of seconds to allow cURL functions to execute (on PHP > 5.2.3 CURLOPT_TIMEOUT_MS) </li>
+<li><code>CURLOPT_CONNECTTIMEOUT</code> - number of seconds to wait while trying to connect. Use 0 to wait indefinitely. (To use microseconds, if on PHP > 5.2.3 use CURLOPT_CONNECTTIMEOUTMS )</li>
+<li><code>CURLOPT_RESUME_FROM</code> - offset, in bytes, to resume a transfer from</li>
+<li><code>CURLOPT_TIMEOUT</code> - maximum number of seconds to allow cURL functions to execute (on PHP > 5.2.3 CURLOPT_TIMEOUT_MS) </li>
 </ul>
 <p>This list includes options that require <code>string</code> values</p>
 <ul>
-<li><b>CURLOPT_URL</b> - URL to fetch. This can also be set when initializing a session with <code>curl_init()</code></li>
-<li><b>CURLOPT_USERAGENT</b> - contents of the <code>User-Agent:</code> header to be used in a HTTP request</li>
-<li><b>CURLOPT_REFERER</b> - contents of the <code>Referer:</code> header to be used in a HTTP request</li>
-<li><b>CURLOPT_POSTFIELDS</b> - full data to post in a HTTP "POST" operation</li>
-<li><b>CURLOPT_USERPWD</b> - username and password formatted as <code>[username]:[password]"</code> to use for the connection</li>
-<li><b>CURLOPT_CUSTOMREQUEST</b> - custom request method to use instead of "GET" or "HEAD" when doing a HTTP request</li>
-<li><b>CURLOPT_PROXY</b> - HTTP proxy to tunnel requests through</li>
-<li><b>CURLOPT_PROXYUSERPWD</b> - username and password formatted as <code>[username]:[password]"</code> for proxy</li>
+<li><code>CURLOPT_URL</code> - URL to fetch. This can also be set when initializing a session with <code>curl_init()</code></li>
+<li><code>CURLOPT_USERAGENT</code> - contents of the <b>User-Agent:</b> header to be used in a HTTP request</li>
+<li><code>CURLOPT_REFERER</code> - contents of the <b>Referer:</b> header to be used in a HTTP request</li>
+<li><code>CURLOPT_POSTFIELDS</code> - full data to post in a HTTP "POST" operation</li>
+<li><code>CURLOPT_USERPWD</code> - username and password formatted as <code>[username]:[password]"</code> to use for the connection</li>
+<li><code>CURLOPT_CUSTOMREQUEST</code> - custom request method to use instead of "GET" or "HEAD" when doing a HTTP request</li>
+<li><code>CURLOPT_PROXY</code> - HTTP proxy to tunnel requests through</li>
+<li><code>CURLOPT_PROXYUSERPWD</code> - username and password formatted as <code>[username]:[password]"</code> for proxy</li>
 </ul>
 <p>This list includes options that require <code>array</code> values</p>
 <ul>
-<li><b>CURLOPT_HTTPHEADER</b> - array of HTTP header fields to set, in the format <code>array('Content-type: text/plain', 'Content-length: 100')</code></li>
+<li><code>CURLOPT_HTTPHEADER</code> - array of HTTP header fields to set, in the format <code>array('Content-type: text/plain', 'Content-length: 100')</code></li>
 </ul>
 
 <h4 id="curl-exec">Executing cURL session - <code>curl_exec</code></h4>
@@ -218,7 +219,7 @@ curl_close($curl_handle);
 <li>Remember to valid/<b>filter</b> all data received through cURL request before using them</li>
 </ul>
 <h6 id="curl-tutorials">Advanced PHP cURL Library Tutorial</h6>
-<p>Here's an advanced tutorial with an in-depth look at handling cURL request with PHP:</p>
+<p>Tutorials with an in-depth look at work with PHP/cURL:</p>
 <ul>
 <li><a href="http://code.tutsplus.com/tutorials/techniques-for-mastering-curl--net-8470">Techniques for Mastering cURL - <b>Tutsplus</b></a></li>
 <li><a href="http://php.net/manual/en/book.curl.php">cURL Library Documentation - <b>PHP Docs</b></a></li>

@@ -1,7 +1,8 @@
 ---
 layout: postlayout
 title: Git Commands - Quick and Dirty
-labels: [git,git commands,github,bash]
+subtitle: An Overview of Useful Git Commands
+tags: [git,git commands,github,bash]
 thumbnail: https://peteretelej.github.io/images/logos/git-logo.png
 ---
 <p>Git is a popular open source Version Control System that allows decentralized management of project repositories.</p>

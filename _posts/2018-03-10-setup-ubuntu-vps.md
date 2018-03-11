@@ -2,7 +2,7 @@
 layout: postlayout
 title: Ubuntu VPS Setup Guide
 subtitle: Setting up your Ubuntu server &middot; VPS Management
-labels: [ubuntu, vps, ubuntu 16.04, sysadmin]
+tags: [ubuntu, vps, ubuntu 16.04, sysadmin]
 thumbnail: https://peteretelej.github.io/images/logos/ubuntu-logo.png
 ---
 
