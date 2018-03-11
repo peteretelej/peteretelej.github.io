@@ -26,9 +26,9 @@ ssh root@SERVER_IP_ADDRESS
 
 <p>Tips regarding authentication:</p>
 <ul>
-<li>SSH login via root should be disabled <i>(explained in <a href="#ssh-lockdown">SSH Lockdown</a> below)</i></li>
-<li>Only use ssh key authentication <i>(explained in <a href="#user-management">User Management</a> below)</i></li>
-<li>Use a non-common port for ssh <i>(explained in <a href="#ssh-lockdown">SSH Lockdown</a> below)</i></li>
+<li>SSH login via root should be disabled <i><small>(explained in <a href="#ssh-lockdown">SSH Lockdown</a> below)</i></small></li>
+<li>Only use ssh key authentication <i><small>(explained in <a href="#user-management">User Management</a> below)</i></small></li>
+<li>Use a non-common port for ssh <i><small>(explained in <a href="#ssh-lockdown">SSH Lockdown</a> below)</i></small></li>
 </ul>
 
 
