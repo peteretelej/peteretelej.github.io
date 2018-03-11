@@ -4,7 +4,8 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width,initial-scale=1.0" />
 		<title>{% if page.thetitle %} {{ page.thetitle }}{% else %}{% if page.title %}{{ page.title }} &bull; {{ site.description }}{% else %}{{ site.description }} &bull; {{site.name}}{% endif %}{% endif %}</title>
-		<meta name="description" content="{% if page.title %}{{ content |strip_newlines |strip_html |replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '| truncatewords:64 }} {% else %}{{ site.description }}{% endif %}">
+		{% if page.title %} <meta name="description" content="{{ page.title }}: {{page.subtitle}}"> 
+		{% else %} <meta name="description" content="{% if page.title %}{{ content |strip_newlines |strip_html |replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '|replace:'  ',' '| truncatewords:64 }} {% else %}{{ site.description }}{% endif %}">{% endif %}
 		<meta name="author" content="Peter Etelej">
 		<meta name="theme-color" content"#dbdbdb">
 		<link rel="manifest" href="/manifest.json">
