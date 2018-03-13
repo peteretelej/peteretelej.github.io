@@ -6,7 +6,7 @@ tags: [ubuntu, vps, ubuntu 16.04, sysadmin]
 thumbnail: https://peteretelej.github.io/images/logos/ubuntu-logo.png
 ---
 
-<p>This is an overview of how to setup your Ubuntu virtual private server. It's based on a collection of private bitbucket snippets I'd written.</p>
+<p>This is an overview of how to setup your Ubuntu virtual private server.</p>
 
 <div class="tags">
 <a href="#accessing-vps" class="tag is-info">Accessing VPS</a>
@@ -19,7 +19,8 @@ thumbnail: https://peteretelej.github.io/images/logos/ubuntu-logo.png
 </div><!--/.tags-->
 
 <h3 id="accessing-vps">Accessing Your VPS</h3>
-<p>After creating a VPS instance (e.g. DigitalOcean droplet or Linode linode), you will be provided an IP address as well as login password. Use the credentials to log into the server.</p>
+<p>After creating a VPS instance (e.g. DigitalOcean <a href="https://m.do.co/c/30b582135eb7">droplet</a> or Linode <a href="https://www.linode.com/?r=81378fcb9376bfa14debce18e992e1803b957f58
+">linode</a>), you will be provided an IP address as well as login password. Use the credentials to log into the server.</p>
 
 {% highlight sh lineos %}
 ssh root@SERVER_IP_ADDRESS
