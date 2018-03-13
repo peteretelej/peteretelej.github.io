@@ -23,7 +23,9 @@ pre{
 .highlight {
 	border-radius:0;
 }
-.highlight span {
+.highlight span.c {
+	display:inline;
+	white-space:normal;
 }
 
 li>code,p>code{
@@ -64,3 +66,4 @@ kbd{
 #meta a:hover{
 	opacity:1;
 }
+
