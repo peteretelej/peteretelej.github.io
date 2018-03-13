@@ -10,6 +10,7 @@
 		<meta name="theme-color" content"#dbdbdb">
 		<link rel="manifest" href="/manifest.json">
 		<link rel="canonical" href="{{ site.url }}{{ page.url }}" />
+		<link rel="alternate" type="application/rss+xml" href="https://peteretelej.github.io/feed.xml" />
 		<meta name="og:url" content="{{ site.url }}{{ page.url }}" />
 		<meta name="og:site_name" content="Let's Talk Code" />
 		<meta name="og:title" content="{% if page.title %}{{ page.title }} | {{ site.description }}{% else %}{{ site.name }} | {{ site.description }}{% endif %}">
@@ -22,7 +23,7 @@
 		<meta name="twitter:title" content="{% if page.title %}{{ page.title }} | {{ site.description }}{% else %}{{ site.name }} | {{ site.description }}{% endif %}">
 		{% if page.title %}<meta name="twitter:description" content="{{ page.title }}: {{page.subtitle}} via @peteretelej"> {% endif %}
 		{% if page.thumbnail %} <meta name="og:image" content="{{ page.thumbnail }}" />
-	       	<meta name="twitter:image" content="{{ page.thumbnail }}" />
+		<meta name="twitter:image" content="{{ page.thumbnail }}" />
 		{% endif %}
 		<link rel='icon' href="{{ site.baseurl }}/favicon.ico" />
 		<link rel="sitemap" href="/sitemap.xml" />
@@ -71,7 +72,7 @@
 						</a>
 						<div class="navbar-item">
 							<svg id="kenyan-flag" style="opacity: 0.5; border-radius: 3px; overflow: scroll;"
-								xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20" height="20" viewBox="0 0 512 512">
+			     xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="20" height="20" viewBox="0 0 512 512">
 								<defs>
 								<path id="a" stroke-miterlimit="10" d="M-28.6 47.5l1.8 1 46.7-81c2.7-.6 4.2-3.2 5.7-5.8 1-1.8 5-8.7 6.7-17.7a58 58 0 0 0-11.9 14.7c-1.5 2.6-3 5.2-2.3 7.9z"/>
 								</defs>
