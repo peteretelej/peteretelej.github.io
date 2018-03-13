@@ -20,7 +20,7 @@ thumbnail: https://peteretelej.github.io/images/logos/ubuntu-logo.png
 
 <h3 id="accessing-vps">Accessing Your VPS</h3>
 <p>After creating a VPS instance (e.g. DigitalOcean <a href="https://m.do.co/c/30b582135eb7">droplet</a> or Linode <a href="https://www.linode.com/?r=81378fcb9376bfa14debce18e992e1803b957f58
-">linode</a>), you will be provided an IP address as well as login password. Use the credentials to log into the server.</p>
+		">linode</a>), you will be provided an IP address as well as login password. Use the credentials to log into the server.</p>
 
 {% highlight sh lineos %}
 ssh root@SERVER_IP_ADDRESS
@@ -76,16 +76,16 @@ sudo service sshd restart
 
 <div class="notification">
 <h5 id="ssh-pub">SSH Key-Based Authentication</h5>
-<p>You can now setup <b>public key authentication</b> (recommended): this enables you to securely login to the server without having to enter your password.</p>
-								     <a class="button is-small is-info" href="#more-ssh-pub" onclick="showBox('more-ssh-pub')" >Read how to do this</a>
-															     </div>
-																   <div class="box hide"  id="more-ssh-pub" >
-																					     <h4>Public Key Authentication</h4>
-																									       <p>Public Key authentication enables you to login to a server using ssh public key. This is my <b>recommended</b> method of authentication.</p>
-																														    <p>SSH Keys come in a pair; a <b>private</b> and <b>public</b> key.</p>
-																														    <h6>Generate Key Pair</h6>
-																														    <p>OpenSSH client is required, this is most likely already installed. You can install it with <code>sudo apt-get -y install openssh-client</code></p>
-																														    <p>Use the following commands to have the key pair generated; accept the defaults by just pressing <kbd>Enter</kbd>. You can leave the password empty (optional). You should use existing keys if you already have them.</p>
+<p>You can now setup <b>public key authentication</b> (recommended). This will enable you to securely login to the server without having to enter your password.</p>
+<a class="button is-small is-info" href="#more-ssh-pub" onclick="showBox('more-ssh-pub')" >Read how to do this</a>
+</div>
+<div class="box hide"  id="more-ssh-pub" >
+<h4>Public Key Authentication</h4>
+<p>Public Key authentication enables you to login to a server using ssh public key. This is my <b>recommended</b> method of authentication.</p>
+<p>SSH Keys come in a pair; a <b>private</b> and <b>public</b> key.</p>
+<h6>Generate Key Pair</h6>
+<p>OpenSSH client is required, this is most likely already installed. You can install it with <code>sudo apt-get -y install openssh-client</code></p>
+<p>Use the following commands to have the key pair generated; accept the defaults by just pressing <kbd>Enter</kbd>. You can leave the password empty (optional). You should use existing keys if you already have them.</p>
 {% highlight sh lineos %}
 ssh-keygen 
 
@@ -122,6 +122,7 @@ ChallengeResponseAuthentication no
 {% highlight sh lineos %}
 sudo systemctl reload sshd
 {% endhighlight %}
+</div><!--/.box-->
 
 <p class="notification">I would also recommend using a <b>non-common port for SSH</b>. 
 <a class="button is-small is-info" href="#more-ssh-port" onclick="showBox('more-ssh-port')" >Read how to do this</a>
