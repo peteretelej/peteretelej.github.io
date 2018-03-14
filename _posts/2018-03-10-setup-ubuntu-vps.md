@@ -386,7 +386,7 @@ loglevel = ERROR
 logtarget = /var/log/fail2ban.log 
 {% endhighlight %}
 
-<p>Restart fail2ban service to make use of your customized configuration <code>sudo systemctl restart fal2ban</code></p>
+<p>Restart fail2ban service to make use of your customized configuration <code>sudo systemctl restart fail2ban</code></p>
 </div><!--/.box-->
 
 <div class="notification">
