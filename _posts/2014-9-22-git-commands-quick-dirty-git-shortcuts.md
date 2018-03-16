@@ -22,11 +22,15 @@ thumbnail: https://peteretelej.github.io/images/logos/git-logo.png
 <a href='#git-guides' class='tag is-info'>Git Guides and Tutorials</a>
 </div><!--/.tags-->
 
-<p>This is <b style='text-transform:uppercase'>not a tutorial</b> on how to use git. It's meant as a quick way to look up git commands. Please do not use these commands if you're just learning to use git; kindly <a href='#git-guides'>follow these links</a> at the bottom of this post to get Git guides and tutorials.</p>
+<p>This is <b style='text-transform:uppercase'>not a tutorial</b> on how to use git. 
+It's meant as a quick way to look up git commands.  Please do not use these commands if you're just learning to use git;
+kindly <a href='#git-guides'>follow these links</a> at the bottom of this post to get Git guides and tutorials.</p>
 
 <h2>Git Quick Commands Listing</h2>
-<h3 id="git-config">Git Configuration:</h3>
-Add your name and email (baked into each commit made)
+
+<h3 id="git-config">Git Configuration</h3>
+
+Add your name and email (baked into each commit made):
 {% highlight sh lineos %}
 git config --global user.name "Your Name"
 git config --global user.email you@example.com
@@ -201,6 +205,22 @@ git fetch -p
 # Checkout branches with latest commits #esp for cleaning old branches
 git for-each-ref --sort=-committerdate --format='%(refname:short) %(committerdate:short)'
 {% endhighlight %}
+
+<div class="card">
+<div class="card-header">
+<p class="card-header-title">Git Branch Naming Conventions</p>
+</div><!--/.card-header-->
+<div class="card-content">
+<ul>
+<li>Use grouping <b>tokens</b> (short words) at the beginning of branch names. e.g. <code>wip</code><small>(work in progress)</small>, <code>feat</code><small>(feature)</small>, <code>fix</code><small>(bug fix)</small>, <code>temp</code><small>(temporary/throaway branch)</small></li>
+<li>Separate branch name parts using slashes i.e. <code>wip/material-design</code>, <code>fix/authflow</code></li>
+<li>Do not start branch names with numbers, git may confuse them for SHA-1's</li>
+<li>Avoid long branch-names</li>
+</ul>
+</li>
+</ul>
+</div><!--/.card-content-->
+</div><!--/.card-->
 
 <h3 id="git-merge">Git merge</h3>
 <p>Before merging, checkout to branch you want to merge to:</p>
