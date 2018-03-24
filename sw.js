@@ -1,4 +1,4 @@
-var cacheName="peterghp-v4"
+var cacheName="peterghp-v5"
 
 self.addEventListener("install",function(event){
 	event.waitUntil(
@@ -51,7 +51,7 @@ self.addEventListener("fetch",function(event){
 						}
 						return fresponse
 					}).catch(function(){
-						return response
+						return response ||fetch(event.request);
 					})
 				})
 			})
@@ -66,7 +66,7 @@ self.addEventListener("fetch",function(event){
 					cache.put(event.request,fresponse.clone())
 					return fresponse
 				}).catch(function(){
-					return response
+					return response ||fetch(event.request);
 				})
 			})
 		})
