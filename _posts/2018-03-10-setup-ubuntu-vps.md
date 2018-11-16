@@ -60,7 +60,7 @@ The user can use the <code>su</code> command to become root (will need root pass
 <p>Edit <code>/etc/ssh/sshd_config</code> and turn <b>PermitRootLogin</b> to <b>no</b>. Use a different editor if new to <b>vi</b> (ZZ to exit).</p>
 <p class="notification is-warning">Before doing this, ensure that you can login with another (non-root) user account (see <a href="#user-management">User Management</a> above).</p> 
 {% highlight sh lineos %}
-sudo vi /etc/ssh/ssh_config
+sudo vi /etc/ssh/sshd_config
 
 # Change the following line
 PermitRootLogin yes
