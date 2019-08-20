@@ -1,4 +1,4 @@
-var cacheName="peterghp-v5"
+var cacheName="peterghp-v6"
 
 self.addEventListener("install",function(event){
 	event.waitUntil(
@@ -12,6 +12,7 @@ self.addEventListener("install",function(event){
 				"/images/pic.png",
 				"/assets/js/axios.min.js",
 				"/assets/js/vue.min.js",
+				"/assets/js/pagemap.min.js",
 			])
 		})
 	)
