@@ -45,7 +45,11 @@ pagemap(document.querySelector('#map'), {
     styles: {
         'header,footer,section,article': 'rgba(0,0,0,0.08)',
         'h1,a': 'rgba(0,0,0,0.10)',
-        'h2,h3,h4': 'rgba(0,0,0,0.08)'
+        'h2,h3,h4': 'rgba(0,0,0,0.08)',
+        'b,strong': 'rgba(0,0,0,0.05)',
+		'code': 'rgba(0, 0, 0, 0.05)',
+		'pre': 'rgba(0, 0, 0, 0.08)',
+		'.box': 'rgba(193, 226, 126, 0.3)'
     },
     back: 'rgba(0,0,0,0.02)',
     view: 'rgba(0,0,0,0.05)',
