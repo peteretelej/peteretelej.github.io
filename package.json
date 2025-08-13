@@ -3,10 +3,13 @@
   "type": "module",
   "version": "0.0.1",
   "scripts": {
-    "dev": "astro dev",
+    "dev": "npx kill-port 4321 && astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "test": "vitest",
+    "test:browser": "vitest --browser",
+    "test:screenshots": "vitest tests/pages.test.ts --browser"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.3",
@@ -20,5 +23,10 @@
     "react-dom": "^19.1.1",
     "sharp": "^0.34.2",
     "tailwindcss": "^4.1.11"
+  },
+  "devDependencies": {
+    "@vitest/browser": "^3.2.4",
+    "playwright": "^1.54.2",
+    "vitest": "^3.2.4"
   }
 }

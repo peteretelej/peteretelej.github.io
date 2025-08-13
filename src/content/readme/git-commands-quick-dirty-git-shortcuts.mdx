@@ -1,0 +1,456 @@
+---
+title: Git Commands - Quick and Dirty
+subtitle: An Overview of Useful Git Commands
+publishDate: 2014-09-22
+tags: [git, git commands, github, bash]
+thumbnail: /images/logos/git-logo.png
+---
+
+import NavigationPills from '../../components/NavigationPills.astro';
+
+Git is a popular open source Version Control System that allows decentralized management of project repositories.
+
+Here's a *quick and dirty* guide to common git commands:
+
+<NavigationPills links={[
+  { href: "#git-configuration", label: "Configure Git" },
+  { href: "#git-basics", label: "Git Basics" },
+  { href: "#resetting-and-reverting-repo", label: "Git Reset" },
+  { href: "#git-branches", label: "Manage Branches" },
+  { href: "#git-merge", label: "Git Merge" },
+  { href: "#rewriting-git-history", label: "Rewriting Git History" },
+  { href: "#working-with-remotes", label: "Git Remotes" },
+  { href: "#stashing", label: "Git Stash" },
+  { href: "#useful-commands", label: "Useful Git Commands" },
+  { href: "#useful-git-files", label: "Git Special Files" },
+  { href: "#guides-and-tutorials-on-git", label: "Git Guides and Tutorials" }
+]} />
+
+This is **NOT A TUTORIAL** on how to use git. 
+It's meant as a quick way to look up git commands. Please do not use these commands if you're just learning to use git;
+kindly [follow these links](#guides-and-tutorials-on-git) at the bottom of this post to get Git guides and tutorials.
+
+## Git Quick Commands Listing
+
+### Git Configuration
+
+Add your name and email (baked into each commit made):
+```sh
+git config --global user.name "Your Name"
+git config --global user.email you@example.com
+```
+
+Configure text editor to use (e.g. to use vim)
+```sh
+git config --global core.editor vim
+```
+
+Adding colors
+```sh
+git config --global color.diff auto
+git config --global color.status auto
+git config --global color.branch auto
+```
+
+In case you have a GPG key you'd like used to sign your commits you can add it
+```sh
+# list GPG keys that you have the private keys to
+gpg --list-secret-keys --keyid-format LONG
+
+# add your key ID to git
+git config --global user.signingkey YOUR_KEYID_HERE
+
+# automatically sign all commits
+git config --global commit.gpgSign true
+```
+
+Listing all configurations set
+```sh
+git config --list
+```
+
+Other useful configurations
+```sh
+# only push the current branch (instead of pushing all matching)
+git config --global push.default simple
+
+# Automatically rebase pulls
+git config --global branch.autosetuprebase always
+```
+
+### Git Basics
+Initialize a repository
+```bash
+# initialize a new git repository
+git init
+
+# add all files in the current directory to the new repo
+git add .
+
+# adds a commit to the new repo
+git commit -m "Initial commit"
+```
+
+Cloning a remote repository
+```bash
+# clone repository via https
+git clone https://github.com/USERNAME/REPOSITORYNAME.git
+
+# clone repository via ssh
+git clone username@host:/path/to/repository
+```
+
+Adding files to repository
+```bash
+# add all in the current directory to staging area
+git add .
+
+# Add all files (new, modified,deletions) to index (stage)
+git add -A # perfoms git add .; git add -u
+
+# Add specific files to staging area
+git add filename.txt
+```
+
+Listing files and tracking status
+```bash
+# List tracked files
+git ls-files;
+
+# List all untracked files
+git ls-files --others  
+# add --directory for directories
+```
+
+Removing a file from tracking
+```bash
+# Unstage a file but preserve it's contents
+git reset filename
+
+# Remove files from index, stage it's deletion from HEAD
+git rm filename
+```
+
+> To prevent tracking of files; add the file or directory to the `.gitignore` file (each file/directory on a new line).
+
+Committing 
+```bash
+# will prompt for a commit message in the configured text editor
+git commit  
+
+# shorthand for adding a message to the commit
+git commit -m "Fixes stuff x"
+
+# Quick Add & Commit - add all modified files and commit
+git commit -am "The commit message here"
+
+# Status of files in index vs Working directory
+git status
+```
+
+### Resetting and Reverting Repo
+**Revert** to previous commit (*graceful* - does not delete history)
+```sh
+# git revert [SHA-1]
+git revert HEAD
+```
+Undo changes you've made to a file i.e. and replace it with the HEAD version.
+```sh
+# git checkout -- [FILENAME]
+git checkout -- myfile
+```
+**Reset** to previous state: **Do not use** if already commited to shared remote
+```sh
+# git reset --hard [SHA-1] # Reset completely delete history and staged
+git reset --hard HEAD
+
+# git reset --soft [SHA-1] # does not touch staging area or working tree
+git reset --soft HEAD
+```
+
+**Re-clone** from a remote repository; will loose changes not in the remote. (e.g if local git corrupt)
+```sh
+rm -fr .git
+git init
+git remote add origin [your-git-remote-url]
+git fetch
+git reset --mixed origin/master
+git branch --set-upstream-to=origin/master master  
+```
+
+### Git Branches
+```sh
+# Create local branch
+git branch branchname
+
+# Move/switch to a branch
+git checkout branchname
+
+# Create and switch to branch
+git checkout -b branchname
+
+# Fetch file from another branch
+git checkout branchtwo -- path/to/file
+
+# Push to a new remote branch, e.g. if remote name is origin
+git push -u origin branchname
+
+# Delete Local Branch
+git branch -d branchname
+
+# Delete remote branch
+git push origin :branchname
+
+# Forcefully delete from both local and remote
+git branch -D branchname
+
+# Update local database of remote branches (prune deleted)
+git fetch -p
+
+# Checkout branches with latest commits #esp for cleaning old branches
+git for-each-ref --sort=-committerdate --format='%(refname:short) %(committerdate:short)'
+```
+
+#### Git Branch Naming Conventions
+
+- Use grouping **tokens** (short words) at the beginning of branch names. e.g. `wip`*(work in progress)*, `feat`*(feature)*, `fix`*(bug fix)*, `temp`*(temporary/throaway branch)*
+- Separate branch name parts using slashes i.e. `wip/material-design`, `fix/authflow`
+- Do not start branch names with numbers, git may confuse them for SHA-1's
+- Avoid long branch-names
+
+### Git merge
+Before merging, checkout to branch you want to merge to:
+```sh
+git checkout master
+
+# Merge local branch
+git merge branchname
+
+# Always generate merge commit even on fast-forward
+git merge --no-ff branchname
+
+# List branches that have been merged to current branch (e.g master)
+git branch --merged
+
+git branch --no-merged  #list branches that haven't been merged to current
+
+# Delete merged branches
+git branch --merged | xargs git branch -d
+```
+Merge remote branch
+```sh
+# Update the remote
+git fetch origin
+
+# Merge remote branch
+git merge origin/branchname
+
+# SHORTCUT - Fetch and merge tracked branch
+git pull
+```
+
+### Rewriting Git History
+**NOTE:** Do not rewrite public commits/history
+
+```sh
+# Updates staged changes to previous commit message.(i.e replaces the previous commit)
+git commit --amend
+```
+#### Git Rebase
+Moving a branch to a new base commit (an ID, a branch name, a tag, or a relative reference to HEAD)
+```sh
+git rebase v0.2.2
+# NOTE - all commits v0.2.2..HEAD will be rewritten
+```
+#### Interactive Rebasing
+Changing multiple commit messages. `git rebase -i 9fceb02` *(9fceb02 is an example ID)*
+provides an interactive text editor for modifying all commits after the base specified (eg 9fceb02)
+```sh
+# Modify all commits after base specified (HEAD~3)
+git rebase -i HEAD~3
+
+# Replace 'pick' command with rebasing command e.g
+pick 6fceb02 Added this thing
+squash 9fabb3a Awesome Featured added
+squash a3a44as I changed stuff
+# All squashed commit will be combined into the single 'picked' commit
+# Note: Another text editor for combined commit messages opens
+```
+Other Interactive Rebase Commands:
+- `p, pick` - use commit
+- `r, reword` - use commit, but edit the commit message
+- `e, edit` - use commit, but stop for amending
+- `s, squash` - use commit, but meld into previous commit
+- `f, fixup` - like "squash", but discard this commit's log message
+- `x, exec` - run command (the rest of the line) using shell
+
+**Interactive Rebasing Tips**
+
+To reorder commits, reorder the lines; they are executed from top to bottom.  
+If you remove a line, THAT COMMIT WILL BE LOST  
+However, if you remove everything, the rebase will be aborted.  
+Empty commits are commented out
+
+### Working with Remotes
+Adding remote - Connecting local repo with a remote repo (for example a repo on github)
+```sh
+git remote add origin https://github.com/USERNAME/REPOSITORY.git
+#git remote add [name] [repourl]
+
+# Verify remotes - List existing remotes
+git remote -v
+
+# List all remote branches
+git branch -r
+
+# Remove remote
+git remote remove origin
+
+# Replace remote url
+git remote set-url origin https://github.com/USERNAME/REPOSITORY2.git
+
+# To check out commits on an upstream master
+git log --oneline master..origin/master
+
+# Merge remote branch eg upstream master into current branch
+git merge origin/master
+
+# Rebase (fetch remote branch and merge)
+git pull --rebase remote
+
+# Fetch all remotes
+git fetch --all #git fetch [remotename] #to fetch single remote
+
+#push to a new remote branch
+git push -u origin branchname
+```
+
+### Stashing
+**Stash** - Store modified tracked files and staged changes on a stach for reapplying later
+```sh
+#push stash onto stack
+git stash
+
+# Store stash with message
+git stash save 'A custom message'
+
+# List stored stashes
+git stash list
+
+# Reapply most recent stash
+git stash apply
+#for older stashes pick from list e.g git stash apply stash@{1}
+
+# Remove stash from stack
+git stash drop stash@{0}
+#drops stash reference or if no parameter drops latest stash
+
+# Clear all stashes
+git stash clear
+
+# Apply latest stash and remove from stack
+git stash pop
+```
+
+### Useful Commands
+**History** - Checkout the history of your commits
+```sh
+git log --oneline --graph --decorate --all --color
+
+# Filter logs
+git log --author=author
+git log --after="MMM DD YYYY"
+git log --before="MMM DD YYYY"
+git log --grep REGEXP  # Commits with matches to regular expression
+
+#list history of file
+git log --follow filename
+
+# Show changes to file
+git whatchanged file
+
+# Show author of each line in file
+git blame file
+
+# Search through repo history
+git rev-list --all | xargs git grep -F 'searchstring'
+#git rev-list --all | xargs git grep 'REGEX' #to search for regular expression
+```
+**Diff** - Compare states
+```sh
+# Compare two commits
+git diff master..upstream/branchname
+#git diff HEAD~2..HEAD~1
+
+# Compare staged changes to your last commit
+git diff --cached
+
+# Compare working directory to your last commit
+git diff HEAD
+```
+**Tagging**
+```sh
+#annotated tag
+git tag -a v1.5 -m 'Message Here'
+
+#lightweight tag
+git tag v1.5.2
+#to create lightweight tag; don't supply the -a, -s, or -m option
+
+#list tags
+git tag
+
+#show tag and related commit
+git show v1.2
+
+# Tag older commit
+git tag -a v2 9fceb02 -m "Message here"
+# git tag -a v1.2 [SHA-1] -m "[your message]"
+
+# Rename tag
+git tag newtag oldtag
+git tag -d oldtag
+git push origin :refs/tags/oldtag
+git push --tags
+
+# Adding a message to an existing tag
+git tag tagname tagname -f -m "the message"
+# creates a tag of the same name with a message and overwrites old tag
+
+# Push referenced tags along with branches
+git push --follow-tags
+```
+**Cleaning**
+```sh
+# Perform clean dry-run - show files to delete
+git clean -n
+
+# Remove all untracked files from working copy
+git clean -f
+
+# Remove all untracked and ignored files and directories from working copy
+git clean -fxd
+
+# Cleanup unnecessary files and optimize the local repository
+git gc #calls git prune with prunes loose objects older than 2wks
+
+git gc --prune=all #prunes all loose objects
+```
+
+#### Useful Git Files
+- .gitignore
+- .gitattributes
+- .mailmap
+- .gitmodules
+
+#### Guides and Tutorials on Git
+- [Git - the **simple guide** - no deep shit](http://rogerdudler.github.io/git-guide/)
+- [Git Tutorial: A **Comprehensive Guide** by Udemy](https://blog.udemy.com/git-tutorial-a-comprehensive-guide/)
+- [**Git Tutorials** by Atlassian *( ~ bitbucket)*](https://www.atlassian.com/git/tutorials/)
+- [Github's Git Training: **Try Git**](https://try.github.io/levels/1/challenges/1)
+- [Official **Git Documentation**](http://git-scm.com/doc)
+
+#### Git Cheat Sheets (Printable)
+- [**Github** Git Cheat Sheet *[PDF]*](https://training.github.com/kit/downloads/github-git-cheat-sheet.pdf)
+- [**Git Tower** Cheat Sheet](https://www.git-tower.com/blog/git-cheat-sheet/)	
+- [**Rebellabs** Git Cheat Sheet](http://zeroturnaround.com/rebellabs/git-commands-and-best-practices-cheat-sheet/)

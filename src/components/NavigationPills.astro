@@ -6,12 +6,12 @@ export interface Props {
 const { links } = Astro.props;
 ---
 
-<div class="navigation-pills bg-gray-50 dark:bg-gray-700 rounded-lg p-4 my-8 border border-gray-200 dark:border-gray-600">
+<div class="navigation-pills my-8">
   <div class="flex flex-wrap gap-3">
     {links.map(link => (
       <a 
         href={link.href} 
-        class="nav-pill inline-flex items-center px-4 py-2 bg-white dark:bg-gray-600 text-brand-600 dark:text-brand-400 border border-brand-200 dark:border-brand-500 rounded-lg text-sm font-medium hover:bg-brand-50 dark:hover:bg-gray-500 hover:border-brand-300 dark:hover:border-brand-400 transition-all duration-200 no-underline shadow-sm hover:shadow-md hover:-translate-y-0.5"
+        class="nav-pill inline-flex items-center px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white border border-brand-600 hover:border-brand-700 rounded-full text-sm font-medium transition-all duration-200 no-underline shadow-sm hover:shadow-md hover:-translate-y-0.5"
       >
         {link.label}
       </a>

@@ -1,0 +1,278 @@
+---
+title: How to Use PHP/cURL - The Basics
+subtitle: An Introduction to the PHP cURL Library
+publishDate: 2014-09-25
+tags: [php, curl, phpcurl]
+thumbnail: /images/logos/phpcurl.png
+---
+
+import NavigationPills from '../../components/NavigationPills.astro';
+
+cURL is a powerful tool for transferring data across various protocols like http, ftp, gopher, file telnet among others. PHP provides support for cURL through the libcurl library as made available through the `php_curl` extension. In order to make use of the following tutorial, you need to have PHP on your server and it's php_curl extension enabled *(enabled by most webhosts)*.
+
+<NavigationPills links={[
+  { href: "#curl-basic-usage", label: "PHP cURL - Basic Usage" },
+  { href: "#initialize-curl", label: "Initialize cURL" },
+  { href: "#set-curl-options", label: "Set cURL Options" },
+  { href: "#execute-curl-session", label: "Execute cURL Session" },
+  { href: "#handle-curl-errors", label: "Handle cURL Errors" },
+  { href: "#close-curl-session", label: "Close cURL Session" },
+  { href: "#tips-tricks-and-common-mistakes", label: "Tips, Tricks and Common Mistakes" },
+  { href: "#advanced-curl-tutorials", label: "Advanced cURL tutorials" }
+]} />
+
+**Is there an easier way to do all this?**
+
+> I'd like to point out that while cURL may be the best way carry out data transfer across protocols in PHP, that does not mean it is the **easiest** or **most efficient**.
+> 
+> If you're looking for an easier and *safer* way to perform HTTP requests, I'd recommend checking out [**Guzzle**](https://guzzle.readthedocs.org/en/latest/).
+
+## cURL Basic Usage
+
+```php
+<?php
+// Initialize cURL
+$ch = curl_init();
+
+// Set cURL options
+curl_setopt($ch, CURLOPT_URL, 'http://example.com/api');
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+// Execute cURL session
+$result = curl_exec($ch);
+
+// Check for errors
+if (curl_errno($ch)) {
+    echo 'cURL error: ' . curl_error($ch);
+}
+
+// Close cURL session
+curl_close($ch);
+
+// Process the result
+echo $result;
+?>
+```
+
+## Initialize cURL
+
+Before you can use cURL, you need to initialize a cURL session using `curl_init()`:
+
+```php
+<?php
+// Initialize cURL session
+$ch = curl_init();
+
+// Initialize with URL
+$ch = curl_init('http://example.com');
+?>
+```
+
+The `curl_init()` function returns a cURL handle resource which is used in all other cURL functions.
+
+## Set cURL Options
+
+cURL options are set using `curl_setopt()`. This is where you configure how cURL should behave:
+
+```php
+<?php
+$ch = curl_init();
+
+// Basic options
+curl_setopt($ch, CURLOPT_URL, 'http://example.com/api');
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+
+// HTTP headers
+curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+    'Content-Type: application/json',
+    'User-Agent: MyApp/1.0'
+));
+
+// POST data
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode(array('key' => 'value')));
+
+// SSL options
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+?>
+```
+
+### Common cURL Options
+
+- `CURLOPT_URL` - The URL to fetch
+- `CURLOPT_RETURNTRANSFER` - Return the response as a string instead of outputting it
+- `CURLOPT_FOLLOWLOCATION` - Follow redirects
+- `CURLOPT_TIMEOUT` - Maximum time allowed for the transfer
+- `CURLOPT_CONNECTTIMEOUT` - Maximum time allowed for connection
+- `CURLOPT_USERAGENT` - User agent string
+- `CURLOPT_HTTPHEADER` - Array of HTTP headers
+- `CURLOPT_POST` - Perform HTTP POST
+- `CURLOPT_POSTFIELDS` - POST data
+- `CURLOPT_COOKIEFILE` - File to read cookies from
+- `CURLOPT_COOKIEJAR` - File to write cookies to
+
+## Execute cURL Session
+
+After setting all options, execute the cURL session with `curl_exec()`:
+
+```php
+<?php
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, 'http://example.com');
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+// Execute the request
+$response = curl_exec($ch);
+
+if ($response === false) {
+    echo 'cURL error: ' . curl_error($ch);
+} else {
+    echo 'Response: ' . $response;
+}
+
+curl_close($ch);
+?>
+```
+
+## Handle cURL Errors
+
+Always check for errors when using cURL:
+
+```php
+<?php
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, 'http://example.com');
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+$response = curl_exec($ch);
+
+// Check if any error occurred
+if (curl_errno($ch)) {
+    $error = curl_error($ch);
+    echo "cURL Error: $error";
+} else {
+    // Get HTTP response code
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    echo "HTTP Code: $httpCode\n";
+    echo "Response: $response";
+}
+
+curl_close($ch);
+?>
+```
+
+### Getting cURL Information
+
+```php
+<?php
+// Get information about the transfer
+$info = curl_getinfo($ch);
+
+// Or get specific information
+$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+$contentType = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
+$totalTime = curl_getinfo($ch, CURLINFO_TOTAL_TIME);
+?>
+```
+
+## Close cURL Session
+
+Always close the cURL session to free up resources:
+
+```php
+<?php
+curl_close($ch);
+?>
+```
+
+## Tips, Tricks and Common Mistakes
+
+### 1. Always Return Transfer
+```php
+// Wrong - outputs directly
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, false);
+
+// Right - returns as string
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+```
+
+### 2. Handle SSL Properly
+```php
+// Wrong - disables SSL verification (security risk)
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+
+// Right - verify SSL certificates
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+curl_setopt($ch, CURLOPT_CAINFO, '/path/to/cacert.pem');
+```
+
+### 3. Set Reasonable Timeouts
+```php
+// Prevent hanging requests
+curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
+```
+
+### 4. Handle Errors Properly
+```php
+$response = curl_exec($ch);
+
+if ($response === false) {
+    $error = curl_error($ch);
+    $errno = curl_errno($ch);
+    // Handle error appropriately
+    throw new Exception("cURL Error ($errno): $error");
+}
+```
+
+### 5. Use Multiple cURL Handles for Batch Requests
+```php
+<?php
+// Create multiple cURL handles
+$ch1 = curl_init();
+$ch2 = curl_init();
+
+// Set options for each handle
+curl_setopt($ch1, CURLOPT_URL, 'http://example.com/api1');
+curl_setopt($ch1, CURLOPT_RETURNTRANSFER, true);
+
+curl_setopt($ch2, CURLOPT_URL, 'http://example.com/api2');
+curl_setopt($ch2, CURLOPT_RETURNTRANSFER, true);
+
+// Create a multiple cURL handle
+$mh = curl_multi_init();
+
+// Add the handles to the multiple handle
+curl_multi_add_handle($mh, $ch1);
+curl_multi_add_handle($mh, $ch2);
+
+// Execute all handles
+$running = null;
+do {
+    curl_multi_exec($mh, $running);
+    curl_multi_select($mh);
+} while ($running > 0);
+
+// Get responses
+$response1 = curl_multi_getcontent($ch1);
+$response2 = curl_multi_getcontent($ch2);
+
+// Clean up
+curl_multi_remove_handle($mh, $ch1);
+curl_multi_remove_handle($mh, $ch2);
+curl_multi_close($mh);
+curl_close($ch1);
+curl_close($ch2);
+?>
+```
+
+## Advanced cURL tutorials
+
+- [cURL POST requests with data](https://curl.haxx.se/docs/httppost.html)
+- [cURL with authentication](https://curl.haxx.se/docs/httpauth.html)
+- [cURL file uploads](https://curl.haxx.se/docs/httppost.html)
+- [cURL with cookies and sessions](https://curl.haxx.se/docs/http-cookies.html)
+- [Multi-threading with cURL](https://www.php.net/manual/en/function.curl-multi-init.php)
