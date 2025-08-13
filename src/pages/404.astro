@@ -1,0 +1,48 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="Page Not Found" description="The page you're looking for doesn't exist">
+	<div class="min-h-[60vh] flex items-center justify-center">
+		<div class="text-center px-6">
+			<div class="mb-8">
+				<h1 class="text-9xl font-bold text-brand-600 dark:text-brand-400">404</h1>
+			</div>
+			
+			<h2 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+				Page Not Found
+			</h2>
+			
+			<p class="text-lg text-gray-600 dark:text-gray-400 mb-8 max-w-md mx-auto">
+				Sorry, we couldn't find the page you're looking for. The post might have been moved or doesn't exist.
+			</p>
+			
+			<div class="space-x-4">
+				<a 
+					href="/" 
+					class="bg-brand-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-brand-700 transition-colors inline-block"
+				>
+					Go Home
+				</a>
+				<a 
+					href="/readme" 
+					class="border-2 border-brand-600 text-brand-600 px-6 py-3 rounded-lg font-semibold hover:bg-brand-600 hover:text-white transition-colors inline-block"
+				>
+					Browse Posts
+				</a>
+			</div>
+			
+			<div class="mt-12">
+				<p class="text-sm text-gray-500 dark:text-gray-400">
+					Looking for something specific? Try the 
+					<a 
+						href="/search" 
+						class="text-brand-600 hover:text-brand-700 dark:text-brand-400 dark:hover:text-brand-300 underline"
+					>
+						search page
+					</a>
+				</p>
+			</div>
+		</div>
+	</div>
+</Base>
