@@ -35,6 +35,8 @@ npm run dev
 
 Your site will be available at `localhost:4321`. Changes you make will reflect automatically on refresh.
 
+Codebase design: `docs/design.md`
+
 ### Customizing Your Blog
 
 #### Update Site Info
