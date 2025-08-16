@@ -6,9 +6,9 @@ import {
   fetchGitHubRepos,
   fetchGitHubReadme,
   fetchGitHubStars,
+  fetchPortfolioProjects,
 } from "../utils/github.ts";
 import { socialLinks } from "../data/socials.ts";
-import { featuredProjects } from "../data/projects.ts";
 import { getCollection } from "astro:content";
 
 const username = "peteretelej";
@@ -16,6 +16,9 @@ const profile = await fetchGitHubProfile(username);
 const repos = await fetchGitHubRepos(username);
 const readme = await fetchGitHubReadme(username);
 const stars = await fetchGitHubStars(username);
+
+// Get dynamic portfolio projects
+const portfolioProjects = await fetchPortfolioProjects();
 
 // Get recent posts
 const readmePosts = await getCollection("readme");
@@ -205,7 +208,7 @@ const publicRepos = profile?.public_repos || 0;
           </div>
           <div class="grid gap-8 sm:grid-cols-2">
             {
-              featuredProjects.map((project) => (
+              portfolioProjects.map((project) => (
                 <div class="bg-gray-50 dark:bg-gray-800 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors overflow-hidden">
                   <div class="p-6">
                     <div class="mb-6">
