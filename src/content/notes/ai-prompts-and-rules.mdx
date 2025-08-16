@@ -1,0 +1,164 @@
+---
+title: "My AI Prompts & Dev Rules"
+publishDate: 2025-08-16
+tags: ["AI", "Prompts"]
+draft: true
+excerpt: "Collection of AI prompts, development rules, and configuration patterns I use across different projects and tools."
+---
+
+# AI Prompts & Development Rules
+
+A curated collection of prompts, rules, and configurations I use with various AI coding assistants and development tools. These have been refined through practical use across multiple projects.
+
+## Core Development Principles
+
+### Communication Guidelines
+- Answer questions directly first - don't immediately start implementing unless explicitly asked
+- For research questions, provide analysis based on knowledge rather than running tests
+- Never use emojis in logs, documentation, or markdown files
+
+### Code Quality Standards
+- Write simple, clear and concise code - prefer simplicity over complexity
+- Avoid comments - code should be self-documenting
+- Keep documentation concise, clear, well-structured and technical
+- Avoid verbosity, marketing fluff, or unnecessary elaboration
+
+### Project Workflow
+- Before implementing changes, prefer discussing first
+- In new sessions, review existing docs (README.md, docs/design.md, _docs/design.md)
+- If project has scripts/pre-push script, run it after completing major phases
+- For Python projects, prefer uv commands
+
+## Task Management Patterns
+
+### Implementation Phases
+- Break work into phases with checklists
+- Each phase MUST end with a checklist item to mark the phase items as done
+- Add final code quality phase to simplify and improve newly added code
+- In last phase, compare current branch to main for bugs, smells, or improvement opportunities
+- Marking checklist items as completed IS CRITICAL
+
+### Planning Structure
+Plans should contain:
+- Clear intro on the problem being solved
+- Current state description
+- Proposed changes (high level)
+- Implementation details
+- Phases with checkboxes
+- Conclusion on proposed changes and impact
+
+## Technology-Specific Rules
+
+### Go Development
+```
+- Simple, idiomatic Go
+- No comments - self-explanatory code
+- Follow existing patterns
+- Use standard library when possible
+- Run `go test ./...` and `go build ./...` to validate
+```
+
+### Frontend (Next.js/React)
+```
+- Always use pnpm for package management
+- Use shadcn CLI for UI components: `pnpm dlx shadcn@latest add [component]`
+- Never install external libraries unless user agrees
+- Never use `use client` unless user agrees
+- Never create Next.js API endpoints (use backend API instead)
+```
+
+### Python Development
+```
+- NEVER use python commands directly - always use `uv`
+- Framework: FastAPI or Litestar with async programming
+- Use Pydantic models for validation
+- Follow async best practices
+- Never publish to pypi or commit on user's behalf
+```
+
+## Tmux Integration Patterns
+
+### Session Management
+```bash
+# Check if session exists, start if needed
+tmux has-session -t project-dev 2>/dev/null || ./dev.sh
+
+# Send commands to specific panes
+tmux send-keys -t project-dev:dev.1 "command" Enter
+tmux send-keys -t project-dev:dev.2 "command" Enter
+
+# Capture output
+tmux capture-pane -t project-dev:dev.1 -p
+tmux capture-pane -t project-dev:dev.2 -p
+```
+
+### Development Server Pattern
+- Pane 1: Main development server (hot reload)
+- Pane 2: Manual commands and testing
+- Use capture-pane to monitor status, never run manual builds
+
+## Agent Specialization Examples
+
+### Architecture Agent
+```
+Responsibilities:
+- Design and document system architecture
+- Write clear, technical design documents
+- Use ASCII art for design diagrams
+- Keep architecture simple and maintainable
+```
+
+### Frontend Developer Agent
+```
+Specialties: Next.js 15, React 19, Tailwind 4, TypeScript
+- Always use pnpm
+- Use shadcn CLI for components
+- Server-rendered by default
+- Follow existing code patterns
+```
+
+### Backend Developer Agent
+```
+Go: Focus on REST endpoints, RSS management, caching
+Python: FastAPI/Litestar, async programming, document conversion
+- Use appropriate package managers (go mod, uv)
+- Follow language-specific best practices
+```
+
+## Git & Version Control
+
+### Commit Guidelines
+- Never git commit or git add on user's behalf
+- When asked for commit/PR messages, provide only the message text
+- Include relevant file paths in documentation for easy reference
+
+### Branch Management
+- Always compare current branch to main for improvements
+- Run pre-push scripts when available
+- Validate with linting/typechecking before completion
+
+## Security & Quality
+
+### Development Standards
+- Avoid unnecessary complexity and premature optimization
+- Use relative paths when referencing repository files
+- Never introduce code that exposes secrets or keys
+- Follow security best practices consistently
+
+### Testing Requirements
+- High test coverage targets
+- Test all input methods and error conditions
+- Validate with appropriate tools before commits
+- Run all available quality checks
+
+## MCP Server Integration
+
+### Available Servers
+- `diffchunk`: For reviewing large commits
+- `directory-indexer`: For troubleshooting customer cases
+
+Always use these when available for their specific use cases.
+
+---
+
+These rules have evolved through practical experience across multiple projects and AI assistants. They emphasize clarity, consistency, and maintainable development practices.

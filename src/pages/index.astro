@@ -9,68 +9,81 @@ const sortedPosts = posts.sort((a, b) => b.data.publishDate.valueOf() - a.data.p
 
 <Base title="Let's Talk Code" description="Technical blog by Peter Etelej covering Ubuntu, PHP, Git, and more">
 	<!-- Hero Section -->
-	<div class="bg-hero-gradient dark:bg-hero-gradient-dark text-white py-20">
-		<div class="max-w-4xl mx-auto px-6 text-center">
-			<h1 class="text-5xl md:text-6xl font-bold mb-6">Let's Talk Code</h1>
-			<p class="text-xl md:text-2xl text-blue-100 mb-8">
-				Technical guides, tutorials, and insights on web development, system administration, and programming.
-			</p>
-			<div class="flex justify-center space-x-4">
-				<a 
-					href="/readme" 
-					class="bg-white text-brand-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
-				>
-					Browse Posts
-				</a>
-				<a 
-					href="/about" 
-					class="border-2 border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-white hover:text-brand-600 transition-colors"
-				>
-					About Me
-				</a>
+	<section class="relative overflow-hidden" aria-labelledby="hero-heading">
+		<!-- Background with enhanced gradients -->
+		<div class="absolute inset-0 bg-gradient-to-br from-blue-600 via-blue-700 to-blue-900 dark:from-brand-800 dark:via-brand-900 dark:to-brand-950"></div>
+		<div class="absolute inset-0 bg-gradient-to-t from-blue-900/20 via-transparent to-transparent dark:from-brand-950/40"></div>
+		
+		<!-- Content -->
+		<div class="relative text-white py-32 lg:py-40">
+			<div class="max-w-6xl mx-auto px-6 lg:px-8 text-center">
+				<h1 id="hero-heading" class="text-6xl md:text-7xl lg:text-8xl font-black mb-8 leading-none tracking-tight">
+					<span class="block">Let's Talk</span>
+					<span class="block bg-gradient-to-r from-white via-blue-100 to-white bg-clip-text text-transparent">Code</span>
+				</h1>
+				<p class="text-xl md:text-2xl lg:text-3xl text-blue-100 mb-12 max-w-4xl mx-auto leading-relaxed">
+					Technical guides, tutorials, and insights on web development, system administration, and programming.
+				</p>
+				<div class="flex flex-col sm:flex-row justify-center items-center gap-6">
+					<a 
+						href="/readme" 
+						class="group relative w-full sm:w-auto bg-white dark:bg-white text-blue-700 dark:text-blue-800 px-10 py-5 rounded-2xl font-bold text-lg hover:bg-blue-50 dark:hover:bg-blue-50 transition-all duration-300 hover:shadow-2xl hover:shadow-blue-900/25 hover:-translate-y-1 active:translate-y-0 overflow-hidden"
+					>
+						<span class="relative z-10">Browse Posts →</span>
+						<div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 -translate-x-full group-hover:translate-x-full"></div>
+					</a>
+					<a 
+						href="/about" 
+						class="group w-full sm:w-auto bg-white/10 border-2 border-white/40 text-white px-10 py-5 rounded-2xl font-bold text-lg hover:bg-white/20 hover:border-white/60 transition-all duration-300 backdrop-blur-sm hover:shadow-2xl hover:shadow-black/20 hover:-translate-y-1 active:translate-y-0"
+					>
+						<span class="group-hover:tracking-wide transition-all duration-300">About Me</span>
+					</a>
+				</div>
 			</div>
 		</div>
-	</div>
+	</section>
 
 	<!-- Featured Posts -->
-	<div class="max-w-6xl mx-auto px-6 py-16">
-		<h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-8">Recent Posts</h2>
+	<section class="max-w-7xl mx-auto px-6 lg:px-8 py-20" aria-labelledby="featured-posts-heading">
+		<h2 id="featured-posts-heading" class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-12 text-center">Recent Posts</h2>
 		
 		<div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
 			{sortedPosts.map((post) => (
-				<article class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+				<article class="group bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-lg dark:shadow-gray-900/10 dark:hover:shadow-gray-900/20 overflow-hidden transition-all duration-300 hover:-translate-y-2">
 					{post.data.thumbnail && (
 						<div class="aspect-video overflow-hidden">
 							<img 
 								src={post.data.thumbnail} 
-								alt=""
-								class="w-full h-full object-cover"
+								alt={post.data.title ? `Thumbnail for ${post.data.title}` : 'Post thumbnail'}
+								class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+								loading="lazy"
+								decoding="async"
 							/>
 						</div>
 					)}
 					
-					<div class="p-6">
-						<h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+					<div class="p-8">
+						<h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-3 leading-tight">
 							<a 
 								href={`/readme/${post.id}`}
-								class="hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
+								class="group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors duration-300 hover:underline decoration-2 underline-offset-2"
 							>
 								{post.data.title}
 							</a>
 						</h3>
 						
 						{post.data.subtitle && (
-							<p class="text-gray-600 dark:text-gray-400 mb-4">
+							<p class="text-gray-600 dark:text-gray-400 mb-6 leading-relaxed">
 								{post.data.subtitle}
 							</p>
 						)}
 						
-						<div class="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
+						<div class="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400 mt-auto">
 							<FormattedDate date={post.data.publishDate} />
 							{post.data.tags && (
 								<div class="flex flex-wrap gap-1">
 									{post.data.tags.slice(0, 2).map(tag => (
-										<span class="bg-brand-100 dark:bg-brand-900 text-brand-800 dark:text-brand-200 px-2 py-1 rounded text-xs">
+										<span class="bg-brand-100 dark:bg-brand-900/50 text-brand-700 dark:text-brand-300 px-3 py-1 rounded-full text-xs font-medium hover:bg-brand-200 dark:hover:bg-brand-800/50 transition-colors duration-200">
 											{tag}
 										</span>
 									))}
@@ -82,13 +95,13 @@ const sortedPosts = posts.sort((a, b) => b.data.publishDate.valueOf() - a.data.p
 			))}
 		</div>
 		
-		<div class="text-center mt-12">
+		<div class="text-center mt-16">
 			<a 
 				href="/readme"
-				class="bg-brand-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-brand-700 transition-colors inline-block"
+				class="bg-brand-600 text-white px-10 py-4 rounded-lg font-semibold hover:bg-brand-700 transition-all duration-300 inline-block hover:shadow-xl hover:scale-105 active:scale-95"
 			>
 				View All Posts
 			</a>
 		</div>
-	</div>
+	</section>
 </Base>

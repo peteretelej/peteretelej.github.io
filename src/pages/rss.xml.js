@@ -3,14 +3,31 @@ import rss from '@astrojs/rss';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 
 export async function GET(context) {
-	const posts = await getCollection('blog');
+	const readmePosts = await getCollection('readme');
+	const notes = await getCollection('notes');
+	
+	// Combine and sort all content by date
+	const allContent = [
+		...readmePosts.map((post) => ({
+			title: post.data.title,
+			description: post.data.subtitle || '',
+			pubDate: post.data.publishDate,
+			link: `/readme/${post.id}/`,
+			category: 'README'
+		})),
+		...notes.map((note) => ({
+			title: note.data.title,
+			description: note.data.excerpt || '',
+			pubDate: note.data.publishDate,
+			link: `/notes/${note.id}/`,
+			category: 'Notes'
+		}))
+	].sort((a, b) => b.pubDate.valueOf() - a.pubDate.valueOf());
+
 	return rss({
 		title: SITE_TITLE,
 		description: SITE_DESCRIPTION,
 		site: context.site,
-		items: posts.map((post) => ({
-			...post.data,
-			link: `/blog/${post.id}/`,
-		})),
+		items: allContent,
 	});
 }

@@ -1,0 +1,82 @@
+---
+import { getCollection } from "astro:content";
+import Base from "../../layouts/Base.astro";
+
+const notes = await getCollection("notes", ({ data }) => {
+  // Show drafts in development, hide in production
+  return import.meta.env.DEV ? true : data.draft !== true;
+});
+
+function createSlug(text) {
+  return text.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+}
+
+const allTags = new Map();
+const tagDisplayNames = new Map();
+
+notes.forEach((note) => {
+  if (note.data.tags) {
+    note.data.tags.forEach((tag) => {
+      const slug = createSlug(tag);
+      const count = allTags.get(slug) || 0;
+      allTags.set(slug, count + 1);
+      tagDisplayNames.set(slug, tag);
+    });
+  }
+});
+
+const sortedTags = Array.from(allTags.entries())
+  .sort((a, b) => {
+    if (b[1] !== a[1]) return b[1] - a[1];
+    return tagDisplayNames.get(a[0]).localeCompare(tagDisplayNames.get(b[0]));
+  })
+  .map(([slug, count]) => ([slug, count, tagDisplayNames.get(slug)]));
+---
+
+<Base title="Note Tags" description="Browse notes by tags and topics">
+  <div class="max-w-6xl mx-auto px-6 py-16">
+    <header class="mb-12">
+      <nav class="mb-6">
+        <a 
+          href="/notes" 
+          class="text-brand-600 dark:text-brand-400 hover:text-brand-700 dark:hover:text-brand-300 transition-colors text-sm font-medium"
+        >
+          ← All Notes
+        </a>
+      </nav>
+      
+      <h1 class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
+        Browse by Topic
+      </h1>
+      <p class="text-xl text-gray-600 dark:text-gray-400">
+        {allTags.size} topic{allTags.size !== 1 ? 's' : ''} across {notes.length} note{notes.length !== 1 ? 's' : ''}
+      </p>
+    </header>
+
+    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {sortedTags.map(([slug, count, displayName]) => (
+        <a
+          href={`/notes/tag/${slug}`}
+          class="group block bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-lg dark:shadow-gray-900/10 dark:hover:shadow-gray-900/20 transition-all duration-300 hover:-translate-y-1 p-6"
+        >
+          <div class="flex items-center justify-between">
+            <h2 class="text-xl font-semibold text-gray-900 dark:text-white group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors duration-300">
+              {displayName}
+            </h2>
+            <span class="bg-brand-100 dark:bg-brand-900/30 text-brand-700 dark:text-brand-400 px-3 py-1 rounded-full text-sm font-medium">
+              {count} note{count !== 1 ? 's' : ''}
+            </span>
+          </div>
+        </a>
+      ))}
+    </div>
+
+    {sortedTags.length === 0 && (
+      <div class="text-center py-16">
+        <p class="text-gray-500 dark:text-gray-400 text-lg">
+          No tags found. Tags will appear here as you add them to your notes.
+        </p>
+      </div>
+    )}
+  </div>
+</Base>

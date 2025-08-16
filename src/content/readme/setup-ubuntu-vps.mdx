@@ -84,7 +84,10 @@ Restart ssh service for this change to effect.
 sudo service sshd restart
 ```
 
-<ExpandableSection title="SSH Key-Based Authentication" client:load>
+<ExpandableSection 
+  title="SSH Key-Based Authentication" 
+  description="You can also setup <b>public key authentication</b> (recommended). This will enable you to securely login to the server without having to enter your password."
+  client:load>
 
 #### Public Key Authentication
 
@@ -142,9 +145,10 @@ sudo systemctl reload sshd
 
 </ExpandableSection>
 
-I would also recommend using a **non-common port for SSH**.
-
-<ExpandableSection title="Using a custom SSH Port" client:load>
+<ExpandableSection 
+  title="Using a custom SSH Port"
+  description="I would also recommend using a <b>non-common port for SSH</b>."
+  client:load>
 
 #### Using a custom SSH Port
 
@@ -228,9 +232,10 @@ sudo vi /etc/fstab
 /swapfile   none    swap    sw    0   0
 ```
 
-If you are working on a RAM intensive app, e.g Java, consider **reducing swappiness** and **inode cache rate**.
-
-<ExpandableSection title="Tweak Swappiness" client:load>
+<ExpandableSection 
+  title="Tweak Swappiness"
+  description="If you are working on a RAM intensive app, e.g Java, consider <b>reducing swappiness</b> and <b>inode cache rate</b>."
+  client:load>
 
 #### Tweak Swappiness
 
@@ -359,9 +364,10 @@ In case of errors during configuration, you can reset `ufw` with the following c
 sudo ufw reset
 ```
 
-**Warning:** UFW and **docker**: Docker usually manipulates `iptables` rules meaning that the ufw restrictions will not apply.
-
-<ExpandableSection title="UFW Docker Fix" client:load>
+<ExpandableSection 
+  title="UFW Docker Fix"
+  description="UFW and <b>docker</b>: Docker usually manipulates <code>iptables</code> rules meaning that the ufw restrictions will not apply."
+  client:load>
 
 Here are a few workarounds I've found useful. You can either:
 
@@ -407,9 +413,10 @@ sudo cp /etc/fail2ban/fail2ban.conf /etc/fail2ban/fail2ban.local
 sudo cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local
 ```
 
-To make changes to fail2ban's general settings, update the `fail2ban.local` file.
-
-<ExpandableSection title="Customizing fail2ban general settings" client:load>
+<ExpandableSection 
+  title="Customizing fail2ban general settings"
+  description="To make changes to fail2ban's general settings, update the <code>fail2ban.local</code> file."
+  client:load>
 
 Customizing general fail2ban settings. Edit the fail2ban config file `fail2ban.local`.
 
@@ -432,9 +439,10 @@ Restart fail2ban service to make use of your customized configuration `sudo syst
 
 Fail2ban is mainly configured using "**jails**". A **jail** is a declaration of filters and actions that fail2ban will follow when protecting services
 
-Customizing fail2ban involves editing the `jail.local` file.
-
-<ExpandableSection title="Jail Configuration" client:load>
+<ExpandableSection 
+  title="Jail Configuration"
+  description="Customizing fail2ban involves editing the <code>jail.local</code> file."
+  client:load>
 
 ###### Jails
 

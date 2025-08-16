@@ -1,0 +1,127 @@
+---
+import { getCollection } from "astro:content";
+import Base from "../../../layouts/Base.astro";
+import FormattedDate from "../../../components/FormattedDate.astro";
+
+export async function getStaticPaths() {
+  function createSlug(text) {
+    return text.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+  }
+  const notes = await getCollection("notes", ({ data }) => {
+    // Show drafts in development, hide in production
+    return import.meta.env.DEV ? true : data.draft !== true;
+  });
+
+  const allTags = new Set();
+  const tagMap = new Map();
+  
+  notes.forEach((note) => {
+    if (note.data.tags) {
+      note.data.tags.forEach((tag) => {
+        const slug = createSlug(tag);
+        allTags.add(slug);
+        tagMap.set(slug, tag);
+      });
+    }
+  });
+
+  return Array.from(allTags).map((tagSlug) => ({
+    params: { tag: tagSlug },
+    props: { tag: tagSlug, originalTag: tagMap.get(tagSlug) },
+  }));
+}
+
+function createSlug(text) {
+  return text.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+}
+
+const { tag, originalTag } = Astro.props;
+const notes = await getCollection("notes", ({ data }) => {
+  // Show drafts in development, hide in production
+  return import.meta.env.DEV ? true : data.draft !== true;
+});
+
+const taggedNotes = notes
+  .filter((note) => 
+    note.data.tags && 
+    note.data.tags.some((t) => createSlug(t) === tag)
+  )
+  .sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf());
+
+const tagDisplayName = originalTag || tag.charAt(0).toUpperCase() + tag.slice(1);
+---
+
+<Base 
+  title={`${tagDisplayName} Notes`} 
+  description={`Notes tagged with ${tagDisplayName}`}
+>
+  <div class="max-w-6xl mx-auto px-6 py-16">
+    <header class="mb-12">
+      <nav class="mb-6">
+        <a 
+          href="/notes" 
+          class="text-brand-600 dark:text-brand-400 hover:text-brand-700 dark:hover:text-brand-300 transition-colors text-sm font-medium"
+        >
+          ← All Notes
+        </a>
+      </nav>
+      
+      <h1 class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
+        {tagDisplayName} Notes
+      </h1>
+      <p class="text-xl text-gray-600 dark:text-gray-400">
+        {taggedNotes.length} note{taggedNotes.length !== 1 ? 's' : ''} tagged with "{tagDisplayName}"
+      </p>
+    </header>
+
+    <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+      {taggedNotes.map((note) => (
+        <article class="group">
+          <a
+            href={`/notes/${note.id}/`}
+            class="block h-full bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-lg dark:shadow-gray-900/10 dark:hover:shadow-gray-900/20 transition-all duration-300 hover:-translate-y-1"
+          >
+            <div class="p-6 h-full flex flex-col">
+              <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-3 group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors duration-300">
+                {note.data.title}
+              </h2>
+
+              {note.data.excerpt && (
+                <p class="text-gray-600 dark:text-gray-400 text-sm mb-4 flex-1 leading-relaxed">
+                  {note.data.excerpt}
+                </p>
+              )}
+
+              <div class="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 mt-auto">
+                <FormattedDate date={note.data.publishDate} />
+
+                {note.data.tags && note.data.tags.length > 0 && (
+                  <div class="flex gap-1">
+                    {note.data.tags.slice(0, 2).map((noteTag) => (
+                      <span class="bg-brand-100 dark:bg-brand-900/30 text-brand-700 dark:text-brand-400 px-2 py-1 rounded-full text-xs font-medium">
+                        {noteTag}
+                      </span>
+                    ))}
+                    {note.data.tags.length > 2 && (
+                      <span class="text-gray-400 dark:text-gray-500">
+                        +{note.data.tags.length - 2}
+                      </span>
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
+          </a>
+        </article>
+      ))}
+    </div>
+
+    {taggedNotes.length === 0 && (
+      <div class="text-center py-16">
+        <p class="text-gray-500 dark:text-gray-400 text-lg">
+          No notes found with the tag "{tagDisplayName}".
+        </p>
+      </div>
+    )}
+  </div>
+</Base>

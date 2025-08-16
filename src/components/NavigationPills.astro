@@ -11,7 +11,8 @@ const { links } = Astro.props;
     {links.map(link => (
       <a 
         href={link.href} 
-        class="nav-pill inline-flex items-center px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white border border-brand-600 hover:border-brand-700 rounded-full text-sm font-medium transition-all duration-200 no-underline shadow-sm hover:shadow-md hover:-translate-y-0.5"
+        class="nav-pill inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white dark:bg-blue-500 dark:hover:bg-blue-600 dark:text-white border-2 border-blue-700 hover:border-blue-800 dark:border-blue-500 dark:hover:border-blue-600 rounded-full text-sm font-semibold transition-all duration-200 shadow-md hover:shadow-lg hover:-translate-y-1"
+        style="text-decoration: none !important; color: white !important;"
       >
         {link.label}
       </a>

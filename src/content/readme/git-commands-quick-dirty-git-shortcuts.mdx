@@ -35,7 +35,7 @@ kindly [follow these links](#guides-and-tutorials-on-git) at the bottom of this 
 ### Git Configuration
 
 Add your name and email (baked into each commit made):
-```sh
+```sh 
 git config --global user.name "Your Name"
 git config --global user.email you@example.com
 ```
@@ -46,7 +46,7 @@ git config --global core.editor vim
 ```
 
 Adding colors
-```sh
+```bash
 git config --global color.diff auto
 git config --global color.status auto
 git config --global color.branch auto
@@ -115,7 +115,7 @@ git add filename.txt
 Listing files and tracking status
 ```bash
 # List tracked files
-git ls-files;
+git ls-files  # [!code focus]
 
 # List all untracked files
 git ls-files --others  
@@ -134,7 +134,7 @@ git rm filename
 > To prevent tracking of files; add the file or directory to the `.gitignore` file (each file/directory on a new line).
 
 Committing 
-```bash
+```bash {5}
 # will prompt for a commit message in the configured text editor
 git commit  
 

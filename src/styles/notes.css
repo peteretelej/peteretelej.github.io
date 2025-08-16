@@ -1,0 +1,311 @@
+/* Notes Content Enhancements - Built on @tailwindcss/typography */
+
+.notes-content {
+  /* Use techy, personal, readable fonts */
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, system-ui, sans-serif;
+  line-height: 1.6;
+  font-size: 1.125rem; /* 18px base - comfortable reading size */
+  letter-spacing: 0; /* Natural letter spacing */
+  max-width: 65ch; /* Optimal line length for readability */
+  
+  /* Custom prose variables for better styling */
+  --tw-prose-body: #1a1a1a;
+  --tw-prose-headings: #1a1a1a;
+  --tw-prose-links: var(--color-brand-600);
+  --tw-prose-bold: #1a1a1a;
+  --tw-prose-counters: #6b7280;
+  --tw-prose-bullets: #6b7280;
+  --tw-prose-hr: #e5e7eb;
+  --tw-prose-quotes: #1a1a1a;
+  --tw-prose-quote-borders: var(--color-brand-300);
+  --tw-prose-captions: #6b7280;
+  --tw-prose-code: #1a1a1a;
+  --tw-prose-pre-code: #e5e7eb;
+  --tw-prose-pre-bg: #1e1e1e;
+  --tw-prose-th-borders: #d1d5db;
+  --tw-prose-td-borders: #e5e7eb;
+}
+
+/* Dark mode prose variables */
+.dark .notes-content {
+  --tw-prose-body: #e5e7eb;
+  --tw-prose-headings: #f9fafb;
+  --tw-prose-links: var(--color-brand-400);
+  --tw-prose-bold: #f9fafb;
+  --tw-prose-code: #f9fafb;
+  --tw-prose-quotes: #f3f4f6;
+  --tw-prose-quote-borders: var(--color-brand-400);
+}
+
+/* Personal, friendly headings with Comfortaa */
+.notes-content h1, 
+.notes-content h2, 
+.notes-content h3, 
+.notes-content h4, 
+.notes-content h5, 
+.notes-content h6 {
+  font-family: 'Comfortaa', 'Inter', sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+  position: relative;
+}
+
+/* Subtle markdown hash indicators */
+.notes-content h1::before { content: "# "; }
+.notes-content h2::before { content: "## "; }
+.notes-content h3::before { content: "### "; }
+.notes-content h4::before { content: "#### "; }
+.notes-content h5::before { content: "##### "; }
+.notes-content h6::before { content: "###### "; }
+
+.notes-content h1::before,
+.notes-content h2::before,
+.notes-content h3::before,
+.notes-content h4::before,
+.notes-content h5::before,
+.notes-content h6::before {
+  color: #9ca3af;
+  font-weight: 400;
+  margin-right: 0.5rem;
+  user-select: none;
+}
+
+.dark .notes-content h1::before,
+.dark .notes-content h2::before,
+.dark .notes-content h3::before,
+.dark .notes-content h4::before,
+.dark .notes-content h5::before,
+.dark .notes-content h6::before {
+  color: #6b7280;
+}
+
+.notes-content h1 {
+  font-size: 1.875rem;
+  line-height: 1.3;
+}
+
+.notes-content h2 {
+  font-size: 1.5rem;
+  line-height: 1.4;
+}
+
+.notes-content h3 {
+  font-size: 1.375rem;
+  line-height: 1.4;
+}
+
+.notes-content h4 {
+  font-size: 1.25rem;
+  line-height: 1.4;
+}
+
+.notes-content h5, 
+.notes-content h6 {
+  font-size: 1.125rem;
+  line-height: 1.5;
+}
+
+/* Natural paragraph styling */
+.notes-content p {
+  margin-bottom: 1.25rem;
+  line-height: 1.6;
+  font-size: 1.125rem;
+  color: #374151;
+}
+
+.dark .notes-content p {
+  color: #d1d5db;
+}
+
+/* First paragraph - just slightly emphasized */
+.notes-content > p:first-of-type {
+  font-size: 1.1875rem;
+  color: #1f2937;
+  margin-bottom: 1.5rem;
+}
+
+.dark .notes-content > p:first-of-type {
+  color: #f3f4f6;
+}
+
+
+/* Enhanced list styling */
+.notes-content ul {
+  list-style-type: disc;
+  padding-left: 1.75rem;
+  margin: 1.5rem 0;
+}
+
+.notes-content ol {
+  list-style-type: decimal;
+  padding-left: 1.75rem;
+  margin: 1.5rem 0;
+}
+
+.notes-content li {
+  margin: 0.5rem 0;
+  line-height: 1.6;
+  font-size: 1.125rem;
+  color: #374151;
+}
+
+.dark .notes-content li {
+  color: #d1d5db;
+}
+
+.notes-content ul ul, 
+.notes-content ol ol, 
+.notes-content ul ol, 
+.notes-content ol ul {
+  margin: 0.5rem 0;
+}
+
+/* Enhanced blockquotes */
+.notes-content blockquote {
+  border-left: 4px solid var(--color-brand-500);
+  background-color: var(--color-brand-50);
+  padding: 1rem 1.5rem;
+  margin: 2rem 0;
+  border-radius: 0.5rem;
+  font-style: italic;
+}
+
+.dark .notes-content blockquote {
+  background-color: var(--color-brand-950);
+  border-left-color: var(--color-brand-400);
+}
+
+.notes-content blockquote p {
+  margin: 0;
+  font-size: 1.125rem;
+  color: #4b5563;
+}
+
+.dark .notes-content blockquote p {
+  color: #9ca3af;
+}
+
+/* Better table styling */
+.notes-content table {
+  border-collapse: collapse;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  margin: 2rem 0;
+}
+
+.notes-content th, 
+.notes-content td {
+  border: 1px solid #e5e7eb;
+  padding: 1rem;
+  text-align: left;
+}
+
+.notes-content th {
+  background-color: #f9fafb;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.dark .notes-content table {
+  border-color: #374151;
+}
+
+.dark .notes-content th,
+.dark .notes-content td {
+  border-color: #374151;
+}
+
+.dark .notes-content th {
+  background-color: #1f2937;
+}
+
+/* Use brand colors for links */
+.notes-content a {
+  color: var(--color-brand-600);
+}
+
+.notes-content a:hover {
+  color: var(--color-brand-700);
+}
+
+.dark .notes-content a {
+  color: var(--color-brand-400);
+}
+
+.dark .notes-content a:hover {
+  color: var(--color-brand-300);
+}
+
+/* Enhanced blockquotes */
+.notes-content blockquote {
+  border-left-color: var(--color-brand-500);
+}
+
+/* Navigation Pills - Override prose styling */
+.notes-content .navigation-pills a.nav-pill,
+.notes-content .navigation-pills a.nav-pill:hover,
+.notes-content .navigation-pills a.nav-pill:visited {
+  color: white !important;
+  text-decoration: none !important;
+  background-color: #2563eb !important; /* blue-600 */
+  border: 2px solid #1d4ed8 !important; /* blue-700 */
+}
+
+.notes-content .navigation-pills a.nav-pill:hover {
+  background-color: #1d4ed8 !important; /* blue-700 */
+  border-color: #1e3a8a !important; /* blue-800 */
+}
+
+.dark .notes-content .navigation-pills a.nav-pill,
+.dark .notes-content .navigation-pills a.nav-pill:hover,
+.dark .notes-content .navigation-pills a.nav-pill:visited {
+  color: white !important;
+  background-color: #3b82f6 !important; /* blue-500 */
+  border-color: #3b82f6 !important; /* blue-500 */
+}
+
+.dark .notes-content .navigation-pills a.nav-pill:hover {
+  background-color: #2563eb !important; /* blue-600 */
+  border-color: #2563eb !important; /* blue-600 */
+}
+
+/* Techy code styling with JetBrains Mono */
+.notes-content code,
+.notes-content pre,
+.notes-content kbd {
+  font-family: 'JetBrains Mono', 'Fira Code', 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+}
+
+.notes-content code:not(pre code) {
+  background-color: #f3f4f6;
+  padding: 0.2em 0.4em;
+  border-radius: 0.25rem;
+  font-size: 0.875em;
+  font-weight: 500;
+}
+
+.dark .notes-content code:not(pre code) {
+  background-color: #374151;
+  color: #f9fafb;
+}
+
+.notes-content pre {
+  background-color: #1e1e1e;
+  color: #e5e7eb;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  margin: 1.5rem 0;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.notes-content pre code {
+  background-color: transparent;
+  padding: 0;
+  font-size: inherit;
+  color: inherit;
+}

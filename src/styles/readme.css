@@ -1,0 +1,203 @@
+/* README Content Enhancements - Built on @tailwindcss/typography */
+
+.readme-content {
+  /* Use the fonts we load */
+  font-family: 'Inter', var(--font-family-sans);
+  line-height: 1.7;
+  font-size: 1.25rem; /* 20px base font size - increased for better readability */
+  max-width: 80ch; /* Optimal reading width */
+  
+  /* Custom prose variables for better styling */
+  --tw-prose-body: #1a1a1a;
+  --tw-prose-headings: #1a1a1a;
+  --tw-prose-links: #3273dc;
+  --tw-prose-bold: #1a1a1a;
+  --tw-prose-counters: #6b7280;
+  --tw-prose-bullets: #6b7280;
+  --tw-prose-hr: #e5e7eb;
+  --tw-prose-quotes: #1a1a1a;
+  --tw-prose-quote-borders: #e5e7eb;
+  --tw-prose-captions: #6b7280;
+  --tw-prose-code: #1a1a1a;
+  --tw-prose-pre-code: #e5e7eb;
+  --tw-prose-pre-bg: #1e1e1e;
+  --tw-prose-th-borders: #d1d5db;
+  --tw-prose-td-borders: #e5e7eb;
+}
+
+/* Better link styling */
+.readme-content a {
+  color: #3273dc !important;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-thickness: 1px;
+}
+
+.readme-content a:hover {
+  color: #2366d1 !important;
+  text-decoration-thickness: 2px;
+}
+
+/* Enhanced headings */
+.readme-content h1, 
+.readme-content h2, 
+.readme-content h3, 
+.readme-content h4, 
+.readme-content h5, 
+.readme-content h6 {
+  font-weight: 600;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.readme-content h3 {
+  font-size: 1.75rem; /* Increased from 1.5rem */
+  border-bottom: 2px solid rgba(229, 231, 235, 0.8);
+  padding-bottom: 0.5rem;
+  color: rgba(26, 26, 26, 0.9);
+}
+
+.dark .readme-content h3 {
+  border-bottom: 2px solid rgba(229, 231, 235, 0.2);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.readme-content h4 {
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+  font-size: 1.375rem; /* Increased from 1.125rem */
+  font-weight: 600;
+}
+
+.readme-content h5, 
+.readme-content h6 {
+  margin-top: 1.25rem;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+/* Better paragraphs */
+.readme-content p {
+  margin-bottom: 1rem;
+  line-height: 1.7;
+  font-size: 1.25rem; /* 20px base font size for better readability */
+}
+
+
+/* Enhanced blockquotes */
+.readme-content blockquote {
+  border-left: 4px solid var(--color-gray-400);
+  background-color: var(--color-gray-50);
+  padding: 0.75rem 1rem;
+  margin: 1rem 0;
+  border-radius: 0.375rem;
+  font-size: 0.95em;
+}
+
+.dark .readme-content blockquote {
+  background-color: var(--color-gray-900);
+  border-left-color: var(--color-gray-600);
+}
+
+.readme-content blockquote p {
+  margin: 0;
+  font-weight: 500;
+  color: var(--color-gray-700);
+}
+
+.dark .readme-content blockquote p {
+  color: var(--color-gray-300);
+}
+
+.readme-content blockquote strong {
+  color: var(--color-gray-800);
+}
+
+.dark .readme-content blockquote strong {
+  color: var(--color-gray-200);
+}
+
+/* Fix list styling */
+.readme-content ul {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+  margin: 1rem 0;
+}
+
+.readme-content ol {
+  list-style-type: decimal;
+  padding-left: 1.5rem;
+  margin: 1rem 0;
+}
+
+.readme-content li {
+  margin: 0.5rem 0;
+  line-height: 1.6;
+  font-size: 1.25rem; /* Match paragraph font size */
+}
+
+.readme-content ul ul, 
+.readme-content ol ol, 
+.readme-content ul ol, 
+.readme-content ol ul {
+  margin: 0.25rem 0;
+}
+
+/* Definition lists */
+.readme-content dt {
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-top: 1rem;
+}
+
+.readme-content dd {
+  margin-left: 1.5rem;
+  margin-bottom: 0.5rem;
+  color: #6b7280;
+}
+
+/* Better table styling */
+.readme-content table {
+  border-collapse: collapse;
+  border: 1px solid #e5e7eb;
+}
+
+.readme-content th, 
+.readme-content td {
+  border: 1px solid #e5e7eb;
+  padding: 0.75rem;
+  text-align: left;
+}
+
+.readme-content th {
+  background-color: #f9fafb;
+  font-weight: 600;
+}
+
+/* Navigation Pills - Override prose styling */
+.readme-content .navigation-pills a.nav-pill,
+.readme-content .navigation-pills a.nav-pill:hover,
+.readme-content .navigation-pills a.nav-pill:visited {
+  color: white !important;
+  text-decoration: none !important;
+  background-color: #2563eb !important; /* blue-600 */
+  border: 2px solid #1d4ed8 !important; /* blue-700 */
+}
+
+.readme-content .navigation-pills a.nav-pill:hover {
+  background-color: #1d4ed8 !important; /* blue-700 */
+  border-color: #1e3a8a !important; /* blue-800 */
+}
+
+.dark .readme-content .navigation-pills a.nav-pill,
+.dark .readme-content .navigation-pills a.nav-pill:hover,
+.dark .readme-content .navigation-pills a.nav-pill:visited {
+  color: white !important;
+  background-color: #3b82f6 !important; /* blue-500 */
+  border-color: #3b82f6 !important; /* blue-500 */
+}
+
+.dark .readme-content .navigation-pills a.nav-pill:hover {
+  background-color: #2563eb !important; /* blue-600 */
+  border-color: #2563eb !important; /* blue-600 */
+}

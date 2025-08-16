@@ -1,0 +1,285 @@
+---
+title: "Configuring Claude Code to use tmux"
+publishDate: 2025-08-16
+tags: ["Claude Code", "tmux", "AI"]
+draft: true
+excerpt: "How to configure Claude Code with tmux for remote session control, multi-agent setups, and automation workflows."
+---
+
+## Why?
+
+Using Claude Code with tmux allows it better automously control a dev session.
+- Multiple Claude session can directly access and reusing the same tmux Session
+- You can clearly see and browse through what commands are being run without using `Ctrl+R` on Claude (I find that hard to use)
+- (I may be wrong here) Claude context is not polluted with output from the commands being run, where it can directly fetch the last x lines from the tmux pane it needs
+- Having claude itself on tmux makes _"coding"_ uninterruptible, as long as you have access to a terminal
+
+## How I configure Claude Code to use tmux
+
+In most cases, I use a `Claude.local.md` file for my `tmux` specific project configurations.
+
+
+```markdown
+# Local Development Instructions
+
+## Development Server
+
+Use the tmux session for all development tasks:
+
+**Start development:**
+# check if tmux session is running, if not start it
+`tux has-session -t peteretelej-dev 2>/dev/null || ./dev.sh`
+
+**Send commands to dev server pane:**
+`tmux send-keys -t peteretelej-dev:dev.1 "your-command" Enter`
+
+**Send commands to commands pane:**
+`tmux send-keys -t peteretelej-dev:dev.2 "your-command" Enter`
+
+**Read output from dev server:**
+`tmux capture-pane -t peteretelej-dev:dev.1 -p`
+
+**Read output from commands pane:**
+`tmux capture-pane -t peteretelej-dev:dev.2 -p`
+```
+
+This configuration enables Claude Code to:
+- Check session existence before starting
+- Send commands to specific panes
+- Capture output for analysis
+- Monitor long-running processes
+
+## Session Architecture
+
+In most cases, I use a different tmux session for each project, that uses this split-window setup:
+- `dev.1` (left pane) for the dev server - usually with hot reload (eg `npm run dev` or `air`)
+  - This is the pane it exclusively uses to run builds, start the dev server etc
+- `dev.2` (right pane) for manual commands and testing (eg `npm run test:screenshots`)
+  - This is the pane it uses to run ad hoc commands, run tests
+
+### dev.sh Script
+
+To ease development, I oftern add the `dev.sh` script to the root of the project (or a scripts/ folder) to allow manual launch of the tmux session.
+  - You can find the `dev.sh` script at the root of this site's repo [here](https://github.com/peteretelej/peteretelej.github.io/blob/master/dev.sh) that has the different commands.
+
+Here's what it looks like
+```bash
+#!/bin/bash
+set -e 
+SESSION_NAME="peteretelej-dev"
+
+# Kill existing session if it exists (gracefully ignore failure)
+tmux kill-session -t $SESSION_NAME 2>/dev/null || true
+
+# Create new tmux session with dev terminal
+tmux new-session -d -s $SESSION_NAME -n "dev" -c "$(pwd)"
+
+# Split the window to create a commands pane
+tmux split-window -h -t $SESSION_NAME:dev -c "$(pwd)"
+
+# Start Astro dev server in left pane
+tmux send-keys -t $SESSION_NAME:dev.1 "npm run dev" Enter
+
+# Set pane titles
+tmux select-pane -t $SESSION_NAME:dev.1 -T "Astro Dev Server"
+tmux select-pane -t $SESSION_NAME:dev.2 -T "Commands"
+
+# Attach to the session
+tmux attach-session -t $SESSION_NAME
+```
+
+## Multi-Agent Architecture
+
+### Primary Development Agent
+Configure the main Claude Code instance in your development session with comprehensive tmux control:
+
+```bash
+# Primary agent controls the main development flow
+tmux send-keys -t project-dev:dev.1 "npm run build" Enter
+tmux capture-pane -t project-dev:dev.1 -p
+```
+
+### Monitoring Agent Setup
+Create a secondary tmux session for a monitoring Claude Code instance:
+
+```bash
+# Create monitoring session
+tmux new-session -d -s project-monitor
+
+# Configure monitoring agent in CLAUDE.local.md
+```
+
+#### Monitoring Agent Configuration
+```markdown
+# Monitoring Agent Instructions
+
+You are a monitoring agent. Your job is to:
+1. Watch the main development session
+2. Detect issues and patterns
+3. Send periodic status updates
+4. Alert on build failures or errors
+
+**Monitor main session:**
+```bash
+tmux capture-pane -t project-dev:dev.1 -p
+tmux capture-pane -t project-dev:dev.2 -p
+```
+
+**Send commands to main session when needed:**
+```bash
+tmux send-keys -t project-dev:dev.1 "command" Enter
+```
+```
+
+### Cross-Session Communication
+```bash
+# Monitoring agent can send commands to development session
+tmux send-keys -t project-dev:dev.1 "npm test" Enter
+
+# And capture results
+tmux capture-pane -t project-dev:dev.1 -p
+```
+
+## Advanced Automation Patterns
+
+### Periodic Health Checks
+Configure monitoring agent to run periodic checks:
+
+```bash
+# Check every 5 minutes for build status
+while true; do
+  sleep 300
+  tmux send-keys -t project-dev:dev.1 "npm run check" Enter
+  sleep 10
+  tmux capture-pane -t project-dev:dev.1 -p
+done
+```
+
+### Error Detection and Recovery
+```bash
+# Monitor for error patterns
+OUTPUT=$(tmux capture-pane -t project-dev:dev.1 -p)
+if echo "$OUTPUT" | grep -q "Error\|Failed\|Exception"; then
+  # Alert and attempt recovery
+  tmux send-keys -t project-dev:dev.1 C-c
+  tmux send-keys -t project-dev:dev.1 "npm run dev" Enter
+fi
+```
+
+### Build Pipeline Integration
+```bash
+# Automated testing pipeline
+tmux send-keys -t project-dev:dev.2 "npm run test:unit" Enter
+sleep 30
+tmux send-keys -t project-dev:dev.2 "npm run test:integration" Enter
+sleep 60
+tmux send-keys -t project-dev:dev.2 "npm run build" Enter
+```
+
+## Remote Access with gotty
+
+### Basic gotty Setup
+```bash
+# Install gotty
+go install github.com/yudai/gotty@latest
+
+# Serve tmux session over HTTP
+gotty -w --port 8080 tmux attach -t project-dev
+```
+
+### Security Considerations
+```bash
+# Enable basic auth
+gotty -w --port 8080 \
+  --credential admin:password \
+  tmux attach -t project-dev
+
+# Enable TLS
+gotty -w --port 8080 \
+  --tls --tls-crt cert.pem --tls-key key.pem \
+  tmux attach -t project-dev
+```
+
+### Read-Only Monitoring
+```bash
+# Create read-only session for monitoring
+tmux new-session -d -s project-monitor-readonly \
+  'tmux attach -t project-dev -r'
+
+# Serve read-only session
+gotty --port 8081 --read-only \
+  tmux attach -t project-monitor-readonly
+```
+
+## Production Patterns
+
+### Session Persistence
+```bash
+# Save and restore sessions
+tmux run-shell 'tmux-resurrect save'
+tmux run-shell 'tmux-resurrect restore'
+```
+
+### Logging and Auditing
+```bash
+# Enable tmux logging
+tmux set-option -g history-limit 10000
+
+# Pipe output to files
+tmux pipe-pane -t project-dev:dev.1 'cat >> ~/logs/dev-server.log'
+tmux pipe-pane -t project-dev:dev.2 'cat >> ~/logs/commands.log'
+```
+
+### Resource Monitoring
+```bash
+# Monitor resource usage
+tmux new-window -t project-dev -n monitor \
+  'watch "ps aux | grep node; free -h; df -h"'
+```
+
+## Integration with CI/CD
+
+### GitHub Actions Trigger
+```bash
+# Trigger actions from tmux session
+tmux send-keys -t project-dev:dev.2 \
+  "gh workflow run build --ref main" Enter
+```
+
+### Remote Deployment
+```bash
+# Deploy from tmux session
+tmux send-keys -t project-dev:dev.2 \
+  "ssh production 'cd /app && git pull && npm run build && pm2 restart all'" Enter
+```
+
+## Troubleshooting
+
+### Session Recovery
+```bash
+# Kill hanging sessions
+tmux kill-session -t project-dev
+
+# Restart with fresh environment
+./dev.sh
+```
+
+### Debug Mode
+```bash
+# Enable tmux verbose logging
+tmux set-option -g log-level debug
+
+# Monitor tmux server
+tmux list-sessions -F '#{session_name}: #{session_windows} windows'
+```
+
+### Performance Optimization
+```bash
+# Reduce history to improve performance
+tmux set-option -g history-limit 1000
+
+# Disable status updates for automated sessions
+tmux set-option -g status off
+```
+
+This setup creates a powerful development environment where Claude Code can orchestrate complex workflows across multiple tmux sessions while maintaining full visibility and control over the development process.

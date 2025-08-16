@@ -1,0 +1,143 @@
+---
+import { getCollection } from "astro:content";
+import Base from "../../layouts/Base.astro";
+import FormattedDate from "../../components/FormattedDate.astro";
+
+const notes = await getCollection("notes", ({ data }) => {
+  // Show drafts in development, hide in production
+  return import.meta.env.DEV ? true : data.draft !== true;
+});
+
+const sortedNotes = notes.sort(
+  (a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf()
+);
+
+function createSlug(text) {
+  return text.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+}
+
+const allTags = new Map();
+const tagDisplayNames = new Map();
+
+notes.forEach((note) => {
+  if (note.data.tags) {
+    note.data.tags.forEach((tag) => {
+      const slug = createSlug(tag);
+      const count = allTags.get(slug) || 0;
+      allTags.set(slug, count + 1);
+      tagDisplayNames.set(slug, tag);
+    });
+  }
+});
+
+const popularTags = Array.from(allTags.entries())
+  .sort((a, b) => b[1] - a[1])
+  .slice(0, 10)
+  .map(([slug, count]) => ([slug, count, tagDisplayNames.get(slug)]));
+---
+
+<Base title="Notes" description="Short notes, scribbles and">
+  <div class="max-w-6xl mx-auto px-6 py-16">
+    <!-- Header -->
+    <header class="mb-12">
+      <h1
+        class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4"
+      >
+        Notes
+      </h1>
+      <p class="text-xl text-gray-600 dark:text-gray-400 max-w-3xl">
+        My short notes, scribbles and tips on various dev tools & topics. These are living documents that I regularly update as I learn new things and discover better approaches.
+      </p>
+    </header>
+
+    <!-- Tags Section -->
+    {popularTags.length > 0 && (
+      <section class="mb-12">
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-2xl font-semibold text-gray-900 dark:text-white">
+            Browse by Topic
+          </h2>
+          <a
+            href="/notes/tags"
+            class="text-brand-600 dark:text-brand-400 hover:text-brand-700 dark:hover:text-brand-300 transition-colors text-sm font-medium"
+          >
+            View all topics →
+          </a>
+        </div>
+        <div class="flex flex-wrap gap-3">
+          {popularTags.map(([slug, count, displayName]) => (
+            <a
+              href={`/notes/tag/${slug}`}
+              class="inline-flex items-center gap-2 bg-brand-50 dark:bg-brand-900/20 hover:bg-brand-100 dark:hover:bg-brand-900/30 text-brand-700 dark:text-brand-300 px-4 py-2 rounded-full transition-colors duration-300 text-sm font-medium"
+            >
+              {displayName}
+              <span class="bg-brand-200 dark:bg-brand-800 text-brand-800 dark:text-brand-200 px-2 py-0.5 rounded-full text-xs">
+                {count}
+              </span>
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <!-- Notes List -->
+    <div class="space-y-4">
+      {
+        sortedNotes.map((note) => (
+          <article class="group">
+            <a
+              href={`/notes/${note.id}/`}
+              class="block bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-brand-300 dark:hover:border-brand-600 transition-all duration-200 hover:shadow-md dark:hover:shadow-gray-900/20 p-6"
+            >
+              <div class="flex items-start justify-between gap-4">
+                <div class="flex-1 min-w-0">
+                  <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-2 group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors duration-200">
+                    {note.data.title}
+                    {note.data.draft && import.meta.env.DEV && (
+                      <span class="ml-2 inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-200">
+                        Draft
+                      </span>
+                    )}
+                  </h2>
+                  
+                  {note.data.excerpt && (
+                    <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed line-clamp-2">
+                      {note.data.excerpt}
+                    </p>
+                  )}
+                </div>
+
+                {note.data.tags && note.data.tags.length > 0 && (
+                  <div class="flex-shrink-0">
+                    <div class="flex flex-wrap gap-1 justify-end max-w-32">
+                      {note.data.tags.slice(0, 3).map((tag) => (
+                        <span class="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-2 py-1 rounded text-xs font-medium">
+                          {tag}
+                        </span>
+                      ))}
+                      {note.data.tags.length > 3 && (
+                        <span class="text-gray-400 dark:text-gray-500 text-xs px-1">
+                          +{note.data.tags.length - 3}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </a>
+          </article>
+        ))
+      }
+    </div>
+
+    {
+      sortedNotes.length === 0 && (
+        <div class="text-center py-16">
+          <p class="text-gray-500 dark:text-gray-400 text-lg">
+            No notes published yet. Check back soon!
+          </p>
+        </div>
+      )
+    }
+  </div>
+</Base>

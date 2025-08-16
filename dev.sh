@@ -1,9 +1,8 @@
 #!/bin/bash
-
-set -e  # Exit on any error
+set -e 
 
 # Development environment launcher for peteretelej.github.io
-# Creates a tmux session with Astro dev server
+# This session will mostly be taken over by Claude Code
 
 SESSION_NAME="peteretelej-dev"
 
