@@ -2,6 +2,7 @@
 import type { CollectionEntry } from "astro:content";
 import Base from "./Base.astro";
 import FormattedDate from "../components/FormattedDate.astro";
+import Comments from "../components/Comments.astro";
 import "../styles/readme.css";
 
 type Props = CollectionEntry<"readme">["data"];
@@ -62,6 +63,9 @@ const { title, subtitle, publishDate, tags, thumbnail } = Astro.props;
           }
         </div>
       </div>
+
+      <!-- Comments -->
+      <Comments repo="peteretelej/peteretelej.github.io" />
     </div>
   </article>
 </Base>

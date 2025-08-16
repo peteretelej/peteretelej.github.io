@@ -2,6 +2,7 @@
 import type { CollectionEntry } from 'astro:content';
 import Base from './Base.astro';
 import FormattedDate from '../components/FormattedDate.astro';
+import Comments from '../components/Comments.astro';
 import '../styles/notes.css';
 
 interface Props {
@@ -41,6 +42,9 @@ const { title, publishDate, tags, excerpt } = post.data;
 		<div class="prose prose-xl dark:prose-invert max-w-none notes-content">
 			<slot />
 		</div>
+
+		<!-- Comments -->
+		<Comments repo="peteretelej/peteretelej.github.io" />
 
 		<!-- Footer navigation -->
 		<footer class="mt-16 pt-8 border-t border-gray-200 dark:border-gray-700">

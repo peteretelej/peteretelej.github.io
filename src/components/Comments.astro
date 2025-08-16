@@ -1,0 +1,112 @@
+---
+export interface Props {
+  repo: string;
+  issueTerm?: 'pathname' | 'url' | 'title' | 'og:title';
+  label?: string;
+}
+
+const {
+  repo,
+  issueTerm = 'pathname',
+  label = ''
+} = Astro.props;
+---
+
+<section id="comments" class="mt-16">
+  <div id="utterances-container"></div>
+</section>
+
+<script is:inline>
+(function() {
+  let utterancesLoaded = false;
+  let currentTheme = null;
+  
+  function getThemePreference() {
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme) {
+      return savedTheme;
+    }
+    if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      return "dark";
+    }
+    return "light";
+  }
+  
+  function getUtterancesTheme(theme) {
+    return theme === 'dark' ? 'github-dark' : 'github-light';
+  }
+  
+  function loadUtterances() {
+    const container = document.getElementById('utterances-container');
+    if (!container) return;
+    
+    const theme = getThemePreference();
+    const utterancesTheme = getUtterancesTheme(theme);
+    
+    // Clear existing utterances
+    container.innerHTML = '';
+    
+    const script = document.createElement('script');
+    script.src = 'https://utteranc.es/client.js';
+    script.setAttribute('data-repo', 'peteretelej/peteretelej.github.io');
+    script.setAttribute('data-issue-term', 'pathname');
+    script.setAttribute('data-theme', utterancesTheme);
+    script.setAttribute('data-label', '');
+    script.setAttribute('crossorigin', 'anonymous');
+    script.async = true;
+    
+    container.appendChild(script);
+    
+    currentTheme = theme;
+    utterancesLoaded = true;
+  }
+  
+  function updateUtterancesTheme() {
+    const theme = getThemePreference();
+    if (theme === currentTheme) return;
+    
+    const utterancesFrame = document.querySelector('.utterances-frame');
+    if (utterancesFrame) {
+      const utterancesTheme = getUtterancesTheme(theme);
+      utterancesFrame.contentWindow.postMessage(
+        { type: 'set-theme', theme: utterancesTheme },
+        'https://utteranc.es'
+      );
+      currentTheme = theme;
+    }
+  }
+  
+  // Listen for theme changes
+  function observeThemeChanges() {
+    const root = document.documentElement;
+    const observer = new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
+          updateUtterancesTheme();
+        }
+      });
+    });
+    
+    observer.observe(root, {
+      attributes: true,
+      attributeFilter: ['data-theme']
+    });
+  }
+  
+  // Load utterances when page loads
+  function initUtterances() {
+    loadUtterances();
+    observeThemeChanges();
+  }
+  
+  // Initialize on page load
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initUtterances);
+  } else {
+    initUtterances();
+  }
+  
+  // Re-initialize on view transitions
+  document.addEventListener('astro:page-load', initUtterances);
+})();
+</script>
