@@ -7,7 +7,7 @@ import "../styles/readme.css";
 
 type Props = CollectionEntry<"readme">["data"];
 
-const { title, subtitle, publishDate, tags, thumbnail } = Astro.props;
+const { title, subtitle, publishDate, updatedDate, tags, thumbnail } = Astro.props;
 ---
 
 <Base title={title} description={subtitle || title}>
@@ -50,6 +50,12 @@ const { title, subtitle, publishDate, tags, thumbnail } = Astro.props;
           class="flex flex-wrap items-center gap-4 text-sm text-gray-600 dark:text-gray-400"
         >
           <FormattedDate date={publishDate} />
+          {updatedDate && (
+            <>
+              <span>&middot;</span>
+              <span>Updated: <FormattedDate date={updatedDate} /></span>
+            </>
+          )}
           {
             tags && tags.length > 0 && (
               <div class="flex flex-wrap gap-2">

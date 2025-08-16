@@ -10,6 +10,7 @@ const readme = defineCollection({
 			title: z.string(),
 			subtitle: z.string().optional(),
 			publishDate: z.coerce.date(),
+			updatedDate: z.coerce.date().optional(),
 			tags: z.array(z.string()),
 			thumbnail: z.string().optional(),
 			draft: z.boolean().optional(),
