@@ -73,6 +73,27 @@ Personal technical blog built with Astro 5, React, and Tailwind CSS. Static site
 - `ExpandableSection.tsx` - Collapsible content
 - `PageMap.tsx` - Content mapping utility
 
+##### ExpandableSection Component Guidelines
+
+**Purpose**: Progressive disclosure for optional/advanced content that doesn't interrupt main flow.
+
+**Title**: Clear, specific topic name (e.g., "Docker Rootless Mode", "VPS Provider Options")
+
+**Description**: 
+- Standalone useful information (don't just describe what's inside)
+- Specific facts, options, or key points
+- Good: "Some great VPS provider options are DigitalOcean, Hetzner, Linode, Vultr."
+- Bad: "Here are some popular VPS providers with my experience and recommendations."
+
+**Button Text**:
+- Match content type: "See provider details", "See comparison", "Read setup guide"
+- Default "Read how to do this" only for actual how-to content
+
+**Content Structure**:
+- Title and description appear in expanded view
+- Avoid repeating description info in first paragraph
+- Start with unique content that adds value beyond the description
+
 ### Build Configuration
 
 #### Astro Config (`astro.config.mjs`)

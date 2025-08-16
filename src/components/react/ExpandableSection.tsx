@@ -126,6 +126,15 @@ export default function ExpandableSection({
               </button>
               
               <div className="prose dark:prose-invert max-w-none prose-sm clear-both">
+                <h4 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mt-0 mb-3">
+                  {title}
+                </h4>
+                {description && (
+                  <p 
+                    className="text-gray-700 dark:text-gray-300 mb-4 text-sm border-b border-gray-200 dark:border-gray-700 pb-3"
+                    dangerouslySetInnerHTML={{ __html: description }}
+                  />
+                )}
                 {children}
               </div>
             </div>

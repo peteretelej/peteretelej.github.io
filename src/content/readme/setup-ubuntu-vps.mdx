@@ -2,38 +2,62 @@
 title: Ubuntu VPS Setup Guide
 subtitle: Setting up your Ubuntu server · VPS Management
 publishDate: 2018-03-10
-tags: [ubuntu, vps, ubuntu 16.04, sysadmin]
+updatedDate: 2025-08-16
+tags: [ubuntu, vps, sysadmin, docker, caddy, security]
 thumbnail: https://peteretelej.github.io/images/logos/ubuntu-logo.png
 ---
 
 import ExpandableSection from '../../components/react/ExpandableSection.tsx';
 import NavigationPills from '../../components/NavigationPills.astro';
 
-This is an overview of how to setup your Ubuntu virtual private server.
+Step-by-step Ubuntu server setup and hardening guide.
 
 <NavigationPills links={[
+  { href: "#getting-a-vps", label: "Getting a VPS" },
   { href: "#accessing-your-vps", label: "Accessing VPS" },
   { href: "#managing-users", label: "Managing Users" },
   { href: "#ssh-lockdown", label: "SSH Lockdown" },
   { href: "#update-server", label: "Update Server" },
+  { href: "#docker-setup", label: "Docker Setup" },
+  { href: "#web-server", label: "Web Server" },
   { href: "#add-swap", label: "Add Swap" },
   { href: "#configuring-a-firewall", label: "Firewall" },
-  { href: "#intrusion-prevention-with-fail2ban", label: "Intrusion Prevention" }
+  { href: "#intrusion-prevention", label: "Intrusion Prevention" },
+  { href: "#monitoring", label: "Monitoring" },
 ]} />
+
+### Getting a VPS
+
+You need a Linux VPS (Virtual Private Server) to follow this guide. Any Ubuntu LTS version works.
+
+<ExpandableSection 
+  title="VPS Provider Options"
+  description="Some great VPS provider options are DigitalOcean, Hetzner, Linode, Vultr."
+  buttonText="See provider details"
+  client:load>
+
+- **[Hetzner Cloud](https://www.hetzner.com/cloud)** - Best value for money. Excellent hardware specs, includes generous traffic allowances. Limited to fewer regions than other VPS providers. Their [server auction](https://www.hetzner.com/sb/) offers dedicated hardware at cheap, transparent pricing.
+
+- **[DigitalOcean](https://m.do.co/c/30b582135eb7)** - Solid choice with good documentation and 14+ global regions. Pricing is middle-tier but you get reliable performance and excellent tutorials.
+
+- **[Linode](https://www.linode.com/)** - Consistent performance and responsive support. Good balance of features and pricing. Strong reputation in the developer community.
+
+- **[Vultr](https://www.vultr.com/)** - Good global coverage with competitive pricing. Interface is straightforward, performance is reliable.
+
+- **[AWS Lightsail](https://aws.amazon.com/lightsail/)** - If you're already in the AWS ecosystem. More expensive but integrates well with other AWS services.
+
+- For most other _"cheap VPS"_, I recommend caution. They often have hidden costs, poor support, or unreliable performance.
+
+</ExpandableSection>
 
 ### Accessing Your VPS
 
-After creating a VPS instance (e.g. DigitalOcean [droplet](https://m.do.co/c/30b582135eb7) or Linode [linode](https://www.linode.com/?r=81378fcb9376bfa14debce18e992e1803b957f58)), you will be provided an IP address as well as login password. Use the credentials to log into the server.
+After creating a VPS instance (for example your DigitalOcean [droplet](https://m.do.co/c/30b582135eb7)), you will be provided an IP address as well as login password. Use the credentials to log into the server.
 
 ```sh
 ssh root@SERVER_IP_ADDRESS
 ```
 
-Tips regarding authentication _(explained further in [SSH Lockdown](#ssh-lockdown) below)_
-
-- SSH login via root should be disabled 
-- Only use ssh key authentication
-- Use a non-common port for ssh
 
 ### Managing Users
 
@@ -62,12 +86,12 @@ sudo su - # try to access root as user
 
 #### Disabling root login
 
-Before disabling root login, ensure that you've created a user that can SSH to the server _(as explained in [User Management above](#user-management))_.
+Before disabling root login, ensure that you've created a user that can SSH to the server _(as explained in [User Management](#managing-users) section above)_.
 The user can use the `su` command to become root (will need root password), or if the user has sudo they can just `sudo su -` to access root.
 
 Edit `/etc/ssh/sshd_config` and turn **PermitRootLogin** to **no**. Use a different editor if new to **vi** (ZZ to exit).
 
-> **Warning:** Before doing this, ensure that you can login with another (non-root) user account (see [User Management](#user-management) above).
+> **Warning:** Before doing this, ensure that you can login with another (non-root) user account (see [Managing Users](#managing-users) above).
 
 ```sh
 sudo vi /etc/ssh/sshd_config
@@ -81,7 +105,7 @@ PermitRootLogin no
 Restart ssh service for this change to effect.
 
 ```sh
-sudo service sshd restart
+sudo systemctl restart sshd
 ```
 
 <ExpandableSection 
@@ -99,16 +123,21 @@ SSH Keys come in a pair; a **private** and **public** key.
 
 OpenSSH client is required, this is most likely already installed. You can install it with `sudo apt-get -y install openssh-client`
 
-Use the following commands to have the key pair generated; accept the defaults by just pressing **Enter**. You can leave the password empty (optional). You should use existing keys if you already have them.
+#### Generate Ed25519 Keys (Recommended)
+
+Ed25519 provides strong security with smaller keys and fast performance.
 
 ```sh
-ssh-keygen 
-
-# alternatively you can use this command to generate a stronger key pair, and tag the keys
-ssh-keygen -t rsa -b 4096 -C "Email OR Comment describing key"
+ssh-keygen -t ed25519 -C "your_email@example.com"
 ```
 
-The public and private keys will be generate in the default directory **~/.ssh** as **~/.ssh/id_rsa.pub** and **~/.ssh/id_rsa** respectively. The public key (id_rsa.pub) can safely be shared, however, NEVER share your private key **(id_rsa)**.
+For systems that don't support Ed25519, use RSA with 4096 bits:
+
+```sh
+ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
+```
+
+The public and private keys will be generated in **~/.ssh/** as **id_ed25519.pub** and **id_ed25519** respectively (or **id_rsa.pub** and **id_rsa** for RSA). The public key can safely be shared, however, NEVER share your private key.
 
 In order to login with the generate ssh keys, append the contents of the public key to the following file in the VPS **~/.ssh/authorized_keys**.
 
@@ -129,12 +158,20 @@ Disable Password Authentication _(Optional)_: Edit `/etc/ssh/sshd_config`
 ```sh
 sudo vi /etc/ssh/sshd_config
 
-# Uncomment and set PasswordAuthentication to no
+# Security settings
+PermitRootLogin no
 PasswordAuthentication no
-
-# Ensure the following lines exist in the file
 PubkeyAuthentication yes
 ChallengeResponseAuthentication no
+MaxAuthTries 3
+ClientAliveInterval 300
+ClientAliveCountMax 2
+
+# Modern crypto only (comment out for older systems)
+HostKey /etc/ssh/ssh_host_ed25519_key
+KexAlgorithms curve25519-sha256,curve25519-sha256@libssh.org
+Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com
+MACs hmac-sha2-256-etm@openssh.com,hmac-sha2-512-etm@openssh.com
 ```
 
 Restart ssh service
@@ -163,7 +200,7 @@ sudo vi /etc/ssh/sshd_config
 Port 2222
 
 # Restart ssh daemon service
-sudo service sshd restart
+sudo systemctl restart sshd
 ```
 
 </ExpandableSection>
@@ -177,6 +214,179 @@ sudo apt-get update && sudo apt-get upgrade -y
 
 - Set desired server hostname: As superuser, edit the files `/etc/hostname` and `/etc/hosts`. To update without a restart restart, run this: `systemctl restart systemd-logind.service`
 - Update the timezone, to your desired timezone. Use `dpkg-reconfigure tzdata`
+
+### Docker Setup
+
+#### Docker Installation
+
+Follow the official installation guide: [Install Docker Engine on Ubuntu](https://docs.docker.com/engine/install/ubuntu/)
+
+Add your user to docker group to avoid using sudo:
+
+```sh
+sudo usermod -aG docker $USER
+# Log out and back in for group changes to take effect
+```
+
+#### Configure Docker Security
+
+Edit `/etc/docker/daemon.json`:
+
+```json
+{
+  "icc": false,
+  "userland-proxy": false,
+  "no-new-privileges": true,
+  "log-driver": "json-file",
+  "log-opts": {
+    "max-size": "10m",
+    "max-file": "3"
+  }
+}
+```
+
+Restart Docker to apply configuration:
+
+```sh
+sudo systemctl restart docker
+```
+
+<ExpandableSection 
+  title="Docker Rootless Mode"
+  description="Run Docker without root privileges using rootless mode for additional security isolation."
+  client:load>
+
+#### Installation
+
+Install rootless Docker:
+
+```sh
+# Install rootless Docker
+curl -fsSL https://get.docker.com/rootless | sh
+
+# Add to PATH
+echo 'export PATH=$HOME/bin:$PATH' >> ~/.bashrc
+echo 'export DOCKER_HOST=unix://$XDG_RUNTIME_DIR/docker.sock' >> ~/.bashrc
+source ~/.bashrc
+
+# Enable systemd service for current user
+systemctl --user enable docker
+systemctl --user start docker
+```
+
+**Benefits:**
+- Docker daemon runs as regular user
+- No need for sudo privileges
+- Additional isolation from host system
+- Reduced attack surface
+
+**Limitations:**
+- Cannot bind to privileged ports (< 1024)
+- Some networking features limited
+- Performance overhead for certain workloads
+
+</ExpandableSection>
+
+### Web Server
+
+#### Caddy (Recommended)
+
+Caddy provides automatic HTTPS without complex configuration.
+
+Install Caddy: [Installation Guide](https://caddyserver.com/docs/install)
+
+Basic configuration in `/etc/caddy/Caddyfile`:
+
+```nginx
+example.com {
+    root * /var/www/example.com
+    file_server
+    encode gzip
+}
+
+# Reverse proxy with automatic HTTPS
+api.example.com {
+    reverse_proxy localhost:8080
+}
+```
+
+Start and enable Caddy:
+
+```sh
+sudo systemctl enable --now caddy
+```
+
+> **Note:** Caddy obtains and renews SSL certificates automatically. No certbot needed.
+
+<ExpandableSection 
+  title="Nginx Configuration"
+  description="Use nginx with Let's Encrypt certificates if you prefer traditional web server setup."
+  client:load>
+
+#### Installation
+
+Install nginx:
+
+```sh
+sudo apt install nginx
+```
+
+Basic site configuration in `/etc/nginx/sites-available/example.com`:
+
+```nginx
+server {
+    listen 80;
+    server_name example.com www.example.com;
+    return 301 https://$server_name$request_uri;
+}
+
+server {
+    listen 443 ssl http2;
+    server_name example.com www.example.com;
+    
+    root /var/www/example.com;
+    index index.html index.php;
+    
+    # SSL configuration (use certbot)
+    ssl_certificate /etc/letsencrypt/live/example.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/example.com/privkey.pem;
+    
+    # Security headers
+    add_header X-Frame-Options "SAMEORIGIN" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header Referrer-Policy "no-referrer-when-downgrade" always;
+    
+    location / {
+        try_files $uri $uri/ =404;
+    }
+    
+    # Reverse proxy example
+    location /api/ {
+        proxy_pass http://localhost:8080;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+```
+
+Enable site and restart nginx:
+
+```sh
+sudo ln -s /etc/nginx/sites-available/example.com /etc/nginx/sites-enabled/
+sudo nginx -t
+sudo systemctl restart nginx
+```
+
+Install certbot for SSL:
+
+```sh
+sudo apt install certbot python3-certbot-nginx
+sudo certbot --nginx -d example.com -d www.example.com
+```
+
+</ExpandableSection>
 
 ### Add Swap
 
@@ -320,7 +530,7 @@ sudo ufw allow ssh
 # same as: sudo ufw allow 22/tcp 
 ```
 
-If you are using different port for SSH (see [SSH Lockdown: custom port](#using-a-custom-ssh-port) above), then allow that instead of port 22
+If you are using different port for SSH (see [SSH Lockdown: custom port](#ssh-lockdown) above), then allow that instead of port 22
 
 ```sh
 sudo ufw allow 2222/tcp
@@ -377,152 +587,219 @@ Here are a few workarounds I've found useful. You can either:
 ```sh
 DOCKER_OPTS="--dns 8.8.8.8 --dns 8.8.4.4 --iptables=false"                 
 ```
-Restart the docker service for the change to effect ` sudo service restart docker`
+Restart the docker service for the change to effect ` sudo systemctl restart docker`
 4. Use the host's network `docker run --net host`..
 
 </ExpandableSection>
 
-### Intrusion Prevention with Fail2ban
+### Intrusion Prevention
 
-Fail2ban is an open source intrusion prevention software that scans log files and bans IPs with malicious behaviour such as too many invalid login attempts or automated attacks. 
-It primarily focusses on SSH attacks but can be configured to work with other services (e.g Apache, SMTP, FTP) based on their logs.
+#### CrowdSec (Recommended)
 
-Install `fail2ban`
+CrowdSec provides community-driven threat intelligence.
+
+Install CrowdSec:
 
 ```sh
-sudo apt-get update
-sudo apt-get install fail2ban
+curl -s https://packagecloud.io/install/repositories/crowdsec/crowdsec/script.deb.sh | sudo bash
+sudo apt update
+sudo apt install crowdsec
 ```
 
-#### Configuring Fail2ban
+CrowdSec automatically detects services and shares threat data while maintaining privacy.
 
-Fail2ban configuration files are located at the `/etc/fail2ban/` directory.
-
-- The fail2ban configuration profile `/etc/fail2ban/fail2ban.conf`: this contains settings for fail2ban itself (eg logging level, pid and socket locations).
-- Fail2ban defail jail configuration: `/etc/fail2ban/jail.conf`: contains declarations for jails (filters and actions), this is usually what you want to customize.
-
-In order to customize fail2ban configs, create .local files at `/etc/fail2ban` containing your desired configuration settings. Settings in .local will override settings in .conf files. 
-Therefore:
-
-- copy `fail2ban.conf` to `fail2ban.local` _(optional)_
-- copy `jail.conf` to `jail.local` _(usu what you'll want to customize)_
-- then make changes to the **.local** files as desired.
+Start and enable CrowdSec:
 
 ```sh
-sudo cp /etc/fail2ban/fail2ban.conf /etc/fail2ban/fail2ban.local
-sudo cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local
+sudo systemctl enable --now crowdsec
+```
+
+Install the firewall bouncer to automatically block detected IPs:
+
+```sh
+sudo apt install crowdsec-firewall-bouncer-iptables
+```
+
+View current detections and bans:
+
+```sh
+sudo cscli decisions list
+sudo cscli alerts list
 ```
 
 <ExpandableSection 
-  title="Customizing fail2ban general settings"
-  description="To make changes to fail2ban's general settings, update the <code>fail2ban.local</code> file."
+  title="CrowdSec vs Fail2ban"
+  description="CrowdSec provides community threat intelligence while fail2ban works with local patterns."
+  buttonText="See comparison"
   client:load>
 
-Customizing general fail2ban settings. Edit the fail2ban config file `fail2ban.local`.
+#### Key Advantages
+
+**Community Intelligence:**
+- Each instance contributes to global threat detection
+- Shared indicators updated in real-time
+- Collective learning from attack patterns
+
+**Machine Learning:**
+- Identifies behavioral patterns regex-based systems miss
+- Adapts to new attack vectors automatically
+- Reduces false positives through smart analysis
+
+**API Integration:**
+- Works with CDNs (Cloudflare, AWS WAF)
+- Integrates with cloud firewalls
+- Supports custom bouncers for any platform
+
+**Privacy-First:**
+- Shares hashed indicators, not raw IPs
+- No personal data transmission
+- Local decision making with global intelligence
+
+#### Migration from fail2ban
+
+If you have fail2ban installed:
 
 ```sh
-sudo vi /etc/fail2ban/fail2ban.local
+# Stop and disable fail2ban
+sudo systemctl stop fail2ban
+sudo systemctl disable fail2ban
 
-# change log details level (verbosity)
-# options  [ CRITICAL | ERROR (default) | WARNING | NOTICE | INFO | DEBUG ]
-loglevel = ERROR
-
-# change logfile location ( STDOUT | STDERR (default) | SYSLOG | FILE )
-logtarget = /var/log/fail2ban.log 
+# CrowdSec automatically handles similar scenarios
+# No complex jail configuration needed
 ```
-
-Restart fail2ban service to make use of your customized configuration `sudo systemctl restart fail2ban`
 
 </ExpandableSection>
 
-##### Customizing fail2ban
+#### Fail2ban (Alternative)
 
-Fail2ban is mainly configured using "**jails**". A **jail** is a declaration of filters and actions that fail2ban will follow when protecting services
-
-<ExpandableSection 
-  title="Jail Configuration"
-  description="Customizing fail2ban involves editing the <code>jail.local</code> file."
-  client:load>
-
-###### Jails
-
-Fail2ban jails are a combination of filters and actions for the various services it will protect. 
-Pre-defined filters and templates of how to declare jails are defined in `jail.conf`, which you copied to `jail.local`.
-
-To customize your jails, edit the file `jail.local` 
+For environments that prefer fail2ban:
 
 ```sh
-sudo vi /etc/fail2ban/jail.local
+sudo apt install fail2ban
 ```
 
-The following options are declared when defining jails:
+Basic SSH protection in `/etc/fail2ban/jail.local`:
 
-**filter**
-: name of pattern to be used to detect matches, each match increments a counter
+```ini
+[DEFAULT]
+bantime = 1800
+findtime = 600
+maxretry = 3
+ignoreip = 127.0.0.1/8
 
-**logpath**
-: path to log file to be used by filter _(default: /var/log/messages)_
-
-**maxretry**
-: number of filter matches (counter) that trigger ban action _(default: 3)_
-
-**findtime**
-: reset counter if no filter matches in this time (seconds) _(default: 600)_
-
-**bantime**
-: duration (seconds) to ban, negative number for permanent ban _(default: 600)_
-
-###### Sections
-
-The `jail.local` file is divided into sections. 
-Jails are defined in their own sections some sections have special uses for example **[DEFAULT]** includes global configurations that apply to all jails and can be overwritten in each individual jail.
-
-Commonly customized settings in the **[DEFAULT]** section:
-
-- `ignoreip` is used to specify IPs that will not be banned. You can append you IP if you have a dedicate IP you use often (203.0.113.11 below is an example)
-- `bantime`, `findtime` and `maxretry` are for changing jail option default values
-- If you wish to enable email, update the values for `destemail`,`sendername` and `mta`
-- Example:
-```sh
-ignoreip = 127.0.0.1/8 203.0.113.11
-bantime  = 1200
-findtime = 1200
-maxretry = 6
-```
-
-Individual Jail Sections
-
-- To enable the jail, set the `enabled` value to true
-- `filter` is the filter the jail will use should exist in `/etc/fail2ban/filter.d`
-- `logpath` defines a logfile to the specific service jail
-- Example: (enable ssh jail for port 22 (default ssh port))
-```sh
-[ssh]
-
+[sshd]
 enabled = true
 port = ssh
 filter = sshd
 logpath = /var/log/auth.log
-maxretry = 5
+maxretry = 3
 ```
 
-Restart fail2ban service to make use of your customized configuration
+Enable and start:
 
 ```sh
-sudo systemctl restart fal2ban
+sudo systemctl enable --now fail2ban
 ```
 
-</ExpandableSection>
+> **Note:** While both solutions help reduce invalid login attempts, they don't eliminate the need for strong authentication. Use SSH key authentication as described above.
 
-> **Warning:** While Fail2ban helps reduce rate of invalid logins, it does not eliminate the risk of weak password authentication. I'd recommend using public key authentication _(described in [SSH Lockdown](#ssh-key-based-authentication) above)_.
+### Monitoring
+
+#### Quick Setup with Netdata
+
+One-line installation for immediate system insights:
+
+```sh
+bash <(curl -Ss https://my-netdata.io/kickstart.sh)
+```
+
+Access at `http://your-server:19999` - no configuration needed.
+
+**What you get:**
+- Real-time system metrics (CPU, memory, disk, network)
+- Application monitoring (web servers, databases)
+- Alert notifications
+- Beautiful, responsive web interface
+
+Configure firewall for Netdata:
+
+```sh
+sudo ufw allow 19999/tcp
+```
+
+<ExpandableSection 
+  title="Advanced Monitoring Stack"
+  description="Use Prometheus + Grafana for custom dashboards, metrics collection, and advanced alerting."
+  client:load>
+
+#### Setup Process
+
+Install Prometheus:
+
+```sh
+sudo useradd --no-create-home --shell /bin/false prometheus
+sudo mkdir /etc/prometheus /var/lib/prometheus
+sudo chown prometheus:prometheus /etc/prometheus /var/lib/prometheus
+
+wget https://github.com/prometheus/prometheus/releases/download/v2.40.0/prometheus-2.40.0.linux-amd64.tar.gz
+tar xvfz prometheus-2.40.0.linux-amd64.tar.gz
+sudo cp prometheus-2.40.0.linux-amd64/prometheus /usr/local/bin/
+sudo cp prometheus-2.40.0.linux-amd64/promtool /usr/local/bin/
+sudo chown prometheus:prometheus /usr/local/bin/prometheus /usr/local/bin/promtool
+```
+
+Basic Prometheus config in `/etc/prometheus/prometheus.yml`:
+
+```yaml
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+  
+  - job_name: 'node'
+    static_configs:
+      - targets: ['localhost:9100']
+```
+
+Install node_exporter for system metrics:
+
+```sh
+wget https://github.com/prometheus/node_exporter/releases/download/v1.4.0/node_exporter-1.4.0.linux-amd64.tar.gz
+tar xvfz node_exporter-1.4.0.linux-amd64.tar.gz
+sudo cp node_exporter-1.4.0.linux-amd64/node_exporter /usr/local/bin/
+sudo useradd --no-create-home --shell /bin/false node_exporter
+sudo chown node_exporter:node_exporter /usr/local/bin/node_exporter
+```
+
+Create systemd services and enable them. For detailed setup, see [Prometheus documentation](https://prometheus.io/docs/introduction/getting_started/).
+
+</ExpandableSection>
 
 ---
 
 #### Relevant Guides & Tutorials
 
-This article is based on snippets, guides and other different sources, some are listed below:
+Helpful resources for further reading and advanced configurations:
 
-- [Initial Server Setup with Ubuntu 16.04](https://www.digitalocean.com/community/tutorials/initial-server-setup-with-ubuntu-16-04)
-- [How To Set Up a Firewall with UFW on Ubuntu 16.04](https://www.digitalocean.com/community/tutorials/how-to-set-up-a-firewall-with-ufw-on-ubuntu-16-04)
-- [How to Secure Your Server](https://linode.com/docs/security/securing-your-server/)
-- [Use Fail2ban to Secure Your Server](https://linode.com/docs/security/using-fail2ban-for-security/)
+##### Official Documentation
+- [Ubuntu Server Guide - Security](https://ubuntu.com/server/docs/security-introduction)
+- [SSH Hardening Guides](https://www.sshaudit.com/hardening_guides.html)
+- [OWASP Docker Security Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Docker_Security_Cheat_Sheet.html)
+
+##### Comprehensive Security Guides
+- [Ubuntu System Hardening Guide](https://linux-audit.com/system-hardening/guides/ubuntu/) - Linux Audit
+- [40 Linux Server Hardening Security Tips](https://www.cyberciti.biz/tips/linux-security.html) - nixCraft
+- [Ubuntu 24.04 LTS Initial Setup & Hardening](https://gist.github.com/jeanpauldejong/1274c87ce0ae0c8e27443437a5b575ea) - Community Gist
+
+##### DigitalOcean Community Tutorials
+- [Initial Server Setup with Ubuntu](https://www.digitalocean.com/community/tutorials/initial-server-setup-with-ubuntu)
+- [How to Set Up a Firewall with UFW on Ubuntu](https://www.digitalocean.com/community/tutorials/how-to-set-up-a-firewall-with-ufw-on-ubuntu)
+- [UFW Essentials: Common Firewall Rules and Commands](https://www.digitalocean.com/community/tutorials/ufw-essentials-common-firewall-rules-and-commands)
+
+##### Modern Security Practices
+- [CrowdSec Documentation](https://docs.crowdsec.net/) - Community-driven intrusion prevention
+- [Caddy Documentation](https://caddyserver.com/docs/) - Automatic HTTPS web server
+- [Docker Security Best Practices](https://docs.docker.com/engine/security/) - Official Docker security guide
