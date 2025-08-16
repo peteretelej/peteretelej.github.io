@@ -3,8 +3,14 @@ import rss from '@astrojs/rss';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 
 export async function GET(context) {
-	const readmePosts = await getCollection('readme');
-	const notes = await getCollection('notes');
+	const readmePosts = await getCollection('readme', ({ data }) => {
+		// Show drafts in development, hide in production
+		return import.meta.env.DEV ? true : data.draft !== true;
+	});
+	const notes = await getCollection('notes', ({ data }) => {
+		// Show drafts in development, hide in production
+		return import.meta.env.DEV ? true : data.draft !== true;
+	});
 	
 	// Combine and sort all content by date
 	const allContent = [
