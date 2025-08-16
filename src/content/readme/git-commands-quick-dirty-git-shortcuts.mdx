@@ -2,11 +2,13 @@
 title: Git Commands - Quick and Dirty
 subtitle: An Overview of Useful Git Commands
 publishDate: 2014-09-22
+updatedDate: 2025-08-16
 tags: [git, cheatsheet]
 thumbnail: /images/logos/git-logo.png
 ---
 
 import NavigationPills from '../../components/NavigationPills.astro';
+import ExpandableSection from '../../components/react/ExpandableSection.tsx';
 
 Git is a popular open source Version Control System that allows decentralized management of project repositories.
 
@@ -14,7 +16,7 @@ Here's a *quick and dirty* guide to common git commands:
 
 <NavigationPills links={[
   { href: "#git-configuration", label: "Configure Git" },
-  { href: "#git-basics", label: "Git Basics" },
+  { href: "#essential-git-operations", label: "Essential Git Operations" },
   { href: "#resetting-and-reverting-repo", label: "Git Reset" },
   { href: "#git-branches", label: "Manage Branches" },
   { href: "#git-merge", label: "Git Merge" },
@@ -23,12 +25,12 @@ Here's a *quick and dirty* guide to common git commands:
   { href: "#stashing", label: "Git Stash" },
   { href: "#useful-commands", label: "Useful Git Commands" },
   { href: "#useful-git-files", label: "Git Special Files" },
-  { href: "#guides-and-tutorials-on-git", label: "Git Guides and Tutorials" }
+  { href: "#official-resources", label: "Official Resources" }
 ]} />
 
 This is **NOT A TUTORIAL** on how to use git. 
 It's meant as a quick way to look up git commands. Please do not use these commands if you're just learning to use git;
-kindly [follow these links](#guides-and-tutorials-on-git) at the bottom of this post to get Git guides and tutorials.
+kindly [follow these links](#official-resources) at the bottom of this post to get Git guides and tutorials.
 
 ## Git Quick Commands Listing
 
@@ -52,7 +54,15 @@ git config --global color.status auto
 git config --global color.branch auto
 ```
 
-In case you have a GPG key you'd like used to sign your commits you can add it
+<ExpandableSection 
+  title="GPG Commit Signing" 
+  description="Set up GPG keys to <b>cryptographically sign</b> your commits for enhanced security and verification."
+  client:load>
+
+### GPG Commit Signing
+
+Set up GPG keys to **cryptographically sign** your commits for enhanced security and verification. This allows others to verify that commits actually came from you.
+
 ```sh
 # list GPG keys that you have the private keys to
 gpg --list-secret-keys --keyid-format LONG
@@ -64,21 +74,46 @@ git config --global user.signingkey YOUR_KEYID_HERE
 git config --global commit.gpgSign true
 ```
 
+</ExpandableSection>
+
 Listing all configurations set
 ```sh
 git config --list
 ```
 
-Other useful configurations
+<ExpandableSection 
+  title="Advanced Configuration Options" 
+  description="Modern Git defaults and <b>performance optimizations</b> for a better development experience."
+  client:load>
+
+### Advanced Configuration Options
+
+Modern Git defaults and **performance optimizations** for a better development experience. These configurations improve Git's behavior and performance.
+
 ```sh
 # only push the current branch (instead of pushing all matching)
 git config --global push.default simple
 
-# Automatically rebase pulls
-git config --global branch.autosetuprebase always
+# Use 'main' as default branch name
+git config --global init.defaultBranch main
+
+# Automatically rebase pulls (cleaner history)
+git config --global pull.rebase true
+
+# Auto-prune deleted remote branches
+git config --global fetch.prune true
+
+# Better conflict markers
+git config --global merge.conflictstyle zdiff3
+
+# Performance optimizations
+git config --global core.preloadindex true
+git config --global core.untrackedcache true
 ```
 
-### Git Basics
+</ExpandableSection>
+
+### Essential Git Operations
 Initialize a repository
 ```bash
 # initialize a new git repository
@@ -124,10 +159,13 @@ git ls-files --others
 
 Removing a file from tracking
 ```bash
-# Unstage a file but preserve it's contents
+# Modern: Unstage a file but preserve its contents
+git restore --staged filename
+
+# Legacy: Unstage a file (still widely used)
 git reset filename
 
-# Remove files from index, stage it's deletion from HEAD
+# Remove files from index, stage its deletion from HEAD
 git rm filename
 ```
 
@@ -148,16 +186,60 @@ git commit -am "The commit message here"
 git status
 ```
 
+<ExpandableSection 
+  title="Interactive Staging" 
+  description="Stage changes <b>selectively</b> by reviewing each change before adding it to the commit."
+  client:load>
+
+### Interactive Staging
+
+Stage changes **selectively** by reviewing each change before adding it to the commit. This powerful feature allows you to commit only specific parts of your changes.
+
+```sh
+# Stage changes selectively - review each change
+git add -p  # or --patch
+
+# Options during interactive staging:
+# y - stage this hunk
+# n - skip this hunk
+# q - quit
+# a - stage this and all remaining hunks
+# s - split hunk into smaller hunks
+# e - manually edit hunk
+
+# Interactive staging for specific files
+git add -p filename.txt
+```
+
+This allows you to commit only the relevant changes and keep unrelated modifications in your working directory.
+
+</ExpandableSection>
+
 ### Resetting and Reverting Repo
 **Revert** to previous commit (*graceful* - does not delete history)
 ```sh
 # git revert [SHA-1]
 git revert HEAD
 ```
-Undo changes you've made to a file i.e. and replace it with the HEAD version.
+#### Modern File Operations (Git 2.23+)
 ```sh
-# git checkout -- [FILENAME]
+# Discard changes in working directory (preferred)
+git restore myfile
+
+# Unstage file (remove from staging area)
+git restore --staged myfile
+
+# Restore file from specific commit
+git restore --source=HEAD~1 myfile
+```
+
+#### Legacy File Operations (still widely used)
+```sh
+# Undo changes to a file (legacy - use 'restore' instead)
 git checkout -- myfile
+
+# Unstage file (legacy - use 'restore --staged' instead)
+git reset myfile
 ```
 **Reset** to previous state: **Do not use** if already commited to shared remote
 ```sh
@@ -179,14 +261,28 @@ git branch --set-upstream-to=origin/master master
 ```
 
 ### Git Branches
+
+#### Modern Branch Operations (Git 2.23+)
+```sh
+# Switch to existing branch (preferred over checkout)
+git switch branchname
+
+# Create and switch to new branch
+git switch -c branchname
+
+# Switch to previous branch
+git switch -
+```
+
+#### Legacy Branch Operations (still widely used)
 ```sh
 # Create local branch
 git branch branchname
 
-# Move/switch to a branch
+# Move/switch to a branch (legacy - use 'switch' instead)
 git checkout branchname
 
-# Create and switch to branch
+# Create and switch to branch (legacy)
 git checkout -b branchname
 
 # Fetch file from another branch
@@ -211,12 +307,27 @@ git fetch -p
 git for-each-ref --sort=-committerdate --format='%(refname:short) %(committerdate:short)'
 ```
 
-#### Git Branch Naming Conventions
+<ExpandableSection 
+  title="Git Branch Naming Conventions" 
+  description="Best practices for <b>naming branches</b> to keep your repository organized and maintainable."
+  client:load>
+
+### Git Branch Naming Conventions
+
+Best practices for **naming branches** to keep your repository organized and maintainable. Following consistent naming conventions helps teams collaborate effectively.
 
 - Use grouping **tokens** (short words) at the beginning of branch names. e.g. `wip`*(work in progress)*, `feat`*(feature)*, `fix`*(bug fix)*, `temp`*(temporary/throaway branch)*
 - Separate branch name parts using slashes i.e. `wip/material-design`, `fix/authflow`
 - Do not start branch names with numbers, git may confuse them for SHA-1's
 - Avoid long branch-names
+
+**Examples:**
+- `feat/user-authentication`
+- `fix/login-bug`
+- `wip/new-dashboard`
+- `hotfix/security-patch`
+
+</ExpandableSection>
 
 ### Git merge
 Before merging, checkout to branch you want to merge to:
@@ -262,9 +373,18 @@ Moving a branch to a new base commit (an ID, a branch name, a tag, or a relative
 git rebase v0.2.2
 # NOTE - all commits v0.2.2..HEAD will be rewritten
 ```
-#### Interactive Rebasing
+<ExpandableSection 
+  title="Interactive Rebasing" 
+  description="Advanced technique for <b>rewriting commit history</b> - squash, reorder, and edit multiple commits."
+  client:load>
+
+### Interactive Rebasing
+
+Advanced technique for **rewriting commit history** - squash, reorder, and edit multiple commits. This powerful feature helps you clean up your commit history before sharing.
+
 Changing multiple commit messages. `git rebase -i 9fceb02` *(9fceb02 is an example ID)*
 provides an interactive text editor for modifying all commits after the base specified (eg 9fceb02)
+
 ```sh
 # Modify all commits after base specified (HEAD~3)
 git rebase -i HEAD~3
@@ -276,7 +396,8 @@ squash a3a44as I changed stuff
 # All squashed commit will be combined into the single 'picked' commit
 # Note: Another text editor for combined commit messages opens
 ```
-Other Interactive Rebase Commands:
+
+**Interactive Rebase Commands:**
 - `p, pick` - use commit
 - `r, reword` - use commit, but edit the commit message
 - `e, edit` - use commit, but stop for amending
@@ -290,6 +411,8 @@ To reorder commits, reorder the lines; they are executed from top to bottom.
 If you remove a line, THAT COMMIT WILL BE LOST  
 However, if you remove everything, the rebase will be aborted.  
 Empty commits are commented out
+
+</ExpandableSection>
 
 ### Working with Remotes
 Adding remote - Connecting local repo with a remote repo (for example a repo on github)
@@ -438,19 +561,29 @@ git gc --prune=all #prunes all loose objects
 ```
 
 #### Useful Git Files
-- .gitignore
-- .gitattributes
-- .mailmap
-- .gitmodules
+Configuration files that control Git behavior:
 
-#### Guides and Tutorials on Git
-- [Git - the **simple guide** - no deep shit](http://rogerdudler.github.io/git-guide/)
-- [Git Tutorial: A **Comprehensive Guide** by Udemy](https://blog.udemy.com/git-tutorial-a-comprehensive-guide/)
-- [**Git Tutorials** by Atlassian *( ~ bitbucket)*](https://www.atlassian.com/git/tutorials/)
-- [Github's Git Training: **Try Git**](https://try.github.io/levels/1/challenges/1)
-- [Official **Git Documentation**](http://git-scm.com/doc)
+- `.gitignore` - files/patterns to exclude from tracking
+- `.gitattributes` - per-path attributes (line endings, GitHub language detection)
+- `.mailmap` - map author/committer names and emails
+- `.gitmodules` - submodule configuration
+- `.gitmessage` - commit message template
+- `.git-blame-ignore-revs` - commits to ignore in blame view
+- `.gitkeep` - placeholder to track empty directories
 
-#### Git Cheat Sheets (Printable)
-- [**Github** Git Cheat Sheet *[PDF]*](https://training.github.com/kit/downloads/github-git-cheat-sheet.pdf)
-- [**Git Tower** Cheat Sheet](https://www.git-tower.com/blog/git-cheat-sheet/)	
-- [**Rebellabs** Git Cheat Sheet](http://zeroturnaround.com/rebellabs/git-commands-and-best-practices-cheat-sheet/)
+#### Official Resources
+
+**Official Documentation:**
+- [Git Documentation](https://git-scm.com/doc) - Official Git documentation and reference
+- [Git Book (Pro Git)](https://git-scm.com/book) - Comprehensive free book on Git
+- [Git Reference](https://git-scm.com/docs) - Complete command reference
+- [Git Tutorial](https://git-scm.com/docs/gittutorial) - Official tutorial
+
+**Interactive Learning:**
+- [Learn Git Branching](https://learngitbranching.js.org/) - Visual interactive Git tutorial
+- [GitHub Skills](https://skills.github.com/) - Hands-on courses for Git and GitHub
+- [Atlassian Git Tutorials](https://www.atlassian.com/git/tutorials) - Comprehensive Git workflows
+
+**Official Cheat Sheets:**
+- [GitHub Git Cheat Sheet](https://training.github.com/downloads/github-git-cheat-sheet/) - Official GitHub reference
+- [Atlassian Git Cheat Sheet](https://www.atlassian.com/git/tutorials/atlassian-git-cheatsheet) - Visual command reference
