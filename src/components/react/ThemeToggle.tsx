@@ -41,7 +41,9 @@ export default function ThemeToggle() {
 
   if (!mounted) {
     return (
-      <div className="w-9 h-9 rounded-lg bg-neutral-200 dark:bg-neutral-700 animate-pulse border border-neutral-200/50 dark:border-neutral-600/50" />
+      <div className="p-2 rounded-lg bg-neutral-200 dark:bg-neutral-700 animate-pulse border border-neutral-200/50 dark:border-neutral-600/50">
+        <div className="w-5 h-5" />
+      </div>
     );
   }
 
@@ -49,7 +51,7 @@ export default function ThemeToggle() {
     <button
       onClick={toggleTheme}
       disabled={isTransitioning}
-      className="group relative p-2 rounded-lg text-neutral-600 hover:text-neutral-900 dark:text-neutral-300 dark:hover:text-white hover:bg-neutral-100/80 dark:hover:bg-neutral-700/80 backdrop-blur-sm transition-all duration-200 hover:scale-105 disabled:opacity-75 border border-transparent hover:border-neutral-200/50 dark:hover:border-neutral-600/50"
+      className="group relative p-2 rounded-lg text-neutral-600 hover:text-neutral-900 dark:text-neutral-300 dark:hover:text-white hover:bg-neutral-100/80 dark:hover:bg-neutral-700/80 backdrop-blur-sm transition-all duration-200 disabled:opacity-75 border border-transparent hover:border-neutral-200/50 dark:hover:border-neutral-600/50"
       aria-label={`Switch to ${isDark ? 'light' : 'dark'} mode`}
     >
       <div className="relative w-5 h-5">

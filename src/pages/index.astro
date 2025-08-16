@@ -5,6 +5,11 @@ import FormattedDate from '../components/FormattedDate.astro';
 
 const posts = await getCollection('readme');
 const sortedPosts = posts.sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf());
+
+const notes = await getCollection('notes', ({ data }) => {
+  return import.meta.env.DEV ? true : data.draft !== true;
+});
+const sortedNotes = notes.sort((a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf()).slice(0, 6);
 ---
 
 <Base title="Let's Talk Code" description="Technical blog by Peter Etelej covering Ubuntu, PHP, Git, and more">
@@ -31,6 +36,12 @@ const sortedPosts = posts.sort((a, b) => b.data.publishDate.valueOf() - a.data.p
 					>
 						<span class="relative z-10">Browse Posts →</span>
 						<div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 -translate-x-full group-hover:translate-x-full"></div>
+					</a>
+					<a 
+						href="/notes" 
+						class="group relative w-full sm:w-auto bg-white/10 border-2 border-white/40 text-white px-10 py-5 rounded-2xl font-bold text-lg hover:bg-white/20 hover:border-white/60 transition-all duration-300 backdrop-blur-sm hover:shadow-2xl hover:shadow-black/20 hover:-translate-y-1 active:translate-y-0"
+					>
+						<span class="group-hover:tracking-wide transition-all duration-300">Browse Notes →</span>
 					</a>
 					<a 
 						href="/about" 
@@ -104,4 +115,63 @@ const sortedPosts = posts.sort((a, b) => b.data.publishDate.valueOf() - a.data.p
 			</a>
 		</div>
 	</section>
+
+	<!-- Notes Section -->
+	{sortedNotes.length > 0 && (
+		<section class="max-w-7xl mx-auto px-6 lg:px-8 py-20 border-t border-gray-200 dark:border-gray-700" aria-labelledby="notes-heading">
+			<div class="flex items-center justify-between mb-12">
+				<h2 id="notes-heading" class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">Recent Notes</h2>
+				<a 
+					href="/notes"
+					class="text-brand-600 dark:text-brand-400 hover:text-brand-700 dark:hover:text-brand-300 transition-colors font-medium"
+				>
+					View All Notes →
+				</a>
+			</div>
+			
+			<div class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+				{sortedNotes.map((note) => (
+					<article class="group">
+						<a
+							href={`/notes/${note.id}/`}
+							class="block bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-brand-300 dark:hover:border-brand-600 transition-all duration-300 hover:shadow-lg dark:hover:shadow-gray-900/20 p-6 h-full hover:-translate-y-1"
+						>
+							<h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-3 group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors duration-300 leading-tight">
+								{note.data.title}
+								{note.data.draft && import.meta.env.DEV && (
+									<span class="ml-2 inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-200">
+										Draft
+									</span>
+								)}
+							</h3>
+							
+							{note.data.excerpt && (
+								<p class="text-gray-600 dark:text-gray-400 mb-4 leading-relaxed text-sm line-clamp-3">
+									{note.data.excerpt}
+								</p>
+							)}
+							
+							<div class="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400 mt-auto">
+								<FormattedDate date={note.data.publishDate} />
+								{note.data.tags && note.data.tags.length > 0 && (
+									<div class="flex flex-wrap gap-1">
+										{note.data.tags.slice(0, 2).map(tag => (
+											<span class="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 px-2 py-1 rounded text-xs font-medium">
+												{tag}
+											</span>
+										))}
+										{note.data.tags.length > 2 && (
+											<span class="text-gray-400 dark:text-gray-500 text-xs px-1">
+												+{note.data.tags.length - 2}
+											</span>
+										)}
+									</div>
+								)}
+							</div>
+						</a>
+					</article>
+				))}
+			</div>
+		</section>
+	)}
 </Base>
