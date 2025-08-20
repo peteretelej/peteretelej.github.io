@@ -1,101 +1,110 @@
 ---
-import { getCollection } from 'astro:content';
-import Base from '../layouts/Base.astro';
+import { getCollection } from "astro:content";
+import Base from "../layouts/Base.astro";
 
-const posts = await getCollection('readme');
-const searchData = posts.map(post => ({
+const posts = await getCollection("readme");
+const searchData = posts.map((post) => ({
   id: post.id,
   title: post.data.title,
   subtitle: post.data.subtitle,
   tags: post.data.tags,
-  url: `/readme/${post.id}`
+  url: `/readme/${post.id}`,
 }));
 ---
 
 <Base title="Search" description="Search through technical posts and guides">
-	<!-- Hero Section -->
-	<div class="bg-hero-gradient dark:bg-hero-gradient-dark text-white py-16">
-		<div class="max-w-4xl mx-auto px-6 text-center">
-			<h1 class="text-4xl md:text-5xl font-bold mb-4">Search</h1>
-			<p class="text-xl text-blue-100">
-				Find the technical content you're looking for
-			</p>
-		</div>
-	</div>
+  <!-- Hero Section -->
+  <div
+    class="bg-hero-gradient dark:bg-hero-gradient-dark text-gray-900 dark:text-white py-16"
+  >
+    <div class="max-w-4xl mx-auto px-6 text-center font-sans">
+      <h1 class="text-4xl md:text-5xl font-bold mb-4">Search</h1>
+      <p class="text-xl">Find articles & notes</p>
+    </div>
+  </div>
 
-	<!-- Search Interface -->
-	<div class="max-w-4xl mx-auto px-6 py-16">
-		<div class="mb-8">
-			<input 
-				type="text" 
-				id="searchInput"
-				placeholder="Search posts by title, subtitle, or tags..."
-				class="w-full p-4 text-lg border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500"
-			/>
-		</div>
+  <!-- Search Interface -->
+  <div class="max-w-4xl mx-auto px-6 py-16">
+    <div class="mb-8">
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="Search posts by title, subtitle, or tags..."
+        class="w-full p-4 text-lg border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-brand-500"
+      />
+    </div>
 
-		<div id="searchResults" class="space-y-6">
-			<p class="text-gray-600 dark:text-gray-400 text-center">
-				Start typing to search through posts...
-			</p>
-		</div>
+    <div id="searchResults" class="space-y-6">
+      <p class="text-gray-600 dark:text-gray-400 text-center">
+        Start typing to search through posts...
+      </p>
+    </div>
 
-		<div id="allPosts" class="space-y-6">
-			<h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">All Posts</h2>
-			{posts.map((post) => (
-				<div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
-					<h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-						<a 
-							href={`/readme/${post.id}`}
-							class="hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
-						>
-							{post.data.title}
-						</a>
-					</h3>
-					{post.data.subtitle && (
-						<p class="text-gray-600 dark:text-gray-400 mb-3">
-							{post.data.subtitle}
-						</p>
-					)}
-					{post.data.tags && (
-						<div class="flex flex-wrap gap-2">
-							{post.data.tags.map(tag => (
-								<span class="bg-brand-600 text-white px-2 py-1 rounded text-sm">
-									{tag}
-								</span>
-							))}
-						</div>
-					)}
-				</div>
-			))}
-		</div>
-	</div>
+    <div id="allPosts" class="space-y-6">
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+        All Posts
+      </h2>
+      {
+        posts.map((post) => (
+          <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+            <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+              <a
+                href={`/readme/${post.id}`}
+                class="hover:text-brand-600 dark:hover:text-brand-400 transition-colors"
+              >
+                {post.data.title}
+              </a>
+            </h3>
+            {post.data.subtitle && (
+              <p class="text-gray-600 dark:text-gray-400 mb-3">
+                {post.data.subtitle}
+              </p>
+            )}
+            {post.data.tags && (
+              <div class="flex flex-wrap gap-2">
+                {post.data.tags.map((tag) => (
+                  <span class="bg-brand-600 text-white px-2 py-1 rounded text-sm">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
+        ))
+      }
+    </div>
+  </div>
 
-	<script define:vars={{ searchData }}>
-		const searchInput = document.getElementById('searchInput');
-		const searchResults = document.getElementById('searchResults');
-		const allPosts = document.getElementById('allPosts');
+  <script define:vars={{ searchData }}>
+    const searchInput = document.getElementById("searchInput");
+    const searchResults = document.getElementById("searchResults");
+    const allPosts = document.getElementById("allPosts");
 
-		function performSearch(query) {
-			const results = searchData.filter(post => {
-				const searchText = `${post.title} ${post.subtitle || ''} ${post.tags?.join(' ') || ''}`.toLowerCase();
-				return searchText.includes(query.toLowerCase());
-			});
+    function performSearch(query) {
+      const results = searchData.filter((post) => {
+        const searchText =
+          `${post.title} ${post.subtitle || ""} ${post.tags?.join(" ") || ""}`.toLowerCase();
+        return searchText.includes(query.toLowerCase());
+      });
 
-			if (query.trim() === '') {
-				searchResults.innerHTML = '<p class="text-gray-600 dark:text-gray-400 text-center">Start typing to search through posts...</p>';
-				allPosts.style.display = 'block';
-				return;
-			}
+      if (query.trim() === "") {
+        searchResults.innerHTML =
+          '<p class="text-gray-600 dark:text-gray-400 text-center">Start typing to search through posts...</p>';
+        allPosts.style.display = "block";
+        return;
+      }
 
-			allPosts.style.display = 'none';
+      allPosts.style.display = "none";
 
-			if (results.length === 0) {
-				searchResults.innerHTML = '<p class="text-gray-600 dark:text-gray-400 text-center">No posts found matching your search.</p>';
-				return;
-			}
+      if (results.length === 0) {
+        searchResults.innerHTML =
+          '<p class="text-gray-600 dark:text-gray-400 text-center">No posts found matching your search.</p>';
+        return;
+      }
 
-			const resultsHTML = results.map(post => `
+      const resultsHTML = results
+        .map(
+          (post) => `
 				<div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
 					<h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">
 						<a 
@@ -105,20 +114,26 @@ const searchData = posts.map(post => ({
 							${post.title}
 						</a>
 					</h3>
-					${post.subtitle ? `<p class="text-gray-600 dark:text-gray-400 mb-3">${post.subtitle}</p>` : ''}
-					${post.tags ? `
+					${post.subtitle ? `<p class="text-gray-600 dark:text-gray-400 mb-3">${post.subtitle}</p>` : ""}
+					${
+            post.tags
+              ? `
 						<div class="flex flex-wrap gap-2">
-							${post.tags.map(tag => `<span class="bg-brand-600 text-white px-2 py-1 rounded text-sm">${tag}</span>`).join('')}
+							${post.tags.map((tag) => `<span class="bg-brand-600 text-white px-2 py-1 rounded text-sm">${tag}</span>`).join("")}
 						</div>
-					` : ''}
+					`
+              : ""
+          }
 				</div>
-			`).join('');
+			`
+        )
+        .join("");
 
-			searchResults.innerHTML = resultsHTML;
-		}
+      searchResults.innerHTML = resultsHTML;
+    }
 
-		searchInput.addEventListener('input', (e) => {
-			performSearch(e.target.value);
-		});
-	</script>
+    searchInput.addEventListener("input", (e) => {
+      performSearch(e.target.value);
+    });
+  </script>
 </Base>
