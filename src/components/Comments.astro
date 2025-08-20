@@ -13,12 +13,25 @@ const {
 ---
 
 <section id="comments" class="mt-16">
-  <div id="utterances-container"></div>
+  <div class="max-w-5xl mx-auto">
+    <div id="giscus-container"></div>
+  </div>
 </section>
+
+<style>
+  #giscus-container :global(.giscus) {
+    max-width: 100% !important;
+  }
+  
+  #giscus-container :global(.giscus-frame) {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+</style>
 
 <script is:inline>
 (function() {
-  let utterancesLoaded = false;
+  let giscusLoaded = false;
   let currentTheme = null;
   
   function getThemePreference() {
@@ -32,45 +45,52 @@ const {
     return "light";
   }
   
-  function getUtterancesTheme(theme) {
-    return theme === 'dark' ? 'github-dark' : 'github-light';
+  function getGiscusTheme(theme) {
+    return theme === 'dark' ? 'dark' : 'light';
   }
   
-  function loadUtterances() {
-    const container = document.getElementById('utterances-container');
+  function loadGiscus() {
+    const container = document.getElementById('giscus-container');
     if (!container) return;
     
     const theme = getThemePreference();
-    const utterancesTheme = getUtterancesTheme(theme);
+    const giscusTheme = getGiscusTheme(theme);
     
-    // Clear existing utterances
+    // Clear existing giscus
     container.innerHTML = '';
     
     const script = document.createElement('script');
-    script.src = 'https://utteranc.es/client.js';
+    script.src = 'https://giscus.app/client.js';
     script.setAttribute('data-repo', 'peteretelej/peteretelej.github.io');
-    script.setAttribute('data-issue-term', 'pathname');
-    script.setAttribute('data-theme', utterancesTheme);
-    script.setAttribute('data-label', '');
+    script.setAttribute('data-repo-id', 'MDEwOlJlcG9zaXRvcnk1MjYwODE1OA==');
+    script.setAttribute('data-category', 'General');
+    script.setAttribute('data-category-id', 'DIC_kwDOAyK8ns4CuYpf');
+    script.setAttribute('data-mapping', 'pathname');
+    script.setAttribute('data-strict', '0');
+    script.setAttribute('data-reactions-enabled', '1');
+    script.setAttribute('data-emit-metadata', '0');
+    script.setAttribute('data-input-position', 'bottom');
+    script.setAttribute('data-theme', giscusTheme);
+    script.setAttribute('data-lang', 'en');
     script.setAttribute('crossorigin', 'anonymous');
     script.async = true;
     
     container.appendChild(script);
     
     currentTheme = theme;
-    utterancesLoaded = true;
+    giscusLoaded = true;
   }
   
-  function updateUtterancesTheme() {
+  function updateGiscusTheme() {
     const theme = getThemePreference();
     if (theme === currentTheme) return;
     
-    const utterancesFrame = document.querySelector('.utterances-frame');
-    if (utterancesFrame) {
-      const utterancesTheme = getUtterancesTheme(theme);
-      utterancesFrame.contentWindow.postMessage(
-        { type: 'set-theme', theme: utterancesTheme },
-        'https://utteranc.es'
+    const giscusFrame = document.querySelector('iframe.giscus-frame');
+    if (giscusFrame) {
+      const giscusTheme = getGiscusTheme(theme);
+      giscusFrame.contentWindow.postMessage(
+        { giscus: { setConfig: { theme: giscusTheme } } },
+        'https://giscus.app'
       );
       currentTheme = theme;
     }
@@ -82,7 +102,7 @@ const {
     const observer = new MutationObserver(function(mutations) {
       mutations.forEach(function(mutation) {
         if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
-          updateUtterancesTheme();
+          updateGiscusTheme();
         }
       });
     });
@@ -93,20 +113,20 @@ const {
     });
   }
   
-  // Load utterances when page loads
-  function initUtterances() {
-    loadUtterances();
+  // Load giscus when page loads
+  function initGiscus() {
+    loadGiscus();
     observeThemeChanges();
   }
   
   // Initialize on page load
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initUtterances);
+    document.addEventListener('DOMContentLoaded', initGiscus);
   } else {
-    initUtterances();
+    initGiscus();
   }
   
   // Re-initialize on view transitions
-  document.addEventListener('astro:page-load', initUtterances);
+  document.addEventListener('astro:page-load', initGiscus);
 })();
 </script>

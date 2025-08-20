@@ -62,7 +62,7 @@ Personal technical blog built with Astro 5, React, and Tailwind CSS. Static site
 - `FormattedDate.astro` - Date formatting
 - `HeaderLink.astro` - Navigation links
 - `NavigationPills.astro` - Content navigation
-- `Comments.astro` - Utterances integration
+- `Comments.astro` - Giscus integration
 
 #### React Components
 - `Search.tsx` - Live search with keyboard navigation
