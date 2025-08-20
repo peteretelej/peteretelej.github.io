@@ -19,6 +19,6 @@ const post = Astro.props;
 const { Content } = await render(post);
 ---
 
-<ReadmePost {...post.data}>
+<ReadmePost {...post.data} slug={post.id}>
   <Content />
 </ReadmePost>

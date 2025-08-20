@@ -5,9 +5,9 @@ import FormattedDate from "../components/FormattedDate.astro";
 import Comments from "../components/Comments.astro";
 import "../styles/readme.css";
 
-type Props = CollectionEntry<"readme">["data"];
+type Props = CollectionEntry<"readme">["data"] & { slug: string };
 
-const { title, subtitle, publishDate, updatedDate, tags, thumbnail } = Astro.props;
+const { title, subtitle, publishDate, updatedDate, tags, thumbnail, slug } = Astro.props;
 ---
 
 <Base title={title} description={subtitle || title}>
@@ -69,7 +69,7 @@ const { title, subtitle, publishDate, updatedDate, tags, thumbnail } = Astro.pro
           }
           <span>&middot;</span>
           <a
-            href={`https://github.com/peteretelej/peteretelej.github.io/edit/main/src/content/readme/${Astro.url.pathname.split('/').pop()}.mdx`}
+            href={`https://github.com/peteretelej/peteretelej.github.io/edit/main/src/content/readme/${slug}.mdx`}
             target="_blank"
             rel="noopener noreferrer"
             class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200 transition-colors duration-200 flex items-center gap-1"

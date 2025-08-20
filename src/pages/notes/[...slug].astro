@@ -19,6 +19,6 @@ const note = Astro.props;
 const { Content } = await render(note);
 ---
 
-<NotesPost post={note}>
+<NotesPost post={note} slug={note.id}>
 	<Content />
 </NotesPost>
