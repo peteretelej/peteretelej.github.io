@@ -1,0 +1,84 @@
+---
+import { getCollection, render } from "astro:content";
+import type { EmbedNotesProps, NotesData } from "../../types/embedded-notes";
+import NoteComponent from './NoteComponent.astro';
+
+type Props = EmbedNotesProps;
+
+const { tag, limit } = Astro.props;
+
+function createSlug(text: string): string {
+  return text.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+}
+
+let notes: NotesData[] = [];
+let error: string = "";
+
+try {
+  const allNotes = await getCollection("notes", ({ data }) => {
+    return import.meta.env.DEV ? true : data.draft !== true;
+  });
+
+  const taggedNotes = allNotes
+    .filter((note) => 
+      note.data.tags && 
+      note.data.tags.some((t) => createSlug(t) === createSlug(tag))
+    )
+    .sort((a, b) => {
+      const aPriority = a.data.priority ?? 99;  // no priority = lowest
+      const bPriority = b.data.priority ?? 99;
+      
+      if (aPriority !== bPriority) {
+        return aPriority - bPriority;  // ascending (1, 2, 3...)
+      }
+      
+      // Same priority = sort by date descending
+      return b.data.publishDate.valueOf() - a.data.publishDate.valueOf();
+    });
+
+  const finalNotes = limit && limit > 0 ? taggedNotes.slice(0, limit) : taggedNotes;
+
+  notes = await Promise.all(
+    finalNotes.map(async (note) => {
+      const { Content } = await render(note);
+      
+      return {
+        note,
+        Content,
+      };
+    })
+  );
+} catch (e) {
+  error = `Failed to load notes with tag "${tag}": ${e.message}`;
+}
+---
+
+{error ? (
+  <div class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 my-4">
+    <div class="text-red-800 dark:text-red-200 text-sm">
+      <strong>Notes Error:</strong> {error}
+    </div>
+  </div>
+) : notes.length === 0 ? (
+  <div class="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4 my-4">
+    <div class="text-yellow-800 dark:text-yellow-200 text-sm">
+      No notes found{tag ? ` with tag "${tag}"` : ''}.
+    </div>
+  </div>
+) : (
+  <div class="space-y-4 my-6">
+    {notes.map(({ note, Content }, index) => {
+      const variant = index % 2 === 0 ? 'a' : 'b';
+      
+      return (
+        <NoteComponent 
+          title={note.data.title}
+          id={note.id}
+          publishDate={note.data.publishDate}
+          Content={Content}
+          variant={variant}
+        />
+      );
+    })}
+  </div>
+)}

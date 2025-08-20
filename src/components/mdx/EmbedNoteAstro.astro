@@ -1,0 +1,48 @@
+---
+import { getCollection, render } from 'astro:content';
+import type { EmbedNoteProps } from '../../types/embedded-notes';
+import NoteComponent from './NoteComponent.astro';
+
+type Props = EmbedNoteProps;
+
+const { slug, variant = 'a' } = Astro.props;
+
+let note = null;
+let Content = null;
+let error = null;
+
+try {
+  const notes = await getCollection('notes', ({ data }) => {
+    return import.meta.env.DEV ? true : data.draft !== true;
+  });
+  
+  note = notes.find(n => n.id === slug);
+  
+  if (note) {
+    const renderResult = await render(note);
+    Content = renderResult.Content;
+  } else {
+    error = `Note "${slug}" not found`;
+  }
+} catch (e) {
+  error = `Failed to load note "${slug}": ${e instanceof Error ? e.message : 'Unknown error'}`;
+}
+---
+
+{error ? (
+  <div class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 my-4">
+    <div class="text-red-800 dark:text-red-200 text-sm">
+      <strong>Note Error:</strong> {error}
+    </div>
+  </div>
+) : note && Content ? (
+  <div class="my-4">
+    <NoteComponent 
+      title={note.data.title}
+      id={note.id}
+      publishDate={note.data.publishDate}
+      Content={Content}
+      variant={variant}
+    />
+  </div>
+) : null}

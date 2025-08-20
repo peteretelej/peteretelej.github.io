@@ -151,7 +151,7 @@ export async function fetchPortfolioProjects(): Promise<PortfolioProject[]> {
     const projectPattern = /<div[^>]*class="media-cell[^"]*"[^>]*>[\s\S]*?<\/div>\s*<\/div>/g;
     
     let match;
-    while ((match = projectPattern.exec(html)) !== null && projects.length < 5) {
+    while ((match = projectPattern.exec(html)) !== null && projects.length < 6) {
       const projectHtml = match[0];
       
       // Extract image source

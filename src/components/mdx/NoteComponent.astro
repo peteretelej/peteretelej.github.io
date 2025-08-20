@@ -1,0 +1,44 @@
+---
+interface Props {
+  title: string;
+  id: string;
+  publishDate: Date;
+  Content: any;
+  variant?: 'a' | 'b';
+}
+
+const { title, id, publishDate, Content, variant = 'a' } = Astro.props;
+---
+
+<div class="my-6 p-4 border rounded-lg bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-600">
+  <!-- Header with title and link -->
+  <div class="flex items-start justify-between gap-3 mb-3">
+    <h4 class="text-base font-semibold text-slate-700 dark:text-slate-200 m-0">
+      📝 {title}
+    </h4>
+    <a 
+      href={`/notes/${id}`}
+      class="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 text-sm transition-colors shrink-0"
+    >
+      View note →
+    </a>
+  </div>
+  
+  <!-- Content with smaller prose -->
+  <div class="prose prose-sm dark:prose-invert max-w-none text-sm">
+    <Content />
+  </div>
+  
+  <!-- Footer -->
+  <div class="flex items-center justify-between pt-3 mt-3 border-t border-slate-200 dark:border-slate-600 text-xs text-slate-500 dark:text-slate-400">
+    <span>Published: {new Date(publishDate).toLocaleDateString()}</span>
+    <a 
+      href={`https://github.com/peteretelej/peteretelej.github.io/edit/main/src/content/notes/${id}.mdx`}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="hover:text-slate-600 dark:hover:text-slate-300 transition-colors"
+    >
+      Edit this note
+    </a>
+  </div>
+</div>

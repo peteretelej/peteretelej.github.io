@@ -1,6 +1,8 @@
 ---
 import { type CollectionEntry, getCollection, render } from "astro:content";
 import ReadmePost from "../../layouts/ReadmePost.astro";
+import EmbedNoteAstro from "../../components/mdx/EmbedNoteAstro.astro";
+import EmbedNotesAstro from "../../components/mdx/EmbedNotesAstro.astro";
 
 export async function getStaticPaths() {
   const posts = await getCollection("readme", ({ data }) => {
@@ -20,5 +22,5 @@ const { Content } = await render(post);
 ---
 
 <ReadmePost {...post.data} slug={post.id}>
-  <Content />
+  <Content components={{ Note: EmbedNoteAstro, Notes: EmbedNotesAstro }} />
 </ReadmePost>

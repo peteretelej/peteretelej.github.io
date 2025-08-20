@@ -50,8 +50,21 @@
   margin-bottom: 1rem;
 }
 
+.readme-content h2 {
+  font-size: 1.75rem; /* 28px */
+  font-weight: 700;
+  border-bottom: 3px solid rgba(229, 231, 235, 0.8);
+  padding-bottom: 0.75rem;
+  color: rgba(26, 26, 26, 0.9);
+}
+
+.dark .readme-content h2 {
+  border-bottom: 3px solid rgba(229, 231, 235, 0.2);
+  color: rgba(255, 255, 255, 0.9);
+}
+
 .readme-content h3 {
-  font-size: 1.75rem; /* Increased from 1.5rem */
+  font-size: 1.5rem; /* 24px - smaller than h2 */
   border-bottom: 2px solid rgba(229, 231, 235, 0.8);
   padding-bottom: 0.5rem;
   color: rgba(26, 26, 26, 0.9);

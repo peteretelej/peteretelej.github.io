@@ -27,6 +27,7 @@ const notes = defineCollection({
 		tags: z.array(z.string()).optional(),
 		draft: z.boolean().optional(),
 		excerpt: z.string().optional(),
+		priority: z.number().optional(),
 	}),
 });
 
